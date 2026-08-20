@@ -39,7 +39,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Restaurant","name":"אדלה בשוק","url":"https://REPLACE-WITH-YOUR-DOMAIN.netlify.app","telephone":"+972504599409","image":"https://REPLACE-WITH-YOUR-DOMAIN.netlify.app/icon-512.png","servesCuisine":["Middle Eastern","Israeli"],"priceRange":"$$","address":{"@type":"PostalAddress","addressLocality":"ערד","addressRegion":"","addressCountry":"IL"},"openingHours":["Su-Fr 18:00-24:00","Sa 10:00-24:00"],"hasMap":"https://maps.google.com/?q=ערד+אדלה+בשוק"}
+{"@context":"https://schema.org","@type":"Restaurant","name":"אדלה בשוק","url":"https://REPLACE-WITH-YOUR-DOMAIN.netlify.app","telephone":"+972504599409","image":"https://REPLACE-WITH-YOUR-DOMAIN.netlify.app/icon-512.png","servesCuisine":["Middle Eastern","Israeli"],"priceRange":"$$","address":{"@type":"PostalAddress","streetAddress":"התעשייה 6","addressLocality":"ערד","addressRegion":"","addressCountry":"IL"},"openingHours":["Su-Fr 18:00-24:00","Sa 10:00-24:00"],"hasMap":"https://maps.google.com/?q=אדלה+בשוק+התעשייה+6+ערד"}
 </script>
 <!-- SEO:END -->
 <style>
@@ -1061,7 +1061,7 @@
 
 <footer>
     <strong id="footer-brand-name">אדלה בשוק</strong> -- <span id="footer-tagline">בר אוכל שוק</span><br>
-    📍 <span id="footer-city">ערד</span> &nbsp;|&nbsp; 📞 <a href="tel:+972504599409" id="footer-phone-link">050-4599409</a><br>
+    📍 <a id="footer-address-link" href="#" target="_blank" rel="noopener">התעשייה 6, ערד</a> &nbsp;|&nbsp; 📞 <a href="tel:+972504599409" id="footer-phone-link">050-4599409</a><br>
     <br>
     <strong>שעות פתיחה:</strong><br>
     <span id="footer-hours">א׳-ו׳ 18:00–24:00 · שבת 10:00–24:00</span>
@@ -1100,12 +1100,18 @@ const MIN_DELIVERY  = SITE_CONFIG.commerce.minDelivery;
     setText("delivery-fee-amount", DELIVERY_FEE + " " + SITE_CONFIG.commerce.currency);
     setText("footer-brand-name", b.name);
     setText("footer-tagline", b.tagline);
-    setText("footer-city", b.city);
     setText("footer-hours", b.hoursDisplay);
     const logoImg = document.getElementById("brand-logo-img");
     if (logoImg) logoImg.alt = "לוגו " + b.name;
     const phoneLink = document.getElementById("footer-phone-link");
     if (phoneLink) { phoneLink.href = "tel:" + b.phone; phoneLink.textContent = b.phoneDisplay; }
+    const addr = b.address || {};
+    const addrText = [addr.street, b.city].filter(Boolean).join(", ");
+    const addrLink = document.getElementById("footer-address-link");
+    if (addrLink) {
+        addrLink.textContent = addrText || b.city;
+        addrLink.href = "https://maps.google.com/?q=" + encodeURIComponent([b.name, addr.street, b.city].filter(Boolean).join(" "));
+    }
 })();
 // Optional integrations — leave empty to disable each silently.
 const GOOGLE_MAPS_API_KEY = "";   // get from console.cloud.google.com → enable Places API → restrict to your domain

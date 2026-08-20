@@ -1,0 +1,52 @@
+// site.config.js — EDIT THIS FILE for your business. This is the single place that
+// holds your business identity + Firebase connection details. It's written so the
+// exact same file works in three places with zero build step:
+//   1. <script src="/site.config.js"> in the browser pages          → window.SITE_CONFIG
+//   2. require("../../site.config.js") inside Netlify Functions      → module.exports
+//   3. importScripts("/site.config.js") inside sw.js (service worker) → self.SITE_CONFIG
+//
+// See SETUP.md for the full walkthrough (Firebase project, Netlify env vars, etc.).
+// This file only holds PUBLIC values — nothing here is a secret (see SETUP.md for
+// where the real secrets like ADMIN_PASSWORD/FB_SECRET go: Netlify environment
+// variables, never this file).
+(function (root) {
+  const SITE_CONFIG = {
+    business: {
+      name: "אדלה בשוק",
+      tagline: "בר אוכל שוק",
+      type: "בר אוכל שוק אותנטי מזרחי",           // ← free text, used in SEO/schema.org
+      city: "ערד",                                // ⚠️ לוודא — לא צויינה עיר במקור, הונח לפי \"הדיינר\" השכן
+      country: "IL",
+      phone: "+972000000000",                      // ⚠️ TODO: להשלים מספר טלפון אמיתי
+      phoneDisplay: "000-0000000",                  // ⚠️ TODO: להשלים מספר טלפון אמיתי
+      whatsappCountryCode: "972",
+      address: { street: "", locality: "ערד", region: "", country: "IL" }, // ⚠️ TODO: להשלים כתובת מדויקת בשוק
+      hoursDisplay: "ב׳-ד׳ 18:00–01:00 · שבת 09:30–01:00", // מהתפריט המודפס — ⚠️ לוודא (חסרים א׳, ה׳, ו׳)
+      canonicalUrl: "https://REPLACE-WITH-YOUR-DOMAIN.netlify.app" // ⚠️ TODO: דומיין בפועל אחרי הדיפלוי
+    },
+    firebase: {
+      // ⚠️ Create your OWN Firebase Realtime Database project (SETUP.md step 2) —
+      // never point this at someone else's project. These placeholders will not work
+      // until you replace them.
+      dbUrl: "https://REPLACE-WITH-YOUR-PROJECT-default-rtdb.REGION.firebasedatabase.app/",
+      apiKey: "REPLACE-WITH-YOUR-FIREBASE-WEB-API-KEY",
+      adminEmail: "owner@yourbusiness.local"
+    },
+    commerce: {
+      deliveryFee: 20,
+      minDelivery: 60,
+      currency: "₪"
+    },
+    theme: {
+      primary: "#9c5a2e",
+      primaryDark: "#5c3115",
+      bg: "#f6efe0"
+    }
+  };
+
+  if (typeof module !== "undefined" && module.exports) {
+    module.exports = SITE_CONFIG;
+  } else {
+    root.SITE_CONFIG = SITE_CONFIG;
+  }
+})(typeof self !== "undefined" ? self : this);

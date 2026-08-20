@@ -39,7 +39,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Restaurant","name":"אדלה בשוק","url":"https://REPLACE-WITH-YOUR-DOMAIN.netlify.app","telephone":"+972000000000","image":"https://REPLACE-WITH-YOUR-DOMAIN.netlify.app/icon-512.png","servesCuisine":["Middle Eastern","Israeli"],"priceRange":"$$","address":{"@type":"PostalAddress","addressLocality":"ערד","addressRegion":"","addressCountry":"IL"},"openingHours":["Mo-We 18:00-01:00","Sa 09:30-01:00"],"hasMap":"https://maps.google.com/?q=ערד+אדלה+בשוק"}
+{"@context":"https://schema.org","@type":"Restaurant","name":"אדלה בשוק","url":"https://REPLACE-WITH-YOUR-DOMAIN.netlify.app","telephone":"+972504599409","image":"https://REPLACE-WITH-YOUR-DOMAIN.netlify.app/icon-512.png","servesCuisine":["Middle Eastern","Israeli"],"priceRange":"$$","address":{"@type":"PostalAddress","addressLocality":"ערד","addressRegion":"","addressCountry":"IL"},"openingHours":["Su-Fr 18:00-24:00","Sa 10:00-24:00"],"hasMap":"https://maps.google.com/?q=ערד+אדלה+בשוק"}
 </script>
 <!-- SEO:END -->
 <style>
@@ -899,9 +899,8 @@
         <p id="closed-msg"></p>
         <p class="open-soon" id="closed-next"></p>
         <table class="hours-table">
-            <tr><td>ראשון–חמישי</td><td>18:00–24:00</td></tr>
-            <tr><td>שישי</td><td>18:00–23:00 (איסוף בלבד)</td></tr>
-            <tr><td>שבת</td><td>12:00–23:00</td></tr>
+            <tr><td>ראשון–שישי</td><td>18:00–24:00</td></tr>
+            <tr><td>שבת</td><td>10:00–24:00</td></tr>
         </table>
     </div>
 
@@ -1061,11 +1060,11 @@
 </div>
 
 <footer>
-    <strong id="footer-brand-name">העסק שלי</strong> -- <span id="footer-tagline">התיאור הקצר של העסק</span><br>
-    📍 <span id="footer-city">העיר שלי</span> &nbsp;|&nbsp; 📞 <a href="tel:+972000000000" id="footer-phone-link">000-0000000</a><br>
+    <strong id="footer-brand-name">אדלה בשוק</strong> -- <span id="footer-tagline">בר אוכל שוק</span><br>
+    📍 <span id="footer-city">ערד</span> &nbsp;|&nbsp; 📞 <a href="tel:+972504599409" id="footer-phone-link">050-4599409</a><br>
     <br>
     <strong>שעות פתיחה:</strong><br>
-    <span id="footer-hours">ימים א׳-ה׳ 09:00–22:00</span>
+    <span id="footer-hours">א׳-ו׳ 18:00–24:00 · שבת 10:00–24:00</span>
     <a class="track-link" onclick="openTrackModal()">📍 איפה ההזמנה שלי?</a>
     <a class="track-link" href="/group.html" style="display:block;margin-top:0.5rem;">🥙 מזמינים יחד? פתח הזמנה קבוצתית</a>
 </footer>
@@ -2535,27 +2534,16 @@ function getHoursStatus() {
     const d = {Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6}[day];
     let pickupHours = false, deliveryHours = false, nextMsg = "";
 
-    if (d >= 1 && d <= 4) {
-        // ב–ה: פתוח 18–24
-        pickupHours   = t >= 18*60 && t < 24*60;
-        deliveryHours = t >= 18*60 && t < 23*60;
-        if (t < 18*60)       nextMsg = "נפתח היום ב-18:00";
-        else if (t >= 24*60) nextMsg = "נפתח מחר ב-18:00";
-        else                 nextMsg = "";
-    } else if (d === 5) {
-        // שישי: איסוף 18+, ללא משלוח
-        pickupHours   = t >= 18*60;
-        deliveryHours = false;
-        nextMsg = t < 18*60 ? "נפתח היום בשישי ב-18:00" : "";
-    } else if (d === 6) {
-        // שבת: פתוח 12–24, משלוח 18–23
-        pickupHours   = t < 60 || t >= 12*60;
-        deliveryHours = t >= 18*60 && t < 23*60;
-        if (t >= 60 && t < 12*60) nextMsg = "נפתח היום בשבת ב-12:00";
-        else                      nextMsg = "";
+    if (d === 6) {
+        // שבת: פתוח 10:00–24:00
+        pickupHours   = t >= 10*60 && t < 24*60;
+        deliveryHours = pickupHours;
+        nextMsg = t < 10*60 ? "נפתח היום בשבת ב-10:00" : "";
     } else {
-        // ראשון: סגור
-        nextMsg = "נפתח ביום שני ב-18:00";
+        // א׳-ו׳: פתוח 18:00–24:00
+        pickupHours   = t >= 18*60 && t < 24*60;
+        deliveryHours = pickupHours;
+        nextMsg = t < 18*60 ? "נפתח היום ב-18:00" : "";
     }
     return {pickupHours, deliveryHours, nextMsg};
 }
@@ -2586,7 +2574,7 @@ function applyHours() {
     const hasOpt = [...sel.options].some(o => o.value === "delivery");
 
     if (!effectiveDelivery) {
-        const why = !deliveryOn ? "המשלוחים מושבתים כרגע" : "משלוחים זמינים ב׳–ה׳ ובשבת בין 18:00–23:00";
+        const why = !deliveryOn ? "המשלוחים מושבתים כרגע" : "משלוחים זמינים א׳-ו׳ 18:00–24:00 ובשבת 10:00–24:00";
         notice.textContent = "🛵 " + why; notice.style.display = "block";
         if (hasOpt) sel.remove([...sel.options].findIndex(o => o.value === "delivery"));
         document.getElementById("address-wrap").style.display = "none";

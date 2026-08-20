@@ -17,11 +17,11 @@
       type: "בר אוכל שוק אותנטי מזרחי",           // ← free text, used in SEO/schema.org
       city: "ערד",                                // ⚠️ לוודא — לא צויינה עיר במקור, הונח לפי \"הדיינר\" השכן
       country: "IL",
-      phone: "+972000000000",                      // ⚠️ TODO: להשלים מספר טלפון אמיתי
-      phoneDisplay: "000-0000000",                  // ⚠️ TODO: להשלים מספר טלפון אמיתי
+      phone: "+972504599409",
+      phoneDisplay: "050-4599409",
       whatsappCountryCode: "972",
       address: { street: "", locality: "ערד", region: "", country: "IL" }, // ⚠️ TODO: להשלים כתובת מדויקת בשוק
-      hoursDisplay: "ב׳-ד׳ 18:00–01:00 · שבת 09:30–01:00", // מהתפריט המודפס — ⚠️ לוודא (חסרים א׳, ה׳, ו׳)
+      hoursDisplay: "א׳-ו׳ 18:00–24:00 · שבת 10:00–24:00",
       canonicalUrl: "https://REPLACE-WITH-YOUR-DOMAIN.netlify.app" // ⚠️ TODO: דומיין בפועל אחרי הדיפלוי
     },
     firebase: {

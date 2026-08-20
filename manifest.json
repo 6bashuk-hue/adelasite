@@ -1,0 +1,34 @@
+{
+  "name": "העסק שלי",
+  "short_name": "העסק שלי",
+  "description": "הזמנה אונליין מהעסק שלי",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#b3592d",
+  "orientation": "portrait",
+  "lang": "he",
+  "dir": "rtl",
+  "categories": ["food", "restaurants"],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "הזמן עכשיו",
+      "url": "/",
+      "description": "פתח תפריט הזמנה"
+    }
+  ]
+}

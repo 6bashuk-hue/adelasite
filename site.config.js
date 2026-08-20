@@ -38,9 +38,9 @@
       currency: "₪"
     },
     theme: {
-      primary: "#9c5a2e",
-      primaryDark: "#5c3115",
-      bg: "#f6efe0"
+      primary: "#7d6652",
+      primaryDark: "#5c4a3a",
+      bg: "#f3ead9"
     }
   };
 

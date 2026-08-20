@@ -14,11 +14,11 @@
 ### מבנה אובייקט order (דוגמה)
 ```json
 {
-  "name": "נועם פאר", "phone": "0546647242",
+  "name": "ישראל ישראלי", "phone": "0501234567",
   "type": "איסוף עצמי" | "משלוח", "address": "...",
-  "items": [{ "name": "פיצה", "qty": 1, "extras": [{"name","qty","price"}], "notes": "", "basePrice": 0, "total": 0 }],
+  "items": [{ "name": "סטייק כרוב", "qty": 1, "extras": [{"name","qty","price"}], "notes": "", "basePrice": 0, "total": 0, "source": "self" | "diner" | "sixbashuk" }],
   "total": 128, "payment": "cash" | "credit", "couponCode": null, "discount": 0,
-  "wonGameCode": "WIN-XXXX", "ts": 1733250000000, "date": "...",
+  "ts": 1733250000000, "date": "...",
   "status": (לא קיים = חדש) | "inprog" | "done"
 }
 ```

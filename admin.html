@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>לוח ניהול — העסק שלי</title>
+<title>לוח ניהול — אדלה בשוק</title>
 <meta name="robots" content="noindex, nofollow">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -11,7 +11,7 @@
 <!-- Kitchen Mode: admin PWA tags (separate manifest; does not touch the customer /manifest.json) -->
 <link rel="manifest" href="/admin-manifest.json">
 <meta name="theme-color" content="#0a0a0a">
-<meta name="apple-mobile-web-app-title" content="מטבח — העסק שלי">
+<meta name="apple-mobile-web-app-title" content="מטבח — אדלה בשוק">
 <link rel="apple-touch-icon" href="/icon-192.png">
 <!-- End Kitchen Mode head -->
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
@@ -438,7 +438,7 @@ body.kitchen-mode-on .order-card.status-new {
 
 <!-- LOGIN -->
 <div id="login-screen">
-    <div class="login-logo" id="login-brand-name">🍕 העסק שלי</div>
+    <div class="login-logo" id="login-brand-name">🥙 אדלה בשוק</div>
     <div class="login-box">
         <h2>כניסה ללוח ניהול</h2>
         <input class="login-input" type="password" id="lpass" placeholder="••••••••"
@@ -454,7 +454,7 @@ body.kitchen-mode-on .order-card.status-new {
     <!-- TOP BAR -->
     <div class="topbar">
         <div style="display:flex; align-items:center; gap:1rem;">
-            <div class="topbar-brand" id="topbar-brand-name">🍕 העסק שלי — KDS</div>
+            <div class="topbar-brand" id="topbar-brand-name">🥙 אדלה בשוק — KDS</div>
             <div class="topbar-clock" id="clock"></div>
         </div>
         <div class="topbar-actions">
@@ -498,7 +498,7 @@ body.kitchen-mode-on .order-card.status-new {
             </div>
             <div id="col-new">
                 <div class="empty-state" id="empty-new" style="display:block;">
-                    <div class="icon">🍕</div>
+                    <div class="icon">🥙</div>
                     אין הזמנות חדשות כרגע
                 </div>
             </div>
@@ -548,8 +548,8 @@ const SENTRY_DSN = ""; // copy from your Sentry project → Settings → Client 
 (function applySiteConfig() {
     const b = SITE_CONFIG.business;
     const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
-    setText("login-brand-name", "🍕 " + b.name);
-    setText("topbar-brand-name", "🍕 " + b.name + " — KDS");
+    setText("login-brand-name", "🥙 " + b.name);
+    setText("topbar-brand-name", "🥙 " + b.name + " — KDS");
 })();
 
 (function setupSentry() {
@@ -867,7 +867,7 @@ function renderColumn(colId, emptyId, cntId, orders, status) {
         const sig  = orderSignature(orders[key]);
         if (existing) {
             if (existing.dataset.sig !== sig) {
-                // Data changed (e.g. dough-game win added a wonGameCode): replace card
+                // Data changed: replace card
                 const div = document.createElement('div');
                 div.innerHTML = html;
                 const card = div.firstElementChild;
@@ -890,8 +890,8 @@ function renderColumn(colId, emptyId, cntId, orders, status) {
 
 function orderSignature(o) {
     // Cheap signature of fields that affect rendering — used to detect when
-    // an existing card needs a re-render (e.g. dough-game win wrote wonGameCode).
-    return [o.status || '', o.wonGameCode || '', o.couponCode || '', o.payment || '',
+    // an existing card needs a re-render.
+    return [o.status || '', o.couponCode || '', o.payment || '',
             o.total || 0, (o.items || []).length].join('|');
 }
 
@@ -899,7 +899,7 @@ function buildCard(key, o, status) {
     const isDelivery = o.type === 'משלוח';
     const itemsHtml  = (o.items || []).map(item => {
         const extras = (item.extras || []).map(e => escapeHtml(e.name) + (e.qty > 1 ? ` ×${e.qty}` : '')).join(', ');
-        const choice = item.choice ? `<div class="card-item-extras">🍕 ${escapeHtml(item.choice)}</div>` : '';
+        const choice = item.choice ? `<div class="card-item-extras">🔸 ${escapeHtml(item.choice)}</div>` : '';
         const notes  = item.notes ? `<div class="card-item-notes">📝 ${escapeHtml(item.notes)}</div>` : '';
         return `<div class="card-item">
             ${escapeHtml(item.name)}${item.qty > 1 ? ` ×${item.qty}` : ''}
@@ -916,7 +916,7 @@ function buildCard(key, o, status) {
     const safePhone = escapeHtml(o.phone || '');
     const taboonBtn = status === 'new'
         ? `<button class="btn-taboon" data-key="${key}" data-name="${safeName}" data-phone="${safePhone}" onclick="markInProgress(this.dataset.key,this.dataset.name,this.dataset.phone)">
-               🔥 נכנס לטאבון
+               🔥 נכנס להכנה
            </button>`
         : '';
 
@@ -940,7 +940,6 @@ function buildCard(key, o, status) {
         </div>
         <div class="card-items">${itemsHtml}</div>
         ${o.couponCode ? `<div style="font-size:0.8rem; color:var(--muted); margin-bottom:0.5rem;">🎟 קופון: ${escapeHtml(o.couponCode)} (-${Number(o.discount)||0} ₪)</div>` : ''}
-        ${o.wonGameCode ? `<div style="font-size:0.8rem; color:#fbbf24; margin-bottom:0.5rem;">🏆 זכה במשחק! קוד אישי: <strong>${escapeHtml(o.wonGameCode)}</strong></div>` : ''}
         ${o.payment === 'cash'
             ? `<div style="font-size:0.85rem; color:var(--success); margin-bottom:0.5rem; font-weight:700;">💵 מזומן — אין צורך להתקשר</div>`
             : `<div style="font-size:0.85rem; color:var(--warning); margin-bottom:0.5rem; font-weight:700;">💳 אשראי טלפוני — להתקשר ללקוח</div>`}
@@ -1102,13 +1101,13 @@ function buildReceiptHtml(o) {
         const extras = (i.extras || []).map(e => e.name + (e.qty > 1 ? ' ×' + e.qty : '')).join(', ');
         return '<div class="r-item">' +
             '<div class="r-row r-bold"><span>' + escapeHtml(i.name) + '</span><span>' + (i.basePrice || 0) + ' ₪</span></div>' +
-            (i.choice ? '<div class="r-extras">🍕 ' + escapeHtml(i.choice) + '</div>' : '') +
+            (i.choice ? '<div class="r-extras">🔸 ' + escapeHtml(i.choice) + '</div>' : '') +
             (extras ? '<div class="r-extras">+ ' + escapeHtml(extras) + '</div>' : '') +
             (i.notes  ? '<div class="r-notes">📝 ' + escapeHtml(i.notes) + '</div>' : '') +
         '</div>';
     }).join('');
     return (
-        '<div class="r-title">🍕 ' + escapeHtml(SITE_CONFIG.business.name) + '</div>' +
+        '<div class="r-title">🥙 ' + escapeHtml(SITE_CONFIG.business.name) + '</div>' +
         '<div class="r-sub">' + escapeHtml(SITE_CONFIG.business.city) + ' • ' + escapeHtml(date) + '</div>' +
         '<div class="r-hr"></div>' +
         '<div class="r-bold">' + escapeHtml(o.name || '') + '</div>' +
@@ -1121,7 +1120,6 @@ function buildReceiptHtml(o) {
         '<div class="r-hr"></div>' +
         (o.couponCode ? '<div class="r-row"><span>🎟 ' + escapeHtml(o.couponCode) + '</span><span>-' + (o.discount || 0) + ' ₪</span></div>' : '') +
         '<div class="r-row r-big"><span>סה״כ:</span><span>' + (o.total || 0) + ' ₪</span></div>' +
-        (o.wonGameCode ? '<div class="r-win">🏆 זכה במשחק! קוד: ' + escapeHtml(o.wonGameCode) + '</div>' : '') +
         '<div class="r-foot">תודה ובתיאבון!</div>'
     );
 }
@@ -1299,7 +1297,6 @@ async function printOrder(key) {
     hr();
     if (o.couponCode) rowRL(o.couponCode, "-" + (Number(o.discount) || 0) + " ₪", 24, false);
     rowRL('סה"כ:', (Number(o.total) || 0) + " ₪", 36, true);
-    if (o.wonGameCode) { y += 4; right("זכה במשחק! קוד: " + o.wonGameCode, 24, true); }
     y += 6; center("תודה ובתיאבון!", 22, false);
     y += 8;
     return { canvas: cv, height: Math.min(cv.height, Math.ceil(y)) };
@@ -1378,7 +1375,7 @@ async function printOrder(key) {
 
 <div id="kitchen-ios-setup" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:10005; padding:20px; overflow-y:auto;">
   <div style="background:#fff; color:#222; max-width:500px; margin:20px auto; padding:24px; border-radius:16px; font-family:'Heebo',sans-serif;">
-    <h2 style="color:#b3592d; margin-top:0;">🍕 הגדרת iPhone למצב מטבח</h2>
+    <h2 style="color:#b3592d; margin-top:0;">🥙 הגדרת iPhone למצב מטבח</h2>
     <p>כדי שמצב המטבח יעבוד מצוין באייפון, הגדר 4 דברים:</p>
     <h3>1️⃣ Auto-Lock = Never</h3>
     <ol><li>Settings → Display &amp; Brightness</li><li>Auto-Lock → <strong>Never</strong></li></ol>
@@ -1599,7 +1596,7 @@ async function printOrder(key) {
       kitchenVibrationInterval = setInterval(() => navigator.vibrate([400, 200, 400, 200, 600]), 3000);
     }
     if ("Notification" in window && Notification.permission === "granted") {
-      try { new Notification("🍕 הזמנה חדשה!", { body: count + " הזמנות חדשות מחכות", requireInteraction: true, tag: "kitchen-new-order" }); } catch {}
+      try { new Notification("🥙 הזמנה חדשה!", { body: count + " הזמנות חדשות מחכות", requireInteraction: true, tag: "kitchen-new-order" }); } catch {}
     }
   }
 

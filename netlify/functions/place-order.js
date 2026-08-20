@@ -14,7 +14,6 @@
 // Optional env: TG_TOKEN, TG_CHAT  (Telegram kitchen ping)
 
 const { fbGet, fbSet, fbPush } = require("../../marketing/lib/fb");
-const crypto = require("crypto");
 const SITE_CONFIG = require("../../site.config.js");
 
 const DELIVERY_FEE = 20;
@@ -24,7 +23,7 @@ const LOYALTY_REWARD = 30;
 const DEFAULT_THRESHOLD = {
   enabled: true,
   thresholdAmount: 95,
-  rewardItem: { name: "פוקצ'ה מהטאבון", description: "שום, שמן זית, מלח גס ורוזמרין", menuPrice: 32, actualCost: 4 }
+  rewardItem: { name: "אדממה", description: "פולי סויה במלח אטלנטי ולימון", menuPrice: 32, actualCost: 8 }
 };
 
 // ── per-IP soft rate limit (in-memory, per warm instance) ──
@@ -222,12 +221,6 @@ exports.handler = async (event) => {
   });
   if (!orderKey) return { statusCode: 502, body: JSON.stringify({ error: "שמירת ההזמנה נכשלה" }) };
 
-  // One-time dough-game token: returned only to this customer and stored in a
-  // function-only node (clients can't read it), so a win can't be minted just from a
-  // publicly-readable orderKey. mint-win-coupon requires a matching, unused token.
-  const gameToken = crypto.randomBytes(16).toString("hex");
-  await fbSet("gameTokens/" + orderKey, { token: gameToken, createdAt: now, used: false }).catch(() => {});
-
   // ── Redeem the coupon (after the order exists, so a failure can't grant a free order) ──
   if (couponRecord) {
     const updates = { usedCount: (couponRecord.usedCount || 0) + 1 };
@@ -278,7 +271,7 @@ exports.handler = async (event) => {
   msg += "💰 *תשלום:* " + paymentLabel + (payment === "credit" ? " — ⚠️ להתקשר" : "") + "\n";
   if (type === "משלוח") msg += "📍 *כתובת:* " + address + "\n💵 דמי משלוח: " + fee + " ₪\n";
   if (discount > 0 && couponCode) msg += "🎟 *קופון " + couponCode + ":* -" + discount + " ₪\n";
-  if (rewardedThreshold) msg += "🎁 *פוקצ'ה מהטאבון — חינם (Threshold)*\n";
+  if (rewardedThreshold) msg += "🎁 *" + (thresholdCfg.rewardItem || DEFAULT_THRESHOLD.rewardItem).name + " — חינם (Threshold)*\n";
   msg += "━━━━━━━━━━━━━━━━━\n📦 *פירוט:*\n" + itemsText + "\n━━━━━━━━━━━━━━━━━\n💰 *סה\"כ: " + total + " ₪*";
   await sendTelegram(msg);
 
@@ -287,7 +280,7 @@ exports.handler = async (event) => {
     statusCode: 200,
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      ok: true, orderKey, total, discount, etaMinutes, gameToken,
+      ok: true, orderKey, total, discount, etaMinutes,
       loyaltyRewardCode: (loyaltyOut && loyaltyOut.rewardCode) || null
     })
   };

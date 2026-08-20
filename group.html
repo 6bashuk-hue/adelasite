@@ -82,7 +82,7 @@
 </head>
 <body>
 <div class="wrap">
-  <h1><a href="/">🍕 <span id="group-brand-name">העסק שלי</span></a> — הזמנה קבוצתית</h1>
+  <h1><a href="/">🥙 <span id="group-brand-name">העסק שלי</span></a> — הזמנה קבוצתית</h1>
 
   <div id="closed-banner" style="display:none;background:#1a1a1a;color:#fff;text-align:center;padding:1rem 1.2rem;border-radius:10px;margin:0.6rem 0 1rem;border:2px solid #444;">
     <div style="font-size:1.6rem;">🔒</div>
@@ -94,7 +94,7 @@
   <div id="state-create" style="display:none;">
     <div class="card">
       <h2>📣 פתח הזמנה קבוצתית</h2>
-      <p class="muted">פתח הזמנה אחת עם החברים. כל אחד מוסיף לעצמו → אתה (המנהל) שולח הכל בבת אחת לטאבון.</p>
+      <p class="muted">פתח הזמנה אחת עם החברים. כל אחד מוסיף לעצמו → אתה (המנהל) שולח הכל בבת אחת למטבח.</p>
       <label for="m-name">השם שלי *</label>
       <input id="m-name" placeholder="לדוגמה: יוסי">
       <label for="m-phone">טלפון *</label>
@@ -126,7 +126,7 @@
     </div>
 
     <div class="card" id="menu-card" style="display:none;">
-      <h2>🍕 בחר מהתפריט</h2>
+      <h2>🥙 בחר מהתפריט</h2>
       <div id="menu-sections"></div>
 
       <h3 style="margin-top:1rem;">הסל שלי</h3>
@@ -143,7 +143,7 @@
     </div>
 
     <div class="card" id="manager-submit" style="display:none;">
-      <h2>📤 שליחה לטאבון</h2>
+      <h2>📤 שליחה למטבח</h2>
       <label for="d-type">סוג</label>
       <select id="d-type"><option>איסוף</option><option>משלוח</option></select>
       <label for="d-addr">כתובת (למשלוח)</label>
@@ -153,7 +153,7 @@
         <option value="cash">מזומן באיסוף/לשליח</option>
         <option value="credit">אשראי טלפוני</option>
       </select>
-      <div style="margin-top:0.8rem;"><button class="btn green" id="submit-btn">🍕 שלח את כל ההזמנה</button></div>
+      <div style="margin-top:0.8rem;"><button class="btn green" id="submit-btn">🥙 שלח את כל ההזמנה</button></div>
       <div id="submit-msg"></div>
     </div>
   </div>
@@ -197,8 +197,8 @@ const EXTRAS_GROUPS = [
   { key: "cheese",  label: "🧀 תוספות גבינות" },
   { key: "premium", label: "✨ פרימיום" }
 ];
-const SECTION_LABELS = { starters: "🥗 ראשונות", pizzas: "🍕 פיצות", desserts: "🍰 קינוחים", drinks: "🥤 שתייה" };
-const SECTION_ORDER = ["starters", "pizzas", "desserts", "drinks"];
+const SECTION_LABELS = { mains: "🍽 עיקריות", snacks: "🥙 נשנושים", starters: "🥗 ראשונות", drinks: "🥤 שתייה" };
+const SECTION_ORDER = ["mains", "snacks", "starters", "drinks"];
 let soldOutSet = new Set();
 let ITEM_IDX = [];
 
@@ -525,7 +525,7 @@ async function refreshGroup() {
   if (fresh.status === "submitted") {
     document.getElementById("menu-card").style.display = "none";
     document.getElementById("manager-submit").style.display = "none";
-    document.getElementById("active-title").textContent = "✅ ההזמנה נשלחה לטאבון!";
+    document.getElementById("active-title").textContent = "✅ ההזמנה נשלחה למטבח!";
     if (pollHandle) clearInterval(pollHandle);
   }
 }
@@ -542,10 +542,10 @@ async function submitGroup() {
       body: JSON.stringify({ groupId: currentGroup.groupId, managerPhone: myPhone, delivery: { type, address, payment } })
     });
     const data = await r.json();
-    if (!r.ok) { showMsg("submit-msg", data.message || data.error || "שגיאה", false); btn.disabled = false; btn.textContent = "🍕 שלח את כל ההזמנה"; return; }
+    if (!r.ok) { showMsg("submit-msg", data.message || data.error || "שגיאה", false); btn.disabled = false; btn.textContent = "🥙 שלח את כל ההזמנה"; return; }
     showMsg("submit-msg", "✅ נשלח! סה\"כ ₪" + data.total + ". אנחנו נתקשר לאישור.", true);
     await refreshGroup();
-  } catch { showMsg("submit-msg", "שגיאת רשת", false); btn.disabled = false; btn.textContent = "🍕 שלח את כל ההזמנה"; }
+  } catch { showMsg("submit-msg", "שגיאת רשת", false); btn.disabled = false; btn.textContent = "🥙 שלח את כל ההזמנה"; }
 }
 
 function copyShareLink() {
@@ -554,7 +554,7 @@ function copyShareLink() {
 }
 function shareWa() {
   const url = location.origin + "/group.html?id=" + currentGroup.groupId;
-  const text = "מזמינים יחד מ" + SITE_CONFIG.business.name + " 🍕 הצטרף ובחר לעצמך:\n" + url;
+  const text = "מזמינים יחד מ" + SITE_CONFIG.business.name + " 🥙 הצטרף ובחר לעצמך:\n" + url;
   window.open("https://wa.me/?text=" + encodeURIComponent(text), "_blank");
 }
 

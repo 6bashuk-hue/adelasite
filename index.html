@@ -8,20 +8,20 @@
      bots (WhatsApp, Facebook, Google) BEFORE any JavaScript runs, so it CANNOT be filled
      in from site.config.js — edit every value below by hand. See SETUP.md for the full
      checklist. Keep the JSON-LD block valid JSON (no trailing commas). -->
-<title>שם העסק -- תיאור קצר | עיר</title>                                    <!-- ← business name, one-line pitch, city -->
-<meta name="description" content="תיאור קצר של העסק, מה מוכרים, איך מזמינים, שעות פתיחה.">
-<meta name="keywords" content="מילת מפתח 1, מילת מפתח 2, שם העסק, סוג העסק עיר">
+<title>אדלה בשוק -- בר אוכל שוק אותנטי | ערד</title>
+<meta name="description" content="אדלה בשוק — בר אוכל שוק אותנטי מזרחי בערד. סטייק כרוב, קבב, חצילים על האש ועוד. הזמינו עכשיו למשלוח ואיסוף עצמי.">
+<meta name="keywords" content="אדלה בשוק, בר אוכל שוק, אוכל מזרחי, שוק ערד, סטייק כרוב, קבב, חצילים">
 <meta name="robots" content="index, follow">
-<meta name="author" content="שם העסק">
+<meta name="author" content="אדלה בשוק">
 <link rel="canonical" href="https://REPLACE-WITH-YOUR-DOMAIN.netlify.app">              <!-- ← your Netlify/custom domain -->
 
 <!-- Open Graph / WhatsApp -->
 
 <meta property="og:type"        content="website">
 <meta property="og:locale"      content="he_IL">
-<meta property="og:site_name"   content="שם העסק">
-<meta property="og:title"       content="שם העסק -- תיאור קצר | עיר">
-<meta property="og:description" content="תיאור קצר לשיתוף ברשתות חברתיות ובוואטסאפ.">
+<meta property="og:site_name"   content="אדלה בשוק">
+<meta property="og:title"       content="אדלה בשוק -- בר אוכל שוק אותנטי | ערד">
+<meta property="og:description" content="בר אוכל שוק אותנטי מזרחי — סטייק כרוב, קבב, חצילים על האש ועוד. הזמינו עכשיו.">
 <meta property="og:image"       content="https://REPLACE-WITH-YOUR-DOMAIN.netlify.app/icon-512.png">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
@@ -30,29 +30,31 @@
 <!-- PWA -->
 
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#b3592d">                                  <!-- ← your brand color, keep in sync with site.config.js theme.primary -->
+<meta name="theme-color" content="#9c5a2e">                                  <!-- ← your brand color, keep in sync with site.config.js theme.primary -->
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="שם העסק">
+<meta name="apple-mobile-web-app-title" content="אדלה בשוק">
 <link rel="apple-touch-icon" href="icon-192.png">
 
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Restaurant","name":"שם העסק","url":"https://REPLACE-WITH-YOUR-DOMAIN.netlify.app","telephone":"+972000000000","image":"https://REPLACE-WITH-YOUR-DOMAIN.netlify.app/icon-512.png","servesCuisine":["Pizza"],"priceRange":"$$","address":{"@type":"PostalAddress","addressLocality":"עיר","addressRegion":"","addressCountry":"IL"},"openingHours":["Mo-Fr 09:00-22:00"],"hasMap":"https://maps.google.com/?q=עיר+שם+העסק"}
+{"@context":"https://schema.org","@type":"Restaurant","name":"אדלה בשוק","url":"https://REPLACE-WITH-YOUR-DOMAIN.netlify.app","telephone":"+972000000000","image":"https://REPLACE-WITH-YOUR-DOMAIN.netlify.app/icon-512.png","servesCuisine":["Middle Eastern","Israeli"],"priceRange":"$$","address":{"@type":"PostalAddress","addressLocality":"ערד","addressRegion":"","addressCountry":"IL"},"openingHours":["Mo-We 18:00-01:00","Sa 09:30-01:00"],"hasMap":"https://maps.google.com/?q=ערד+אדלה+בשוק"}
 </script>
 <!-- SEO:END -->
 <style>
         :root {
-            --primary: #b3592d;
-            --primary-dark: #8f4422;
-            --bg: #fdf5e6;
-            --dark: #4a2411;
+            --primary: #9c5a2e;
+            --primary-dark: #5c3115;
+            --bg: #f6efe0;
+            --dark: #2b1a10;
             --white: #ffffff;
             --success: #25D366;
             --danger: #e74c3c;
-            --gray: #666;
-            --border: #e0d0b0;
+            --gray: #6b5c48;
+            --border: #ddc9a0;
+            --gold: #b8892f;
+            --font-display: 'Frank Ruhl Libre', 'Heebo', serif;
         }
         * { box-sizing: border-box; }
         body { font-family: 'Heebo', sans-serif; background: var(--bg); color: var(--dark); margin: 0; padding: 0; }
@@ -79,7 +81,7 @@
     }
     .logo-wrap { display: flex; flex-direction: column; align-items: center; width: 100%; }
     .logo-img { max-width: 130px; height: auto; margin: 0 auto 0.4rem; display: block; cursor: pointer; transition: max-width .25s ease, margin .25s ease; }
-    .restaurant-name { font-size: 1.5rem; font-weight: 900; color: var(--primary); letter-spacing: -0.01em; line-height: 1.1; margin: 0.1rem 0 0.2rem; text-align: center; transition: font-size .25s ease; }
+    .restaurant-name { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--primary); letter-spacing: 0; line-height: 1.1; margin: 0.1rem 0 0.2rem; text-align: center; transition: font-size .25s ease; }
     .header-sub { font-size: 0.85rem; letter-spacing: 2px; color: #aaa; margin: 0; text-align: center; transition: font-size .25s ease, margin .25s ease; }
     @media (max-width: 600px) { .logo-img { max-width: 104px; } .cart-badge-wrap { display: none; } }
 
@@ -113,15 +115,6 @@
     .promo-banner.visible { display: block; }
     .promo-banner .promo-title { font-weight: 900; }
     .promo-banner .promo-desc { font-weight: 400; font-size: 0.85rem; opacity: 0.95; }
-
-    /* WINNERS BANNER (social proof) */
-    .winners-banner {
-        background: #1f2a14; border: 1px solid #4ade80; color: #d4f5be;
-        text-align: center; padding: 0.5rem 1rem; font-size: 0.85rem;
-        border-radius: 0; display: none;
-    }
-    .winners-banner.visible { display: block; }
-    .winners-banner strong { color: #ffd700; }
 
     /* LOYALTY CARD on the homepage */
     .loyalty-card {
@@ -189,8 +182,8 @@
     .container { max-width: 820px; margin: auto; padding: 1rem 1rem 3rem; }
 
     /* SECTION TITLE */
-    .section-title { text-align: center; font-weight: 900; font-size: 1.5rem; letter-spacing: -0.01em; line-height: 1.15; margin: 2.5rem 0 1rem; color: var(--dark); }
-    .section-title::after { content: ''; display: block; width: 60px; height: 4px; background: var(--primary); margin: 0.4rem auto 0; border-radius: 2px; }
+    .section-title { text-align: center; font-family: var(--font-display); font-weight: 700; font-size: 1.6rem; letter-spacing: 0; line-height: 1.15; margin: 2.5rem 0 1rem; color: var(--dark); }
+    .section-title::after { content: ''; display: block; width: 60px; height: 2px; background: var(--gold); margin: 0.5rem auto 0; }
 
     /* MENU GRID */
     .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
@@ -207,7 +200,7 @@
     .menu-item.sold-out { opacity: 0.5; border-right-color: #999; }
     .sold-out-badge { position: absolute; top: 0.6rem; left: 0.6rem; background: #666; color: white; font-size: 0.7rem; font-weight: bold; padding: 0.2rem 0.5rem; border-radius: 4px; }
     .top-seller-badge { position: absolute; top: 0.6rem; left: 0.6rem; background: linear-gradient(135deg, #d97706, #f59e0b); color: white; font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem; border-radius: 4px; box-shadow: 0 1px 4px rgba(245,158,11,0.4); }
-    .menu-item h3 { margin: 0 0 0.4rem; font-size: 1.1rem; }
+    .menu-item h3 { margin: 0 0 0.4rem; font-size: 1.1rem; font-family: var(--font-display); font-weight: 700; }
     .menu-item p { margin: 0; font-size: 0.85rem; color: var(--gray); line-height: 1.4; }
     .item-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 0.8rem; }
     .price { font-weight: bold; color: var(--primary); font-size: 1.05rem; }
@@ -512,31 +505,6 @@
     .login-secondary { background: #333 !important; margin-top: 0.5rem; }
     .login-error { color: var(--danger); font-size: 0.85rem; margin-top: 0.5rem; text-align: center; display: none; }
 
-    /* ══ DOUGH GAME ══ */
-    #dough-game { margin: 2rem auto 0; max-width: 340px; background: #1a1008; border-radius: 20px; padding: 1.4rem 1.2rem 1.8rem; text-align: center; border: 2px solid #5a3a18; box-shadow: 0 8px 32px rgba(0,0,0,0.4); display: none; }
-    .dg-title { font-size: 1.1rem; font-weight: 900; color: #f5deb3; margin-bottom: 0.2rem; }
-    .dg-sub { font-size: 0.82rem; color: #a08060; margin-bottom: 1rem; }
-    .dg-scale-wrap { position: relative; width: 200px; height: 200px; margin: 0 auto 0.6rem; }
-    .dg-scale-base { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 170px; height: 18px; background: #3a2a10; border-radius: 6px; border: 2px solid #5a4020; }
-    .dg-scale-pole { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); width: 7px; height: 55px; background: #5a4020; border-radius: 4px; }
-    .dg-scale-plate { position: absolute; bottom: 73px; left: 50%; transform: translateX(-50%); width: 140px; height: 10px; background: #8a6030; border-radius: 50%; border: 2px solid #a07840; }
-    .dg-dough { position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); width: 76px; height: 76px; border-radius: 50%; background: radial-gradient(circle at 33% 33%, #f5e8c0, #d4b483 58%, #b8955a); box-shadow: 0 4px 14px rgba(0,0,0,0.45), inset 0 -4px 8px rgba(0,0,0,0.2); }
-    .dg-weight-display { font-size: 2.8rem; font-weight: 900; letter-spacing: -0.01em; color: #f5deb3; line-height: 1; font-variant-numeric: tabular-nums; margin-bottom: 0.2rem; }
-    .dg-weight-unit { font-size: 0.9rem; color: #a08060; margin-bottom: 0.5rem; }
-    .dg-target { font-size: 0.85rem; color: #c8a060; margin-bottom: 0.9rem; }
-    .dg-target span { color: #ffd700; font-weight: 900; }
-    .dg-tries { font-size: 0.82rem; color: #a08060; margin-bottom: 1rem; display: flex; justify-content: center; gap: 0.5rem; align-items: center; }
-    .dg-dot { width: 12px; height: 12px; border-radius: 50%; background: #c8a060; display: inline-block; transition: background 0.3s; }
-    .dg-dot.used { background: #3a2010; border: 1px solid #6a4020; }
-    .dg-stop-btn { background: linear-gradient(135deg, #c96a30, #8f4422); color: white; border: none; border-radius: 14px; font-family: 'Heebo', sans-serif; font-size: 1.1rem; font-weight: 900; padding: 0.9rem 2rem; cursor: pointer; width: 100%; box-shadow: 0 4px 14px rgba(180,80,20,0.4); transition: transform 0.1s; touch-action: manipulation; }
-    .dg-stop-btn:active:not(:disabled) { transform: scale(0.96); }
-    .dg-stop-btn:disabled { opacity: 0.45; cursor: default; }
-    .dg-result { display: none; padding: 1rem; border-radius: 12px; margin-top: 1rem; font-size: 0.95rem; font-weight: 700; line-height: 1.6; }
-    .dg-result.win { background: #0f2a0a; border: 2px solid #4ade80; color: #4ade80; }
-    .dg-result.lose { background: #2a0f0a; border: 2px solid #c96a30; color: #f5deb3; }
-    .dg-coupon { font-size: 1.6rem; font-weight: 900; letter-spacing: 4px; color: #ffd700; margin: 0.6rem 0; }
-    .dg-copy-btn { background: #ffd700; color: #1a1008; border: none; border-radius: 8px; font-family: 'Heebo', sans-serif; font-weight: 900; font-size: 0.85rem; padding: 0.45rem 1.1rem; cursor: pointer; margin-top: 0.5rem; }
-    /* ══ END DOUGH GAME ══ */
 
     /* ══ ADMIN TABS ══ */
     .admin-tabs {
@@ -643,7 +611,7 @@
     @media (prefers-reduced-motion: reduce) {
         *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
         header, .modal-overlay, .modal, .sheet-handle, .upsell-overlay, .upsell-box,
-        #track-modal, .track-box, .promo-banner, .winners-banner, .threshold-achieved {
+        #track-modal, .track-box, .promo-banner, .threshold-achieved {
             transition-duration: 0.12s !important;
         }
         .modal, .upsell-box, .track-box { transform: none !important; }
@@ -676,7 +644,7 @@
 
 <div id="admin-page">
     <div class="admin-header">
-        <h1>🍕 ניהול -- <span id="admin-brand-name">העסק שלי</span></h1>
+        <h1>🥙 ניהול -- <span id="admin-brand-name">העסק שלי</span></h1>
         <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
             <button class="admin-logout" style="background:#444;" onclick="adminLogout()">🏪 לאתר</button>
             <button class="admin-logout" style="background:#1976d2;" onclick="window.location.href='/admin.html'">🍳 מטבח</button>
@@ -688,7 +656,7 @@
     <button class="admin-tab-btn active" data-tab="daily" onclick="switchAdminTab('daily')">🏠 ניהול יומי</button>
     <button class="admin-tab-btn"        data-tab="coupons" onclick="switchAdminTab('coupons')">🎟 קופונים</button>
     <button class="admin-tab-btn"        data-tab="promos" onclick="switchAdminTab('promos')">🎉 מבצעים</button>
-    <button class="admin-tab-btn"        data-tab="menu" onclick="switchAdminTab('menu')">🍕 תפריט</button>
+    <button class="admin-tab-btn"        data-tab="menu" onclick="switchAdminTab('menu')">🥙 תפריט</button>
     <button class="admin-tab-btn"        data-tab="reports" onclick="switchAdminTab('reports')">📊 דוחות</button>
 </div>
 
@@ -733,7 +701,7 @@
     <div class="admin-section-title">🎟 קופונים</div>
     <div class="admin-section">
         <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1rem;">
-            <input class="admin-input" id="new-code" placeholder="קוד (PIZZA20)" style="flex:1; min-width:110px; text-transform:uppercase;">
+            <input class="admin-input" id="new-code" placeholder="קוד (ADELA20)" style="flex:1; min-width:110px; text-transform:uppercase;">
             <select class="admin-input" id="new-type">
                 <option value="percent">אחוז %</option>
                 <option value="fixed">סכום ₪</option>
@@ -742,13 +710,6 @@
             <button class="admin-btn" onclick="createCoupon()">+ צור</button>
         </div>
         <div id="coupons-list"><div style="color:#888; font-size:0.85rem;">טוען...</div></div>
-    </div>
-
-    <div class="admin-section-title">🏆 קופונים שניתנו במשחק</div>
-    <div class="admin-section">
-        <div id="game-stats" style="background:#2a2a2a; border-radius:8px; padding:0.7rem 0.9rem; margin-bottom:0.7rem; font-size:0.88rem;"></div>
-        <div id="won-coupons-list"><div style="color:#888; font-size:0.85rem;">טוען...</div></div>
-        <button class="admin-btn-secondary" style="margin-top:0.5rem;" onclick="previewDoughGame()">🎮 הצג תצוגה מקדימה של המשחק</button>
     </div>
 </div>
 
@@ -790,7 +751,7 @@
         <div id="couple-meal-admin"></div>
     </div>
 
-    <div class="admin-section-title">🍕 ניהול תפריט</div>
+    <div class="admin-section-title">🥙 ניהול תפריט</div>
     <div class="admin-section">
         <div id="menu-admin"></div>
         <div style="margin-top:0.7rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
@@ -850,16 +811,15 @@
             <button class="cart-icon-btn">🛒 <span id="cart-count-badge">0</span></button>
         </div>
         <div class="logo-wrap">
-            <img src="logo.png" alt="לוגו העסק" id="brand-logo-img" class="logo-img" onclick="handleLogoTap()">
-            <div class="restaurant-name" id="brand-name-display">העסק שלי</div>
-            <p class="header-sub">פיצה | טאבון | אווירה</p>
+            <img src="logo.png" alt="לוגו אדלה בשוק" id="brand-logo-img" class="logo-img" onclick="handleLogoTap()">
+            <div class="restaurant-name" id="brand-name-display">אדלה בשוק</div>
+            <p class="header-sub">שוק | על האש | אותנטי</p>
         </div>
     </header>
 
 <div class="busy-banner" id="busy-banner">🔥 אנחנו עמוסים כרגע -- זמן ההמתנה עשוי להיות ארוך יותר</div>
 <div class="prep-banner" id="prep-banner"></div>
 <div class="promo-banner" id="promo-banner"></div>
-<div class="winners-banner" id="winners-banner"></div>
 
 <!-- UPSELL MODAL — shown right before submitting if cart has no dessert/drink -->
 <div class="upsell-overlay" id="upsell-modal">
@@ -938,15 +898,15 @@
             <div id="quiz-options" class="quiz-options"></div>
             <div id="quiz-result" class="quiz-result" style="display:none;"></div>
         </div>
-        <a href="/group.html" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;background:#fff0e6;border:1.5px dashed #b3592d;border-radius:10px;padding:0.7rem 1rem;margin:0.5rem 0 1rem;text-decoration:none;color:#b3592d;font-weight:700;font-size:0.95rem;">🍕 מזמינים יחד? פתח הזמנה קבוצתית — כל אחד בוחר משלו</a>
+        <a href="/group.html" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;background:#fff0e6;border:1.5px dashed #b3592d;border-radius:10px;padding:0.7rem 1rem;margin:0.5rem 0 1rem;text-decoration:none;color:#b3592d;font-weight:700;font-size:0.95rem;">🥙 מזמינים יחד? פתח הזמנה קבוצתית — כל אחד בוחר משלו</a>
+        <div class="section-title">עיקריות</div>
+        <div class="menu-grid" id="grid-mains"></div>
+
+        <div class="section-title">נשנושים</div>
+        <div class="menu-grid" id="grid-snacks"></div>
+
         <div class="section-title">ראשונות</div>
         <div class="menu-grid" id="grid-starters"></div>
-
-        <div class="section-title">פיצות הבית</div>
-        <div class="menu-grid" id="grid-pizzas"></div>
-
-        <div class="section-title">קינוחים</div>
-        <div class="menu-grid" id="grid-desserts"></div>
 
         <div class="section-title">שתייה קלה</div>
         <div class="menu-grid" id="grid-drinks"></div>
@@ -1003,7 +963,7 @@
 
             <form class="order-form" onsubmit="return false;">
                 <div class="delivery-notice" id="delivery-notice"></div>
-                <label>איך תרצו לקבל את הפיצה?</label>
+                <label>איך תרצו לקבל את ההזמנה?</label>
                 <select id="delivery-type" onchange="onDeliveryChange()">
                     <option value="pickup">🚶 איסוף עצמי</option>
                     <option value="delivery">🛵 משלוח (+20 ₪)</option>
@@ -1022,22 +982,18 @@
                     <option value="cash">💵 מזומן (תשלום באיסוף / לשליח)</option>
                 </select>
                 <p class="fine-print" id="payment-note">* לאחר השליחה נחזור אליך טלפונית לחיוב אשראי</p>
-                <button type="button" class="btn-submit" id="submit-btn" onclick="submitOrder()">שלח הזמנה למטבח 🍕</button>
+                <button type="button" class="btn-submit" id="submit-btn" onclick="submitOrder()">שלח הזמנה למטבח 🥙</button>
             </form>
         </div>
     </div>
 
     <!-- THANK YOU -->
     <div id="thank-you">
-        <div style="font-size:3rem;">🍕</div>
+        <div style="font-size:3rem;">🥙</div>
         <h2>ההזמנה בדרך!</h2>
-        <p>תודה <strong><span id="ty-name"></span></strong>, ההזמנה התקבלה בטאבון שלנו.</p>
+        <p>תודה <strong><span id="ty-name"></span></strong>, ההזמנה התקבלה במטבח שלנו.</p>
         <p id="ty-payment-msg">נחזור אליך טלפונית תוך כמה דקות לאישור ולקיחת פרטי תשלום.</p>
 
-        <!-- Compact dough-game pointer at the top of thank-you -->
-        <div id="dough-game-cta" style="display:none;max-width:340px;margin:0.6rem auto 0;background:#fff8e1;border:1px dashed #b8860b;border-radius:8px;padding:0.5rem 0.8rem;text-align:center;cursor:pointer;font-size:0.88rem;color:#7a5800;" onclick="document.getElementById('dough-game').scrollIntoView({behavior:'smooth',block:'center'});">
-            🎮 בונוס בהמשך — משחק משקל הבצק <strong>(15% הנחה ↓)</strong>
-        </div>
         <div class="eta-box" id="eta-box">⏱ זמן הכנה משוער: <span id="eta-display">30</span> דקות</div>
         <br>
         <button class="whatsapp-share-btn" onclick="shareWhatsApp()">
@@ -1048,7 +1004,7 @@
         <div id="push-prompt" style="display:none;background:linear-gradient(135deg,#fff0e6 0%,#ffe4d0 100%);border:2px solid #b3592d;border-radius:12px;padding:1rem;max-width:340px;margin:0 auto 1rem;text-align:center;">
             <div style="font-size:1.6rem;">🔔</div>
             <strong style="display:block;color:#b3592d;font-size:1.05rem;">להישאר מעודכן?</strong>
-            <div style="color:#666;font-size:0.88rem;margin:0.3rem 0 0.7rem;">נשלח לך התראה כשהפיצה יוצאת מהטאבון + קופונים מיוחדים.</div>
+            <div style="color:#666;font-size:0.88rem;margin:0.3rem 0 0.7rem;">נשלח לך התראה כשההזמנה יוצאת מהמטבח + קופונים מיוחדים.</div>
             <button class="btn-submit" style="max-width:240px;margin:0.2rem auto;" onclick="enablePushFromThankYou()">כן, להפעיל</button>
             <button onclick="dismissPushPrompt()" style="display:block;margin:0.3rem auto 0;background:none;border:none;color:#888;text-decoration:underline;cursor:pointer;font-size:0.85rem;">אולי בפעם הבאה</button>
             <div id="ios-pwa-hint" style="display:none;margin-top:0.6rem;font-size:0.82rem;color:#7a5800;background:#fff3cd;border-radius:8px;padding:0.5rem;">
@@ -1067,37 +1023,14 @@
         </div>
 
         <div style="background:#fff7ef;border:1.5px solid #e8590c;border-radius:10px;padding:1rem;max-width:340px;margin:0 auto 1rem;">
-            <div style="font-weight:bold;color:#c2410c;">📸 צילמת את הפיצה?</div>
+            <div style="font-weight:bold;color:#c2410c;">📸 צילמת את המנה?</div>
             <div style="font-size:0.92rem;margin:0.3rem 0 0.7rem;">שתף אותנו וקבל קופון הנחה למנה הבאה 🎁</div>
             <button class="btn-submit" style="max-width:280px;margin:auto;background:#e8590c;"
                 onclick="window.open('/marketing/public/upload.html' + (window._lastOrderKey ? '?order=' + encodeURIComponent(window._lastOrderKey) : ''), '_blank')">
-                שתף תמונה 🍕
+                שתף תמונה 🥙
             </button>
         </div>
         <button class="btn-submit" style="max-width:300px; margin:auto;" onclick="location.reload()">הזמנה חדשה</button>
-        <!-- ══ DOUGH GAME ══ -->
-        <div id="dough-game">
-            <div class="dg-title">🎮 אתגר משקל הבצק</div>
-            <div class="dg-sub">עצור על המשקל הנכון וזכה בקופון 15% הנחה!</div>
-            <div class="dg-scale-wrap">
-                <div class="dg-dough" id="dg-dough"></div>
-                <div class="dg-scale-plate"></div>
-                <div class="dg-scale-pole"></div>
-                <div class="dg-scale-base"></div>
-            </div>
-            <div class="dg-weight-display" id="dg-weight">215</div>
-            <div class="dg-weight-unit">גרם</div>
-            <div class="dg-target">מטרה: <span>278–282 גרם</span></div>
-            <div class="dg-tries">
-                ניסיונות נותרו:&nbsp;
-                <span class="dg-dot" id="dg-dot-1"></span>
-                <span class="dg-dot" id="dg-dot-2"></span>
-                <span class="dg-dot" id="dg-dot-3"></span>
-            </div>
-            <button class="dg-stop-btn" id="dg-btn" onclick="dgStop()">עצור עכשיו! 🛑</button>
-            <div class="dg-result" id="dg-result"></div>
-        </div>
-        <!-- ══ END DOUGH GAME ══ -->
     </div>
 </div>
 
@@ -1108,7 +1041,7 @@
     <strong>שעות פתיחה:</strong><br>
     <span id="footer-hours">ימים א׳-ה׳ 09:00–22:00</span>
     <a class="track-link" onclick="openTrackModal()">📍 איפה ההזמנה שלי?</a>
-    <a class="track-link" href="/group.html" style="display:block;margin-top:0.5rem;">🍕 מזמינים יחד? פתח הזמנה קבוצתית</a>
+    <a class="track-link" href="/group.html" style="display:block;margin-top:0.5rem;">🥙 מזמינים יחד? פתח הזמנה קבוצתית</a>
 </footer>
 
 <button class="float-btn" id="float-btn" style="display:none;" onclick="scrollToCart()">
@@ -1156,10 +1089,13 @@ const SENTRY_DSN          = "";   // get from sentry.io project settings → Cli
 // MENU DATA
 // ============================================================
 // Default extras pool — used when Firebase has no `siteSettings/extras` yet.
+// Adela BaShuk itself doesn't sell pizza, so this pool is dormant for the site's own
+// menu (no item below sets extras:true). It's kept because "עוד מהשכונה" reuses it as
+// the topping pool for 6 בשוק's guest pizzas — see neighbors.config.js.
 const DEFAULT_EXTRAS = {
-    veggies: [{n:"בצל סגול",p:4},{n:"פטריות",p:4},{n:"זיתי קלמטה",p:4},{n:"חלפיניו",p:4},{n:"צלפים",p:4}],
-    cheese:  [{n:"מוצרלה נוספת",p:6},{n:"פרמזן",p:6},{n:"גבינה טבעונית",p:6}],
-    premium: [{n:"אנשובי",p:8}]
+    veggies: [],
+    cheese:  [],
+    premium: []
 };
 let EXTRAS = JSON.parse(JSON.stringify(DEFAULT_EXTRAS));
 const EXTRAS_GROUPS = [
@@ -1182,60 +1118,57 @@ async function loadExtrasFromFirebase() {
 }
 
 // Default menu — used when Firebase has no `menu` node yet (first run / migration).
+// Transcribed from אדלה בשוק's printed menu — ⚠️ worth a proofread against the current
+// physical menu before going live (prices/descriptions may have changed since).
 const DEFAULT_MENU = {
+    mains: [
+        {name:"סטייק כרוב",     desc:"כרוב צלוי, טחינה חמוצה, עגבניות גחלים, שום קונפי, אריסה, לימון כבוש, בצל קריספי, בצל ירוק ושמן צ'ילי", price:52},
+        {name:"הקבב של אדלה",   desc:"קבב אסאדו (250 גרם), טחינה, בצל צלוי, בטטה צלויה וסלסת עגבניות גחלים", price:69},
+        {name:"הכריך של בן",     desc:"לחם של פעם על הגז, אנטריקוט, איולי פלפלים, חסה וסגולים מוחמצים, תפו\"א קריספי בצד", price:69}
+    ],
+    snacks: [
+        {name:"כנפיים קריספיות", desc:"רוטב שזיפים ושומשום",                          price:39},
+        {name:"אדממה",           desc:"פולי סויה במלח אטלנטי ולימון",                  price:32},
+        {name:"תפו\"א קריספי",   desc:"קייגון, איולי פלפלים ואיולי נענע",              price:42},
+        {name:"טבעות בצל אדלה",  desc:"איולי נענע ואיולי פלפלים",                      price:41}
+    ],
     starters: [
-        {name:"סלט קיסר",       desc:"חסה קיסר, בצל סגול, קרוטונים ופרמזן",            price:48},
-        {name:"סלט קפרזה",      desc:"עגבניות שרי, בזיליקום, מוצרלה",                   price:42},
-        {name:"פוקאצה עיזים",   desc:"גבינת עיזים, פלפל קלוי ובלסמי",                   price:56},
-        {name:"פוקאצה קלאסית",  desc:"שום, שמן זית ורוזמרין",                            price:32},
-        {name:"לאבנה אסלית",    desc:"פיתה בטאבון, צנוברים, זעתר ודבש",                  price:48}
-    ],
-    pizzas: [
-        {name:"מרגריטה קלאסית", desc:"רוטב עגבניות, מוצרלה ובזיליקום",                  price:56, extras:true},
-        {name:"אנשובי",         desc:"רוטב עגבניות, מוצרלה, בצל סגול, אנשובי וצלפים",   price:64, extras:true},
-        {name:"מקורמלת",        desc:"רוטב עגבניות, מוצרלה, בצל מקורמל, חלפיניו ופרמזן",price:62, extras:true},
-        {name:"דבש וצילי",      desc:"גבינת עיזים, שום קונפי, חלפיניו ודבש צילי",       price:64, extras:true},
-        {name:"דרוזית",         desc:"מוצרלה, לאבנה, עגבניות שרי, בצל סגול, זעתר",      price:62, extras:true},
-        {name:"אלה-רומנה",      desc:"רוטב עגבניות, מוצרלה, ארטישוק ופרמזן",            price:64, extras:true},
-        {name:"מלך היער",       desc:"רוטב מסקרפונה ופרמזן, מוצרלה, פטריות",             price:64, extras:true},
-        {name:"טרטופו",         desc:"רוטב מלך היער, מוצרלה, פטריות, מחית כמהין וערמונים",price:68, extras:true},
-        {name:"פיצה שוק",       desc:"רוטב עגבניות, חציל, זוקיני, שום קונפי ובלסמי",   price:64, extras:true},
-        {name:"קיסר שרוף",      desc:"מוצרלה, צלפים, חסה, בצל סגול, רוטב קיסר, פרמזן, גרידת לימון וצילי", price:68, extras:true}
-    ],
-    desserts: [
-        {name:"קלצונה שוקולד",  desc:"קלצונה ממולאת שוקולד נוזלי ואגוזים, מוגשת עם גלידה",  price:44},
-        {name:"טירמיסו",         desc:"קרם מסקרפונה, ביסקוויטים, אספרסו ואבקת קקאו",          price:38}
+        {name:"לחם הבית",        desc:"סלסת עגבניות גחלים, שום קונפי וזעתר",           price:38},
+        {name:"חצילים אש",       desc:"חצילים על גחלים, טחינה חמוצה, שום קונפי, עגבניות גחלים, כוסברה, צנוברים, צ'ילי חריף ושמן זית", price:48},
+        {name:"קרפצ'יו פלפלים",  desc:"לאליק, שרי, עגבניה, קרם בלסמי, שום גרוס, שמן זית, לימון כבוש, שקדים קלויים וברוסקטה", price:46},
+        {name:"סלט חסות",        desc:"חסות מהשוק, בצל סגול, צנונית, ארטישוק בבלסמי, קרוטונים וויניגרט לימון", price:48},
+        {name:"סלט הדר ושומר",   desc:"שומר, מלפפון, כוסברה, נענע, בצל ירוק, חמוציות, צ'ילי חריף ופירות הדר", price:46}
     ],
     drinks: [
-        {name:"קולה",            desc:"", price:14},
+        {name:"קוקה קולה",       desc:"", price:14},
         {name:"קולה זירו",       desc:"", price:14},
-        {name:"ענבים",           desc:"", price:14},
         {name:"ספרייט",          desc:"", price:14},
         {name:"ספרייט זירו",     desc:"", price:14},
-        {name:"פיוז טי אפרסק",  desc:"", price:14},
-        {name:"מים מינרלים",     desc:"", price:10}
+        {name:"פריגת ענבים",     desc:"", price:14},
+        {name:"פיוז טי אפרסק",   desc:"", price:14},
+        {name:"פיבר טרי",        desc:"", price:15},
+        {name:"מים מינרלים",     desc:"", price:10},
+        {name:"סודה",            desc:"", price:10}
     ]
 };
 
-// Chef's recommendation — a single highlighted pizza pinned to the top of the list.
-// Stored under `menu/chefSpecial` so the server's price map picks it up automatically.
+// Chef's recommendation / couple's meal specials aren't part of אדלה בשוק's current
+// menu — disabled by default (kept so the admin panel can turn one on later if wanted).
 const DEFAULT_CHEF_SPECIAL = {
-    enabled: true,
+    enabled: false,
     name: "המלצת השף",
-    desc: "הפיצה המיוחדת של השבוע — בחירת השף",
-    price: 68,
-    extras: true
+    desc: "",
+    price: 0,
+    extras: false
 };
-// Couple's meal — a fixed bundle (caprese + classic focaccia + a pizza of choice)
-// with a per-order pizza selection. Also stored under `menu/coupleMeal`.
 const DEFAULT_COUPLE_MEAL = {
-    enabled: true,
+    enabled: false,
     name: "ארוחה זוגית",
-    desc: "סלט קפרזה, פוקאצ'ה קלאסית, ופיצה מרגריטה או דרוזית לבחירתכם",
-    price: 132,
-    extras: true,
-    choiceLabel: "בחרו את הפיצה שלכם",
-    choices: [{ name: "פיצה מרגריטה" }, { name: "פיצה דרוזית" }]
+    desc: "",
+    price: 0,
+    extras: false,
+    choiceLabel: "בחרו אפשרות",
+    choices: []
 };
 
 // Live menu (loaded from Firebase). Mutated by admin CRUD.
@@ -1281,9 +1214,9 @@ function normCoupleMeal(raw) {
     };
 }
 const MENU_SECTIONS = [
+    {key:"mains",    label:"עיקריות"},
+    {key:"snacks",   label:"נשנושים"},
     {key:"starters", label:"ראשונות"},
-    {key:"pizzas",   label:"פיצות הבית"},
-    {key:"desserts", label:"קינוחים"},
     {key:"drinks",   label:"שתייה קלה"}
 ];
 
@@ -1558,9 +1491,9 @@ function loadLastOrder() {
 // RENDER MENU
 // ============================================================
 function renderMenu() {
+    renderMainsGrid();
+    renderSection("grid-snacks",   MENU.snacks   || []);
     renderSection("grid-starters", MENU.starters || []);
-    renderPizzasGrid();
-    renderSection("grid-desserts", MENU.desserts || []);
     renderSection("grid-drinks",   MENU.drinks   || []);
 }
 
@@ -1570,13 +1503,14 @@ function renderSection(gridId, items) {
     el.innerHTML = items.map(item => menuCardHTML(item)).join("");
 }
 
-// Pizzas grid: chef's recommendation pinned on top, couple's meal at the bottom.
-function renderPizzasGrid() {
-    const el = document.getElementById("grid-pizzas");
+// Mains grid: chef's recommendation pinned on top, couple's meal at the bottom (both
+// off by default for אדלה בשוק — the admin panel can turn one on if ever wanted).
+function renderMainsGrid() {
+    const el = document.getElementById("grid-mains");
     if (!el) return;
     let html = "";
     if (chefSpecial && chefSpecial.enabled) html += specialCardHTML(chefSpecial, "chef");
-    html += (MENU.pizzas || []).map(item => menuCardHTML(item)).join("");
+    html += (MENU.mains || []).map(item => menuCardHTML(item)).join("");
     if (coupleMeal && coupleMeal.enabled)  html += specialCardHTML(coupleMeal, "couple");
     el.innerHTML = html;
 }
@@ -1889,7 +1823,7 @@ let thresholdConfig = null;
 const DEFAULT_THRESHOLD_CONFIG = {
     enabled: true,
     thresholdAmount: 95,
-    rewardItem: { name: "פוקצ'ה מהטאבון", description: "שום, שמן זית, מלח גס ורוזמרין", menuPrice: 32, actualCost: 4 }
+    rewardItem: { name: "אדממה", description: "פולי סויה במלח אטלנטי ולימון", menuPrice: 32, actualCost: 8 }
 };
 async function loadThresholdConfig() {
     try {
@@ -1949,7 +1883,7 @@ function updateCart() {
             '<li class="cart-item">' +
             '<div class="cart-item-top"><span class="cart-item-name">' + escAttr(item.name) + "</span>" +
             '<span class="cart-item-price">' + (Number(item.total) || 0) + " ₪</span></div>" +
-            (item.choice ? '<div class="cart-item-extras">🍕 ' + escAttr(item.choice) + "</div>" : "") +
+            (item.choice ? '<div class="cart-item-extras">🥙 ' + escAttr(item.choice) + "</div>" : "") +
             (extText ? '<div class="cart-item-extras">' + extText + "</div>" : "") +
             (item.notes ? '<div class="cart-item-notes">📝 ' + escAttr(item.notes) + "</div>" : "") +
             '<div class="cart-item-actions"><button class="remove-btn" onclick="removeItem(' + i + ')">🗑 הסר</button></div>' +
@@ -2155,7 +2089,6 @@ async function submitOrder() {
             const total = (data && data.total != null)
                 ? data.total
                 : Math.max(0, itemsTotal + (isDelivery() ? DELIVERY_FEE : 0) - calcDiscount(itemsTotal));
-            window._gameToken = (data && data.gameToken) || null; // one-time dough-game token
             saveCustomer(name, phone, address);
             saveLastOrder(cart);
             // REF- referrals are still processed by their own function (works post-lock).
@@ -2177,7 +2110,7 @@ async function submitOrder() {
             // and let the customer fix it — do NOT fall back to a client-trusted write.
             const e = await res.json().catch(() => ({}));
             toast("⚠️ " + (e.error || "שגיאה בשליחת ההזמנה"));
-            btn.textContent = "שלח הזמנה למטבח 🍕"; btn.disabled = false; window._submitting = false;
+            btn.textContent = "שלח הזמנה למטבח 🥙"; btn.disabled = false; window._submitting = false;
             return;
         }
         // 5xx → fall through to the legacy client write so checkout still works.
@@ -2198,7 +2131,7 @@ async function submitOrder() {
         itemsText += "\n  סה\"כ: " + item.total + " ₪\n";
     });
 
-    let msg = "🍕 *הזמנה חדשה -- " + SITE_CONFIG.business.name + "*\n━━━━━━━━━━━━━━━━━\n";
+    let msg = "🥙 *הזמנה חדשה -- " + SITE_CONFIG.business.name + "*\n━━━━━━━━━━━━━━━━━\n";
     msg += "👤 *שם:* " + name + "\n📞 *טלפון:* " + phone + "\n🚲 *סוג:* " + type + "\n";
     msg += "💰 *תשלום:* " + paymentLabel + (payment === "credit" ? " — ⚠️ להתקשר" : "") + "\n";
     if (type === "משלוח") msg += "📍 *כתובת:* " + address + "\n💵 דמי משלוח: " + fee + " ₪\n";
@@ -2219,7 +2152,7 @@ async function submitOrder() {
                 threshold: thresholdConfig.thresholdAmount,
                 rewardItem: r.name, rewardCost: r.actualCost || 0
             };
-            msg += "\n🎁 *פוקצ'ה מהטאבון — חינם (Threshold)*\n";
+            msg += "\n🎁 *" + r.name + " — חינם (Threshold)*\n";
         }
         // Push to Firebase FIRST so the kitchen always sees the order,
         // even if the Telegram notification fails for any reason.
@@ -2296,12 +2229,12 @@ async function submitOrder() {
 
     } catch {
         alert("אופס! שגיאה בשליחה. בדוק חיבור אינטרנט ונסה שוב.");
-        btn.textContent = "שלח הזמנה למטבח 🍕"; btn.disabled = false;
+        btn.textContent = "שלח הזמנה למטבח 🥙"; btn.disabled = false;
         window._submitting = false;
     }
 }
 
-// Shared post-order UI (thank-you screen, push prompt, dough game, share vars).
+// Shared post-order UI (thank-you screen, push prompt, share vars).
 // Used by both the server-authoritative path and the legacy fallback.
 function finishOrderUI(orderKey, total, name, phone, payment) {
     document.getElementById("main-content").style.display = "none";
@@ -2352,33 +2285,33 @@ function cartHasFromSection(sectionKey) {
     return cart.some(i => names.has(i.name));
 }
 function shouldShowUpsell() {
-    const hasDessert = cartHasFromSection("desserts");
-    const hasDrink   = cartHasFromSection("drinks");
-    if (hasDessert && hasDrink) return false;
+    const hasSnack = cartHasFromSection("snacks");
+    const hasDrink = cartHasFromSection("drinks");
+    if (hasSnack && hasDrink) return false;
     // Only suggest if there's actually something to suggest in either section
-    const hasOptions = (MENU.desserts || []).length > 0 || (MENU.drinks || []).length > 0;
+    const hasOptions = (MENU.snacks || []).length > 0 || (MENU.drinks || []).length > 0;
     return hasOptions;
 }
 function openUpsell() {
     const titleEl = document.getElementById("upsell-title");
     const subEl   = document.getElementById("upsell-sub");
     const content = document.getElementById("upsell-content");
-    const hasDessert = cartHasFromSection("desserts");
-    const hasDrink   = cartHasFromSection("drinks");
-    if (!hasDessert && !hasDrink) {
-        titleEl.textContent = "🍰 רגע! לסיים בגדול?";
-        subEl.textContent   = "נראה שלא הוספת קינוח או שתייה — אולי תרצה?";
-    } else if (!hasDessert) {
-        titleEl.textContent = "🍰 לסיים בקינוח?";
-        subEl.textContent   = "אין קינוח בעגלה. ממליצים לטעום!";
+    const hasSnack = cartHasFromSection("snacks");
+    const hasDrink = cartHasFromSection("drinks");
+    if (!hasSnack && !hasDrink) {
+        titleEl.textContent = "🥙 רגע! לסיים בגדול?";
+        subEl.textContent   = "נראה שלא הוספת נשנוש או שתייה — אולי תרצה?";
+    } else if (!hasSnack) {
+        titleEl.textContent = "🥙 נשנוש בצד?";
+        subEl.textContent   = "אין נשנוש בעגלה. ממליצים לטעום!";
     } else {
         titleEl.textContent = "🥤 משהו לשתות?";
         subEl.textContent   = "אין שתייה בעגלה. שווה להוסיף.";
     }
     let html = "";
-    if (!hasDessert && (MENU.desserts || []).length) {
-        html += '<div class="upsell-group-title">🍰 קינוחים</div><div class="upsell-grid">' +
-            MENU.desserts.filter(i => !soldOut.has(i.name)).map(upsellTile).join("") +
+    if (!hasSnack && (MENU.snacks || []).length) {
+        html += '<div class="upsell-group-title">🥙 נשנושים</div><div class="upsell-grid">' +
+            MENU.snacks.filter(i => !soldOut.has(i.name)).map(upsellTile).join("") +
             '</div>';
     }
     if (!hasDrink && (MENU.drinks || []).length) {
@@ -2404,7 +2337,7 @@ function upsellTile(item) {
     );
 }
 function upsellAdd(name) {
-    const all = [...(MENU.desserts || []), ...(MENU.drinks || [])];
+    const all = [...(MENU.snacks || []), ...(MENU.drinks || [])];
     const item = all.find(i => i.name === name);
     if (!item || soldOut.has(item.name)) return;
     cart.push({
@@ -2449,7 +2382,7 @@ document.addEventListener('click', function(e) {
 // ============================================================
 function shareWhatsApp() {
     const text = encodeURIComponent(
-        "🍕 הזמנתי ב" + SITE_CONFIG.business.name + " ב" + SITE_CONFIG.business.city + "!\n" +
+        "🥙 הזמנתי ב" + SITE_CONFIG.business.name + " ב" + SITE_CONFIG.business.city + "!\n" +
         (window._lastOrderItems ? window._lastOrderItems + "\n" : "") +
         "תזמינו גם: " + SITE_CONFIG.business.canonicalUrl
     );
@@ -2517,7 +2450,7 @@ function applyHours() {
         document.getElementById("closed-next").textContent = (!pickupOn ? "" : nextMsg);
         btn.disabled = true; btn.textContent = "🔒 סגורים כרגע";
     } else {
-        btn.disabled = false; btn.textContent = "שלח הזמנה למטבח 🍕";
+        btn.disabled = false; btn.textContent = "שלח הזמנה למטבח 🥙";
     }
 
     const sel    = document.getElementById("delivery-type");
@@ -2569,7 +2502,7 @@ function saveETA() {
 function renderSoldOutGrid() {
     const grid = document.getElementById("soldout-grid");
     if (!grid) return;
-    const allItems = [...(MENU.starters||[]), ...(MENU.pizzas||[]), ...(MENU.desserts||[]), ...(MENU.drinks||[])];
+    const allItems = [...(MENU.mains||[]), ...(MENU.snacks||[]), ...(MENU.starters||[]), ...(MENU.drinks||[])];
     // Include specials if enabled so the admin can mark them sold out too.
     if (chefSpecial && chefSpecial.enabled) allItems.push(chefSpecial);
     if (coupleMeal  && coupleMeal.enabled)  allItems.push(coupleMeal);
@@ -2615,7 +2548,7 @@ async function loadCouponsList() {
     }
     // Resolve "who created each coupon" (display only — does not change coupon behavior).
     // Most coupons already carry the phone (referrerPhone / wonByPhone); names come from
-    // the loyalty record, and dough-game coupons are resolved via their linked order.
+    // the loyalty record.
     const loyalty = (await fbGet("loyalty")) || {};
     const nameFor = (phone) => { const r = phone && loyalty[phone]; return r ? (r.firstName || r.fullName || "") : ""; };
     const entries = Object.entries(coupons);
@@ -2638,7 +2571,6 @@ async function loadCouponsList() {
         else if (c.active === false) badge = '<span class="coupon-entry-status-off"> ● כבוי</span>';
         else                   badge = '<span class="coupon-entry-status-on"> ● פעיל</span>';
         const expiry = c.expiresAt ? '<span class="coupon-entry-info">תפוגה ' + new Date(c.expiresAt).toLocaleDateString("he-IL") + '</span>' : '';
-        const winTag = c.source === "dough-game" ? '<span class="coupon-entry-info">🏆</span>' : '';
         const cr = creators[idx];
         const creator = cr.phone
             ? '<div class="coupon-entry-info" style="width:100%;margin-top:2px;">👤 ' + escAttr(cr.name || "לקוח") + ' · 📞 ' + escAttr(cr.phone) + '</div>'
@@ -2646,7 +2578,6 @@ async function loadCouponsList() {
         return (
             '<div class="coupon-entry">' +
             '<div><span class="coupon-entry-name">' + code + '</span>' +
-            winTag +
             '<span class="coupon-entry-info">' + (c.type === "percent" ? c.value + "%" : c.value + "₪") + " הנחה</span>" +
             (c.usedCount ? '<span class="coupon-entry-info">(' + c.usedCount + ' שימושים)</span>' : '') +
             expiry + badge +
@@ -2908,7 +2839,6 @@ async function saveDish(sectionKey, idx) {
 async function addDish(sectionKey) {
     MENU[sectionKey] = MENU[sectionKey] || [];
     const blank = { name: "מנה חדשה", desc: "", price: 0 };
-    if (sectionKey === "pizzas") blank.extras = true;
     MENU[sectionKey].push(blank);
     await fbSet("menu/" + sectionKey, MENU[sectionKey]);
     rebuildItemIndex();
@@ -3200,55 +3130,10 @@ async function loadWeeklyReports() {
         '</div>' +
         '<div class="history-entry-meta">' +
             (r.orders || 0) + ' הזמנות • ממוצע ' + (r.avg || 0) + ' ₪ • ' +
-            (r.gameWins || 0) + ' זכיות במשחק • ' +
             (r.newCustomers || 0) + ' לקוחות חדשים' +
         '</div>' +
         '</div>'
     ).join("");
-}
-
-async function loadGameStats() {
-    const el = document.getElementById("game-stats");
-    if (!el) return;
-    const stats = (await fbGet("siteSettings/gameStats")) || { sessions: 0, wins: 0 };
-    const sessions = stats.sessions || 0;
-    const wins = stats.wins || 0;
-    const winRate = sessions > 0 ? ((wins / sessions) * 100).toFixed(1) : "—";
-    el.innerHTML =
-        '<div style="display:flex; gap:1.5rem; flex-wrap:wrap; color:#eee;">' +
-            '<div><div style="color:#888; font-size:0.78rem;">סשנים</div><div style="font-size:1.3rem; font-weight:900; color:var(--primary);">' + sessions + '</div></div>' +
-            '<div><div style="color:#888; font-size:0.78rem;">זכיות</div><div style="font-size:1.3rem; font-weight:900; color:#4ade80;">' + wins + '</div></div>' +
-            '<div><div style="color:#888; font-size:0.78rem;">% זכייה</div><div style="font-size:1.3rem; font-weight:900; color:#fbbf24;">' + winRate + (sessions > 0 ? '%' : '') + '</div></div>' +
-        '</div>';
-}
-
-async function loadWonCoupons() {
-    loadGameStats();
-    const el = document.getElementById("won-coupons-list");
-    if (!el) return;
-    const coupons = await fbGet("coupons");
-    if (!coupons) { el.innerHTML = '<div style="color:#888; font-size:0.85rem;">אין נתונים</div>'; return; }
-    const won = Object.entries(coupons).filter(([, c]) => c && c.source === "dough-game");
-    if (!won.length) { el.innerHTML = '<div style="color:#888; font-size:0.85rem;">עדיין אין זוכים במשחק</div>'; return; }
-    won.sort((a, b) => (b[1].createdAt || 0) - (a[1].createdAt || 0));
-    el.innerHTML = won.map(([code, c]) => {
-        const expired = c.expiresAt && Date.now() > c.expiresAt && !c.used;
-        let statusHtml;
-        if (c.used)        statusHtml = '<span class="status-redeemed">● מומש' + (c.usedAt ? ' (' + new Date(c.usedAt).toLocaleDateString("he-IL") + ')' : '') + '</span>';
-        else if (expired)  statusHtml = '<span class="status-expired">● פג תוקף</span>';
-        else               statusHtml = '<span class="status-pending">● טרם מומש</span>';
-        const expiryStr = c.expiresAt ? new Date(c.expiresAt).toLocaleDateString("he-IL") : "—";
-        const orderStr  = c.wonByOrderId ? c.wonByOrderId.slice(-6) : "—";
-        const usedByStr = c.usedByOrderId ? ' • מימוש: ' + c.usedByOrderId.slice(-6) : "";
-        return (
-            '<div class="won-row">' +
-            '<div><span class="won-code">' + code + '</span> ' + statusHtml + '</div>' +
-            '<div class="won-meta">' +
-            (c.value ? c.value + '% הנחה • ' : '') +
-            'תפוגה: ' + expiryStr + ' • זכייה בהזמנה: ' + orderStr + usedByStr +
-            '</div></div>'
-        );
-    }).join("");
 }
 
 // ============================================================
@@ -3267,7 +3152,6 @@ async function loadHistory() {
     el.innerHTML = entries.map(([key, o]) => {
         const items = (o.items || []).map(i => i.name).join(", ");
         const time  = o.ts ? new Date(o.ts).toLocaleTimeString("he-IL", {hour:"2-digit", minute:"2-digit"}) : "";
-        const won   = o.wonGameCode ? '<div class="history-entry-coupon">🏆 זכה במשחק: ' + o.wonGameCode + '</div>' : '';
         const cpn   = o.couponCode  ? '<div class="history-entry-coupon">🎟 קופון: ' + o.couponCode + ' (-' + (o.discount || 0) + ' ₪)</div>' : '';
         return (
             '<div class="history-entry">' +
@@ -3277,7 +3161,7 @@ async function loadHistory() {
             '</div>' +
             '<div class="history-entry-meta">' + time + ' • ' + (o.type || "—") + ' • ' + (o.payment === "cash" ? "מזומן" : "אשראי") + ' • ' + (o.phone || "") + '</div>' +
             (items ? '<div class="history-entry-items">📦 ' + items + '</div>' : '') +
-            cpn + won +
+            cpn +
             '</div>'
         );
     }).join("");
@@ -3312,13 +3196,12 @@ async function loadSalesReport() {
 
     if (!filtered.length) { el.innerHTML = '<div class="history-empty">אין הזמנות בטווח הזה</div>'; return; }
 
-    let revenue = 0, delivery = 0, pickup = 0, gameWins = 0, couponsUsed = 0, couponDiscount = 0;
+    let revenue = 0, delivery = 0, pickup = 0, couponsUsed = 0, couponDiscount = 0;
     const itemCounts = {};
     const hourCounts = new Array(24).fill(0);
     filtered.forEach(o => {
         revenue += o.total || 0;
         if (o.type === "משלוח") delivery++; else pickup++;
-        if (o.wonGameCode) gameWins++;
         if (o.couponCode)  { couponsUsed++; couponDiscount += o.discount || 0; }
         (o.items || []).forEach(it => { itemCounts[it.name] = (itemCounts[it.name] || 0) + 1; });
         if (o.ts) hourCounts[new Date(o.ts).getHours()]++;
@@ -3336,11 +3219,10 @@ async function loadSalesReport() {
         statTile("משלוחים", delivery) +
         statTile("איסוף", pickup) +
         statTile("שעת שיא", peakHour + ":00") +
-        statTile("זכיות במשחק", gameWins) +
         statTile("קופונים מומשו", couponsUsed) +
         '</div>' +
         (couponDiscount ? '<div class="history-entry-meta" style="margin-bottom:0.7rem;">סך הנחות שניתנו: ' + couponDiscount + ' ₪</div>' : '') +
-        '<div class="menu-admin-section-head">🍕 מנות הכי נמכרות</div>' +
+        '<div class="menu-admin-section-head">🥙 מנות הכי נמכרות</div>' +
         topItems.map(([name, count]) =>
             '<div class="history-entry"><div class="history-entry-top">' +
             '<span class="history-entry-name">' + name + '</span>' +
@@ -3353,25 +3235,6 @@ function statTile(label, value) {
     return '<div style="background:#1e1e1e; border:1px solid #333; border-radius:8px; padding:0.6rem 0.8rem;">' +
         '<div style="color:#888; font-size:0.75rem;">' + label + '</div>' +
         '<div style="color:var(--primary); font-size:1.3rem; font-weight:900;">' + value + '</div></div>';
-}
-
-// ============================================================
-// GAME PREVIEW (admin) — opens the dough game without minting a real coupon
-// ============================================================
-function previewDoughGame() {
-    // Hide admin and show thank-you so the existing #dough-game container is visible
-    document.getElementById("admin-page").style.display = "none";
-    document.getElementById("site-page").style.display  = "block";
-    document.getElementById("main-content").style.display = "none";
-    document.getElementById("float-btn").style.display    = "none";
-    document.getElementById("ty-name").textContent        = "תצוגה מקדימה";
-    document.getElementById("eta-display").textContent    = etaMinutes;
-    document.getElementById("thank-you").style.display    = "block";
-    window.scrollTo(0, 0);
-    // No order key → mintWinCoupon will skip the order link, but it still creates
-    // a coupon. Set a flag the game can read to fully skip Firebase writes.
-    window._dgPreview = true;
-    setTimeout(() => dgInit(null), 200);
 }
 
 // ============================================================
@@ -3424,7 +3287,7 @@ function openAdminUI() {
     document.getElementById("site-page").style.display  = "none";
     document.getElementById("admin-page").style.display = "block";
     renderSoldOutGrid(); applyBusy(); loadStats(); loadCouponsList();
-    renderMenuAdmin(); renderExtrasAdmin(); renderSpecialsAdmin(); loadPromosList(); loadWonCoupons();
+    renderMenuAdmin(); renderExtrasAdmin(); renderSpecialsAdmin(); loadPromosList();
     const today = new Date().toISOString().slice(0, 10);
     const hd = document.getElementById("history-date");
     if (hd) hd.value = today;
@@ -3439,7 +3302,7 @@ function switchAdminTab(tab) {
         t.classList.toggle('active', t.dataset.tab === tab);
     });
     // Re-render data that may have changed since the tab last opened
-    if (tab === "coupons") { loadCouponsList(); loadWonCoupons(); }
+    if (tab === "coupons") { loadCouponsList(); }
     if (tab === "promos")  { loadPromosList(); }
     if (tab === "menu")    { renderMenuAdmin(); renderExtrasAdmin(); renderSpecialsAdmin(); }
     if (tab === "reports") { loadWeeklyReports(); }
@@ -3492,7 +3355,6 @@ async function init() {
     startPolling();
     loadPrepTime();
     loadActivePromos();
-    loadRecentWinners();
     loadCustomerLoyaltyCard();
     loadReorderCard();
     loadDailyQuiz();
@@ -3723,7 +3585,7 @@ function closeTrackModal() {
 async function trackOrder() {
     await trackOrderFetch(true);
     // Auto-refresh every 8s while the modal is open so the customer
-    // sees status changes the moment the kitchen taps "נכנס לטאבון" / "סיום".
+    // sees status changes the moment the kitchen taps "נכנס להכנה" / "סיום".
     if (window._trackInterval) clearInterval(window._trackInterval);
     window._trackInterval = setInterval(() => trackOrderFetch(false), 8000);
 }
@@ -3756,7 +3618,7 @@ async function trackOrderFetch(showLoadingState) {
         const time = o.ts ? new Date(o.ts).toLocaleTimeString("he-IL", {hour:"2-digit", minute:"2-digit"}) : "";
         let statusKey, statusText;
         if (archived || o.status === "done")        { statusKey = "s-done";   statusText = "✅ ההזמנה הושלמה"; }
-        else if (o.status === "inprog")             { statusKey = "s-inprog"; statusText = "🔥 בטאבון, מכינים לך"; }
+        else if (o.status === "inprog")             { statusKey = "s-inprog"; statusText = "🔥 בהכנה, מכינים לך"; }
         else                                        { statusKey = "s-new";    statusText = "📥 התקבלה - בהמתנה"; }
         const items = (o.items || []).map(i => i.name).join(", ");
         return (
@@ -4034,215 +3896,6 @@ async function recordItemStats(itemNames) {
         });
     }));
 }
-
-// ============================================================
-// RECENT WINNERS BANNER (social proof)
-// ============================================================
-async function loadRecentWinners() {
-    const banner = document.getElementById("winners-banner");
-    if (!banner) return;
-    const coupons = await fbGet("coupons");
-    if (!coupons) { banner.classList.remove("visible"); return; }
-    const now = Date.now();
-    const sevenDays = 7 * 86400000;
-    const recent = Object.values(coupons).filter(c =>
-        c && c.source === "dough-game" && c.createdAt && (now - c.createdAt) < sevenDays
-    );
-    if (!recent.length) { banner.classList.remove("visible"); return; }
-    const last = recent.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0))[0];
-    const hours = Math.max(1, Math.round((now - last.createdAt) / 3600000));
-    const timeAgo = hours < 24 ? 'לפני ' + hours + ' שעות' : 'לפני ' + Math.round(hours/24) + ' ימים';
-    banner.innerHTML = '🏆 <strong>' + recent.length + ' זוכים</strong> השבוע במשחק הבצק! האחרון ' + timeAgo + ' — בוא לנסות בהזמנה הבאה';
-    banner.classList.add("visible");
-}
-
-// ══ DOUGH GAME ══
-// Win window: 278–282g (inclusive). On win we mint a unique 15%-off coupon
-// (server-side via Netlify function when possible, with a client fallback),
-// link it to the order, and show its 14-day expiry.
-(function(){
-    const TARGET=280,WIN_TOLERANCE=2,MIN_W=150,MAX_W=410,MIN_PX=50,MAX_PX=112,PERIOD=2800;
-    const COUPON_PERCENT=15,COUPON_TTL_MS=14*86400000;
-    const TOTAL_TRIES=3;
-    let rafId=null,triesLeft=TOTAL_TRIES,gameOver=false,startTime=null;
-    let lastOrderKey=null,lastWonCode=null;
-    function weightAt(t){const sine=(1-Math.cos(2*Math.PI*((t%PERIOD)/PERIOD)))/2;return Math.round(MIN_W+sine*(MAX_W-MIN_W));}
-    function sizeAt(w){return MIN_PX+((w-MIN_W)/(MAX_W-MIN_W))*(MAX_PX-MIN_PX);}
-    function tick(ts){
-        if(!startTime)startTime=ts;
-        const w=weightAt(ts-startTime),px=sizeAt(w);
-        const wEl=document.getElementById('dg-weight'),dough=document.getElementById('dg-dough');
-        if(wEl)wEl.textContent=w;
-        if(dough){dough.style.width=px+'px';dough.style.height=px+'px';dough.style.bottom=(80+(MAX_PX-px)/2)+'px';}
-        if(!gameOver)rafId=requestAnimationFrame(tick);
-    }
-    function genCode(){
-        const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-        let s='';for(let i=0;i<5;i++)s+=chars[Math.floor(Math.random()*chars.length)];
-        return 'WIN-'+s;
-    }
-    function fmtDate(ts){
-        const d=new Date(ts);
-        return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
-    }
-    function daysLeft(expiresAt){
-        return Math.max(0, Math.ceil((expiresAt - Date.now()) / 86400000));
-    }
-    function todayKey(){
-        const d=new Date();
-        return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-    }
-    function alreadyWonToday(){
-        try {
-            const phone = window._lastOrderPhone;
-            if (!phone) return false;
-            const k = '6bq_won_' + phone.replace(/\D/g,'');
-            return localStorage.getItem(k) === todayKey();
-        } catch { return false; }
-    }
-    function markWonToday(){
-        try {
-            const phone = window._lastOrderPhone;
-            if (!phone) return;
-            const k = '6bq_won_' + phone.replace(/\D/g,'');
-            localStorage.setItem(k, todayKey());
-        } catch {}
-    }
-    async function mintViaServer(){
-        // Preferred path — calls Netlify function which performs anti-abuse checks.
-        try {
-            const r = await fetch('/.netlify/functions/mint-win-coupon', {
-                method:'POST', headers:{'Content-Type':'application/json'},
-                body: JSON.stringify({ orderKey: lastOrderKey, gameToken: window._gameToken || null })
-            });
-            if (!r.ok) return null;
-            const j = await r.json();
-            if (j && j.code && j.expiresAt) return j;
-            return null;
-        } catch { return null; }
-    }
-    async function mintViaClient(){
-        // Fallback when the function isn't deployed yet.
-        const expiresAt=Date.now()+COUPON_TTL_MS;
-        for(let i=0;i<5;i++){
-            const code=genCode();
-            const existing=await fbGet("coupons/"+code);
-            if(existing) continue;
-            await fbSet("coupons/"+code,{
-                type:"percent",value:COUPON_PERCENT,active:true,
-                usedCount:0,used:false,oneTime:true,
-                createdAt:Date.now(),expiresAt,
-                wonByOrderId:lastOrderKey||null,source:"dough-game"
-            });
-            if(lastOrderKey){
-                await fbSet("orders/"+lastOrderKey+"/wonGameCode",code);
-                await fbSet("orders/"+lastOrderKey+"/wonGameAt",Date.now());
-            }
-            return {code,expiresAt};
-        }
-        return null;
-    }
-    async function mintWinCoupon(){
-        if (window._dgPreview) {
-            // Preview mode: don't touch Firebase, just show a fake code.
-            return { code:'DEMO-CODE', expiresAt: Date.now()+COUPON_TTL_MS, preview: true };
-        }
-        // Server-only: the mint-win-coupon function performs the anti-abuse checks and
-        // writes with FB_SECRET. The old client-side mint is intentionally not used as a
-        // fallback (it would write a fake code once the coupons node is locked).
-        return await mintViaServer();
-    }
-    async function bumpStat(field) {
-        try {
-            const cur = (await fbGet("siteSettings/gameStats")) || {};
-            await fbSet("siteSettings/gameStats", { ...cur, [field]: (cur[field] || 0) + 1 });
-        } catch {}
-    }
-    window.dgInit=function(orderKey){
-        lastOrderKey=orderKey||window._lastOrderKey||null;
-        // A real orderKey means this is not a preview
-        if (lastOrderKey) window._dgPreview = false;
-        // Count one game session per real order (skipped in preview)
-        if (!window._dgPreview && !window._dgSessionLogged) {
-            window._dgSessionLogged = true;
-            bumpStat("sessions");
-        }
-        lastWonCode=null;
-        triesLeft=TOTAL_TRIES;gameOver=false;startTime=null;
-        const game=document.getElementById('dough-game'),result=document.getElementById('dg-result'),btn=document.getElementById('dg-btn');
-        if(!game)return;
-        const cta=document.getElementById('dough-game-cta'); if(cta) cta.style.display='block';
-        // One-win-per-phone-per-day guard (skipped in preview mode)
-        if (!window._dgPreview && alreadyWonToday()) {
-            game.style.display='block';
-            btn.disabled=true;btn.textContent='כבר זכית היום 🎉';
-            result.className='dg-result lose';
-            result.innerHTML='⏳ כבר ניצחת היום! חזור מחר לעוד ניסיון.<br><span style="font-size:0.85rem;font-weight:400;">משחק אחד ליום ללקוח.</span>';
-            result.style.display='block';
-            cancelAnimationFrame(rafId);
-            return;
-        }
-        result.style.display='none';result.className='dg-result';result.innerHTML='';
-        btn.disabled=false;btn.textContent='עצור עכשיו! 🛑';
-        updateDots();cancelAnimationFrame(rafId);
-        game.style.display='block';
-        setTimeout(()=>{startTime=null;rafId=requestAnimationFrame(tick);},80);
-    };
-    window.dgStop=async function(){
-        if(gameOver)return;
-        const w=parseInt(document.getElementById('dg-weight').textContent,10);
-        const diff=Math.abs(w-TARGET);
-        const isWin=diff<=WIN_TOLERANCE;
-        triesLeft--;updateDots();
-        const result=document.getElementById('dg-result'),btn=document.getElementById('dg-btn');
-        if(isWin){
-            gameOver=true;cancelAnimationFrame(rafId);btn.disabled=true;
-            result.className='dg-result win';
-            result.innerHTML='🎉 מדהים! עצרת על '+w+' גרם!<br><span style="font-size:0.9rem;font-weight:400;">מכין לך קופון אישי...</span>';
-            result.style.display='block';
-            const minted=await mintWinCoupon();
-            if(minted){
-                lastWonCode=minted.code;
-                if (!minted.preview) { markWonToday(); bumpStat("wins"); }
-                const left = daysLeft(minted.expiresAt);
-                const previewTag = minted.preview ? '<br><span style="color:#fbbf24;font-size:0.78rem;">(תצוגה מקדימה — קוד פיקטיבי, לא נשמר)</span>' : '';
-                result.innerHTML=
-                    '🎉 מדהים! עצרת על '+w+' גרם!<br>'+
-                    '<span style="font-size:0.9rem;font-weight:400;">קופון אישי ל-'+COUPON_PERCENT+'% הנחה על ההזמנה הבאה:</span>'+
-                    '<div class="dg-coupon">'+minted.code+'</div>'+
-                    '<button class="dg-copy-btn" onclick="dgCopy()">📋 העתק קוד</button><br>'+
-                    '<span style="font-size:0.78rem;font-weight:400;color:#f5deb3;display:block;margin-top:0.7rem;">'+
-                    '⏳ נשארו <strong>'+left+' ימים</strong> למימוש (עד '+fmtDate(minted.expiresAt)+')<br>'+
-                    'הקופון אישי וחד-פעמי — שמור אותו!</span>'+previewTag;
-            } else {
-                result.innerHTML='🎉 ניצחת! אבל קרתה בעיה ביצירת הקופון.<br><span style="font-size:0.85rem;font-weight:400;">צור קשר טלפוני ונסדר לך הנחה.</span>';
-            }
-        } else if(triesLeft<=0){
-            gameOver=true;cancelAnimationFrame(rafId);btn.disabled=true;
-            result.className='dg-result lose';
-            result.innerHTML='😅 פספסת ב-'+diff+' גרם!<br><span style="font-size:0.85rem;font-weight:400;">אולי בפעם הבאה 🍕</span>';
-            result.style.display='block';
-        } else {
-            result.className='dg-result lose';
-            const triesText = triesLeft === 1 ? 'נשאר ניסיון אחד!' : 'נשארו '+triesLeft+' ניסיונות';
-            result.innerHTML='😬 פספסת ב-'+diff+' גרם!<br><span style="font-size:0.85rem;font-weight:400;">נסה שוב -- '+triesText+'</span>';
-            result.style.display='block';
-            btn.textContent = triesLeft === 1 ? 'ניסיון אחרון! 🛑' : 'עצור עכשיו! 🛑';
-        }
-    };
-    window.dgCopy=function(){
-        if(!lastWonCode)return;
-        navigator.clipboard.writeText(lastWonCode).then(()=>{
-            const b=document.querySelector('.dg-copy-btn');
-            if(b){b.textContent='✅ הועתק!';setTimeout(()=>b.textContent='📋 העתק קוד',2000);}
-        }).catch(()=>{});
-    };
-    function updateDots(){
-        document.getElementById('dg-dot-1').className='dg-dot'+(triesLeft<3?' used':'');
-        document.getElementById('dg-dot-2').className='dg-dot'+(triesLeft<2?' used':'');
-        document.getElementById('dg-dot-3').className='dg-dot'+(triesLeft<1?' used':'');
-    }
-})();
 </script>
 
 </body>

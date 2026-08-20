@@ -1,7 +1,7 @@
 {
-  "name": "העסק שלי — מטבח",
+  "name": "אדלה בשוק — מטבח",
   "short_name": "מטבח",
-  "description": "מסך מטבח / ניהול הזמנות",
+  "description": "מסך מטבח / ניהול הזמנות — אדלה בשוק",
   "start_url": "/admin.html",
   "scope": "/admin.html",
   "display": "standalone",

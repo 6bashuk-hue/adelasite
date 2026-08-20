@@ -12,17 +12,17 @@
 (function (root) {
   const SITE_CONFIG = {
     business: {
-      name: "העסק שלי",                       // ← e.g. "6 בשוק"
-      tagline: "התיאור הקצר של העסק",          // ← e.g. "פיצה וטאבון"
-      type: "מסעדה",                            // ← free text, used in SEO/schema.org, e.g. "פיצריה וטאבון"
-      city: "העיר שלי",                         // ← e.g. "ערד"
+      name: "אדלה בשוק",
+      tagline: "בר אוכל שוק",
+      type: "בר אוכל שוק אותנטי מזרחי",           // ← free text, used in SEO/schema.org
+      city: "ערד",                                // ⚠️ לוודא — לא צויינה עיר במקור, הונח לפי \"הדיינר\" השכן
       country: "IL",
-      phone: "+972000000000",                  // ← international format, used for tel: links
-      phoneDisplay: "000-0000000",              // ← how the phone number is shown to customers
-      whatsappCountryCode: "972",               // ← used to convert local 05XXXXXXXX numbers into wa.me links
-      address: { street: "", locality: "העיר שלי", region: "", country: "IL" },
-      hoursDisplay: "ימים א׳-ה׳ 09:00–22:00",   // ← free text shown in the footer / meta description
-      canonicalUrl: "https://REPLACE-WITH-YOUR-DOMAIN.netlify.app"
+      phone: "+972000000000",                      // ⚠️ TODO: להשלים מספר טלפון אמיתי
+      phoneDisplay: "000-0000000",                  // ⚠️ TODO: להשלים מספר טלפון אמיתי
+      whatsappCountryCode: "972",
+      address: { street: "", locality: "ערד", region: "", country: "IL" }, // ⚠️ TODO: להשלים כתובת מדויקת בשוק
+      hoursDisplay: "ב׳-ד׳ 18:00–01:00 · שבת 09:30–01:00", // מהתפריט המודפס — ⚠️ לוודא (חסרים א׳, ה׳, ו׳)
+      canonicalUrl: "https://REPLACE-WITH-YOUR-DOMAIN.netlify.app" // ⚠️ TODO: דומיין בפועל אחרי הדיפלוי
     },
     firebase: {
       // ⚠️ Create your OWN Firebase Realtime Database project (SETUP.md step 2) —
@@ -38,9 +38,9 @@
       currency: "₪"
     },
     theme: {
-      primary: "#b3592d",
-      primaryDark: "#8f4422",
-      bg: "#fdf5e6"
+      primary: "#9c5a2e",
+      primaryDark: "#5c3115",
+      bg: "#f6efe0"
     }
   };
 

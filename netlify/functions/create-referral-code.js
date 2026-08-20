@@ -66,7 +66,7 @@ async function handler(event) {
     });
   }
 
-  const shareText = "היי, " + name + " שלח לך הנחה ל" + SITE_CONFIG.business.name + " 🍕\nקוד אישי: " + code +
+  const shareText = "היי, " + name + " שלח לך הנחה ל" + SITE_CONFIG.business.name + " 🥙\nקוד אישי: " + code +
                     " — 15% בהזמנה ראשונה.\n" + SITE_CONFIG.business.canonicalUrl;
 
   return { statusCode: 200, body: JSON.stringify({ code, shareText }) };

@@ -152,7 +152,7 @@ async function handler(event) {
 
   const itemsText = buildItemsText(participants);
   await notifyOwner(
-    "🍕 *הזמנה קבוצתית חדשה* (" + groupId + ")\n" +
+    "🥙 *הזמנה קבוצתית חדשה* (" + groupId + ")\n" +
     "━━━━━━━━━━━━━━━━━\n" +
     "👤 *מנהל:* " + group.managerName + "\n📞 *טלפון:* " + managerPhone + "\n" +
     "🚲 *סוג:* " + (delivery.type || "איסוף") +

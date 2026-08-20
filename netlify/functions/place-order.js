@@ -15,6 +15,7 @@
 
 const { fbGet, fbSet, fbPush } = require("../../marketing/lib/fb");
 const SITE_CONFIG = require("../../site.config.js");
+const NEIGHBORS_CONFIG = require("../../neighbors.config.js");
 
 const DELIVERY_FEE = 20;
 const MIN_DELIVERY = 60;
@@ -79,6 +80,37 @@ function flattenPrices(node) {
   return map;
 }
 
+// ── "עוד מהשכונה" — trusted price tables built from the static neighbors.config.js,
+// scoped per business key. This is the ONLY source of truth for guest-item prices;
+// nothing here ever reads a price from the request body. Scoping by business key
+// (instead of one shared name→price map) means a name that happens to collide with
+// אדלה בשוק's own menu — or between the two neighbors — can never be mispriced: each
+// business's items/extras only ever get looked up in their own table.
+function buildNeighborPriceMaps() {
+  const byKey = new Map();
+  for (const biz of (NEIGHBORS_CONFIG.businesses || [])) {
+    const items = new Map();
+    const extras = new Map();
+    for (const sec of (biz.sections || [])) {
+      for (const item of (sec.items || [])) {
+        if (item && item.name != null && Number.isFinite(Number(item.price))) {
+          items.set(String(item.name), Number(item.price));
+        }
+        if (Array.isArray(item.extras)) {
+          for (const e of item.extras) {
+            if (e && e.name != null && Number.isFinite(Number(e.price))) {
+              extras.set(String(e.name), Number(e.price));
+            }
+          }
+        }
+      }
+    }
+    byKey.set(biz.key, { name: biz.name, icon: biz.icon || null, items, extras });
+  }
+  return byKey;
+}
+const NEIGHBOR_PRICES = buildNeighborPriceMaps();
+
 async function sendTelegram(message) {
   const { TG_TOKEN, TG_CHAT } = process.env;
   if (!TG_TOKEN || !TG_CHAT) return;
@@ -137,25 +169,59 @@ exports.handler = async (event) => {
   for (const raw of items) {
     const itemName = String(raw && raw.name || "").slice(0, 120);
     if (!itemName) continue;
-    if (soldOut.has(itemName)) {
-      return { statusCode: 409, body: JSON.stringify({ error: `הפריט "${itemName}" אזל מהמלאי` }) };
-    }
-    let basePrice;
-    if (menuLoaded) {
-      if (!menuPrices.has(itemName)) {
-        return { statusCode: 409, body: JSON.stringify({ error: `הפריט "${itemName}" כבר לא בתפריט — רענן את הדף` }) };
+    const rawSource = String((raw && raw.source) || "self").slice(0, 40);
+    const isGuest = rawSource !== "self";
+
+    let basePrice, extraPriceMap, sourceName = null, sourceIcon = null;
+
+    if (!isGuest) {
+      // Own menu — priced from the live `menu` node (or the client's basePrice only
+      // as a last resort if Firebase itself is unreachable).
+      if (soldOut.has(itemName)) {
+        return { statusCode: 409, body: JSON.stringify({ error: `הפריט "${itemName}" אזל מהמלאי` }) };
       }
-      basePrice = menuPrices.get(itemName);
+      if (menuLoaded) {
+        if (!menuPrices.has(itemName)) {
+          return { statusCode: 409, body: JSON.stringify({ error: `הפריט "${itemName}" כבר לא בתפריט — רענן את הדף` }) };
+        }
+        basePrice = menuPrices.get(itemName);
+      } else {
+        basePrice = Math.max(0, Number(raw.basePrice) || 0);
+      }
+      extraPriceMap = extraPrices;
     } else {
-      basePrice = Math.max(0, Number(raw.basePrice) || 0);
+      // Guest item ("עוד מהשכונה") — priced ONLY from the static, trusted
+      // neighbors.config.js, scoped to this exact business. An unknown business key
+      // or an item name that doesn't exist in that business's menu is rejected outright
+      // — never priced from the client, never from a different business's table.
+      const biz = NEIGHBOR_PRICES.get(rawSource);
+      if (!biz || !biz.items.has(itemName)) {
+        return { statusCode: 409, body: JSON.stringify({ error: `הפריט "${itemName}" לא נמצא בתפריט השכן` }) };
+      }
+      basePrice = biz.items.get(itemName);
+      extraPriceMap = biz.extras;
+      sourceName = biz.name;
+      sourceIcon = biz.icon;
     }
 
-    const extras = (Array.isArray(raw.extras) ? raw.extras : []).slice(0, 30).map(e => {
-      const en = String(e && e.name || "").slice(0, 80);
+    const rawExtras = (Array.isArray(raw.extras) ? raw.extras : []).slice(0, 30);
+    const extras = [];
+    for (const e of rawExtras) {
+      const en = String(e && e.name || "").slice(0, 120);
+      if (!en) continue;
       const qty = Math.max(1, Math.min(20, Math.floor(Number(e && e.qty) || 1)));
-      const price = menuLoaded && extraPrices.has(en) ? extraPrices.get(en) : Math.max(0, Number(e && e.price) || 0);
-      return { name: en, qty, price };
-    }).filter(e => e.name);
+      let price;
+      if (isGuest) {
+        // Guest extras are always strict — the config is static, never "unloaded".
+        if (!extraPriceMap.has(en)) {
+          return { statusCode: 409, body: JSON.stringify({ error: `התוספת "${en}" לא נמצאה בתפריט השכן` }) };
+        }
+        price = extraPriceMap.get(en);
+      } else {
+        price = menuLoaded && extraPriceMap.has(en) ? extraPriceMap.get(en) : Math.max(0, Number(e && e.price) || 0);
+      }
+      extras.push({ name: en, qty, price });
+    }
 
     const extrasSum = extras.reduce((s, e) => s + e.qty * e.price, 0);
     const lineTotal = basePrice + extrasSum;
@@ -165,7 +231,9 @@ exports.handler = async (event) => {
       name: itemName, basePrice, extras,
       choice: choice || null,
       notes: String(raw.notes || "").slice(0, 280),
-      total: lineTotal
+      total: lineTotal,
+      source: isGuest ? rawSource : "self",
+      sourceName, sourceIcon
     });
   }
   if (!orderItems.length) return { statusCode: 400, body: JSON.stringify({ error: "העגלה ריקה" }) };
@@ -262,11 +330,12 @@ exports.handler = async (event) => {
   let itemsText = "";
   orderItems.forEach(i => {
     itemsText += "• " + i.name + (i.choice ? " — " + i.choice : "") + " -- " + i.basePrice + " ₪";
+    if (i.source && i.source !== "self") itemsText += "\n  🏪 מ-" + (i.sourceName || i.source);
     if (i.extras && i.extras.length) itemsText += "\n  ↳ " + i.extras.map(e => e.name + (e.qty > 1 ? " x" + e.qty : "") + " (+" + (e.qty * e.price) + "₪)").join(", ");
     if (i.notes) itemsText += "\n  📝 " + i.notes;
     itemsText += "\n  סה\"כ: " + i.total + " ₪\n";
   });
-  let msg = "🍕 *הזמנה חדשה -- " + SITE_CONFIG.business.name + "*\n━━━━━━━━━━━━━━━━━\n";
+  let msg = "🥙 *הזמנה חדשה -- " + SITE_CONFIG.business.name + "*\n━━━━━━━━━━━━━━━━━\n";
   msg += "👤 *שם:* " + name + "\n📞 *טלפון:* " + phone + "\n🚲 *סוג:* " + type + "\n";
   msg += "💰 *תשלום:* " + paymentLabel + (payment === "credit" ? " — ⚠️ להתקשר" : "") + "\n";
   if (type === "משלוח") msg += "📍 *כתובת:* " + address + "\n💵 דמי משלוח: " + fee + " ₪\n";

@@ -191,6 +191,7 @@ body {
 }
 .card-item:last-child { border-bottom: none; }
 .card-item-extras { font-size: 0.78rem; color: var(--muted); font-weight: 400; }
+.card-item-source { font-size: 0.76rem; color: #fbbf24; font-weight: 700; }
 .card-item-notes  { font-size: 0.78rem; color: var(--warning); font-weight: 400; }
 
 .card-footer { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; }
@@ -901,8 +902,11 @@ function buildCard(key, o, status) {
         const extras = (item.extras || []).map(e => escapeHtml(e.name) + (e.qty > 1 ? ` ×${e.qty}` : '')).join(', ');
         const choice = item.choice ? `<div class="card-item-extras">🔸 ${escapeHtml(item.choice)}</div>` : '';
         const notes  = item.notes ? `<div class="card-item-notes">📝 ${escapeHtml(item.notes)}</div>` : '';
+        const source = (item.source && item.source !== 'self')
+            ? `<div class="card-item-source">🏪 מ-${escapeHtml(item.sourceName || item.source)}</div>` : '';
         return `<div class="card-item">
             ${escapeHtml(item.name)}${item.qty > 1 ? ` ×${item.qty}` : ''}
+            ${source}
             ${choice}
             ${extras ? `<div class="card-item-extras">+ ${extras}</div>` : ''}
             ${notes}
@@ -1099,8 +1103,11 @@ function buildReceiptHtml(o) {
     const date = new Date(o.ts || Date.now()).toLocaleString('he-IL', { timeZone:'Asia/Jerusalem' });
     const itemsHtml = (o.items || []).map(i => {
         const extras = (i.extras || []).map(e => e.name + (e.qty > 1 ? ' ×' + e.qty : '')).join(', ');
+        const source = (i.source && i.source !== 'self')
+            ? '<div class="r-extras" style="font-weight:700;">🏪 מ-' + escapeHtml(i.sourceName || i.source) + '</div>' : '';
         return '<div class="r-item">' +
             '<div class="r-row r-bold"><span>' + escapeHtml(i.name) + '</span><span>' + (i.basePrice || 0) + ' ₪</span></div>' +
+            source +
             (i.choice ? '<div class="r-extras">🔸 ' + escapeHtml(i.choice) + '</div>' : '') +
             (extras ? '<div class="r-extras">+ ' + escapeHtml(extras) + '</div>' : '') +
             (i.notes  ? '<div class="r-notes">📝 ' + escapeHtml(i.notes) + '</div>' : '') +
@@ -1289,6 +1296,7 @@ async function printOrder(key) {
     hr();
     (o.items || []).forEach(i => {
       rowRL(i.name || "", ((Number(i.basePrice) || 0)) + " ₪", 27, true);
+      if (i.source && i.source !== "self") right("🏪 מ-" + (i.sourceName || i.source), 21, true);
       if (i.choice) right("פיצה: " + i.choice, 21, false);
       const extras = (i.extras || []).map(e => e.name + (Number(e.qty) > 1 ? " ×" + e.qty : "")).join(", ");
       if (extras) right("+ " + extras, 21, false);

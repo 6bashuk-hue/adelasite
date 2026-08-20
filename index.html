@@ -290,6 +290,28 @@
     .modal-add-btn { background: var(--primary); color: white; font-family: 'Heebo', sans-serif; font-weight: bold; font-size: 1.05rem; width: 100%; padding: 0.85rem; border: none; border-radius: 8px; cursor: pointer; margin-top: 1.2rem; transition: background 0.2s; }
     .modal-add-btn:hover { background: var(--primary-dark); }
 
+    /* NEIGHBORS — "עוד מהשכונה" (guest orders from הדיינר / 6 בשוק) */
+    .neighbors-wrap { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 1rem; }
+    .neighbor-box { border: 1.5px solid var(--border); border-radius: 12px; background: var(--white); overflow: hidden; }
+    .neighbor-header { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; background: none; border: none; cursor: pointer; padding: 0.9rem 1rem; font-family: 'Heebo', sans-serif; text-align: right; }
+    .neighbor-title { font-weight: 900; font-size: 1.02rem; color: var(--dark); display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; }
+    .neighbor-note { font-weight: 400; font-size: 0.78rem; color: var(--gray); }
+    .neighbor-toggle-label { font-size: 0.85rem; font-weight: 700; color: var(--primary); white-space: nowrap; }
+    .neighbor-body { border-top: 1px solid var(--border); padding: 0.4rem 1rem 0.8rem; }
+    .neighbor-section { margin-top: 0.8rem; }
+    .neighbor-section:first-child { margin-top: 0.6rem; }
+    .neighbor-section-label { font-weight: 700; font-size: 0.85rem; color: var(--primary-dark); margin-bottom: 0.4rem; }
+    .neighbor-item-row { display: flex; align-items: center; justify-content: space-between; gap: 0.7rem; padding: 0.55rem 0; border-bottom: 1px dashed var(--border); }
+    .neighbor-item-row:last-child { border-bottom: none; }
+    .neighbor-item-info { flex: 1; min-width: 0; }
+    .neighbor-item-name { font-weight: 700; font-size: 0.92rem; }
+    .neighbor-item-desc { font-size: 0.78rem; color: var(--gray); margin-top: 0.15rem; line-height: 1.35; }
+    .neighbor-item-actions { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
+    .neighbor-item-price { font-weight: 900; font-size: 0.88rem; color: var(--dark); }
+    .neighbor-add-btn { background: var(--primary); color: white; border: none; border-radius: 8px; padding: 0.4rem 0.8rem; font-family: 'Heebo', sans-serif; font-weight: 700; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
+    .neighbor-add-btn:hover { background: var(--primary-dark); }
+    .cart-item-source-tag { display: inline-block; font-size: 0.74rem; font-weight: 700; color: var(--primary-dark); background: #f1e4cf; border-radius: 5px; padding: 0.1rem 0.4rem; margin-top: 0.3rem; }
+
     /* CART */
     .cart { background: var(--white); padding: 1.5rem; margin-top: 2.5rem; border-radius: 12px; border: 2px solid var(--primary); margin-bottom: 2rem; }
     .cart h3 { margin: 0 0 1rem; font-size: 1.3rem; }
@@ -911,6 +933,10 @@
         <div class="section-title">שתייה קלה</div>
         <div class="menu-grid" id="grid-drinks"></div>
 
+        <!-- עוד מהשכונה — order from neighboring businesses in the same order/ticket -->
+        <div class="section-title">עוד מהשכונה</div>
+        <div class="neighbors-wrap" id="neighbors-wrap"></div>
+
         <!-- CART -->
         <div class="cart" id="cart-section">
             <h3>🛒 ההזמנה שלי</h3>
@@ -1051,6 +1077,7 @@
 </div>
 
 <script src="site.config.js"></script>
+<script src="neighbors.config.js"></script>
 <script src="js/firebase-auth.js"></script>
 <script>
 // ============================================================
@@ -1089,9 +1116,10 @@ const SENTRY_DSN          = "";   // get from sentry.io project settings → Cli
 // MENU DATA
 // ============================================================
 // Default extras pool — used when Firebase has no `siteSettings/extras` yet.
-// Adela BaShuk itself doesn't sell pizza, so this pool is dormant for the site's own
-// menu (no item below sets extras:true). It's kept because "עוד מהשכונה" reuses it as
-// the topping pool for 6 בשוק's guest pizzas — see neighbors.config.js.
+// Adela BaShuk itself doesn't sell pizza, so this pool is dormant (no item below sets
+// extras:true) — kept only so the admin panel's extras tab still works if ever needed.
+// "עוד מהשכונה" (the neighbor section) uses its own per-item topping lists from
+// neighbors.config.js instead — see the guest-item handling further down.
 const DEFAULT_EXTRAS = {
     veggies: [],
     cheese:  [],
@@ -1226,13 +1254,28 @@ function rebuildItemIndex() {
     MENU_SECTIONS.forEach(s => {
         (MENU[s.key] || []).forEach(item => {
             item._i = i;
+            item._source = "self";
             ITEM_IDX[i] = item;
             i++;
         });
     });
     // Specials live outside MENU_SECTIONS but still need modal-addressable indices.
-    if (chefSpecial && chefSpecial.enabled) { chefSpecial._i = i; ITEM_IDX[i] = chefSpecial; i++; }
-    if (coupleMeal  && coupleMeal.enabled)  { coupleMeal._i  = i; ITEM_IDX[i] = coupleMeal;  i++; }
+    if (chefSpecial && chefSpecial.enabled) { chefSpecial._i = i; chefSpecial._source = "self"; ITEM_IDX[i] = chefSpecial; i++; }
+    if (coupleMeal  && coupleMeal.enabled)  { coupleMeal._i  = i; coupleMeal._source  = "self"; ITEM_IDX[i] = coupleMeal;  i++; }
+    // "עוד מהשכונה" — guest items from neighbors.config.js, addressable through the
+    // same ITEM_IDX/openModal machinery as the site's own menu (see addGuestItem()).
+    ((typeof NEIGHBORS_CONFIG !== "undefined" && NEIGHBORS_CONFIG.businesses) || []).forEach(biz => {
+        (biz.sections || []).forEach(sec => {
+            (sec.items || []).forEach(item => {
+                item._i = i;
+                item._source = biz.key;
+                item._sourceName = biz.name;
+                item._sourceIcon = biz.icon;
+                ITEM_IDX[i] = item;
+                i++;
+            });
+        });
+    });
 }
 
 async function loadMenuFromFirebase() {
@@ -1553,6 +1596,84 @@ function specialCardHTML(item, kind) {
 }
 
 // ============================================================
+// NEIGHBORS — "עוד מהשכונה": order from הדיינר / 6 בשוק in the same ticket.
+// Static, trusted menu data lives in neighbors.config.js — the server re-prices every
+// guest item against that same file, scoped by business key, so nothing here needs to
+// (or should) touch Firebase.
+// ============================================================
+function renderNeighbors() {
+    const wrap = document.getElementById("neighbors-wrap");
+    if (!wrap) return;
+    const businesses = (typeof NEIGHBORS_CONFIG !== "undefined" && NEIGHBORS_CONFIG.businesses) || [];
+    wrap.innerHTML = businesses.map(neighborBoxHTML).join("");
+}
+
+function neighborBoxHTML(biz) {
+    const sectionsHtml = (biz.sections || []).map(sec => {
+        const items = sec.items || [];
+        if (!items.length) return "";
+        return (
+            '<div class="neighbor-section">' +
+            '<div class="neighbor-section-label">' + escAttr(sec.label) + '</div>' +
+            items.map(neighborItemHTML).join("") +
+            '</div>'
+        );
+    }).join("");
+    return (
+        '<div class="neighbor-box">' +
+        '<button type="button" class="neighbor-header" onclick="toggleNeighbor(\'' + biz.key + '\')">' +
+            '<span class="neighbor-title">🏪 ' + escAttr(biz.name) +
+            (biz.note ? '<span class="neighbor-note">' + escAttr(biz.note) + '</span>' : '') + '</span>' +
+            '<span class="neighbor-toggle-label" id="neighbor-toggle-' + biz.key + '">הצג תפריט ▾</span>' +
+        '</button>' +
+        '<div class="neighbor-body" id="neighbor-body-' + biz.key + '" style="display:none;">' +
+            sectionsHtml +
+        '</div>' +
+        '</div>'
+    );
+}
+
+function neighborItemHTML(item) {
+    const hasOptions = (Array.isArray(item.extras) && item.extras.length) || (Array.isArray(item.choices) && item.choices.length);
+    return (
+        '<div class="neighbor-item-row">' +
+        '<div class="neighbor-item-info">' +
+            '<div class="neighbor-item-name">' + escAttr(item.name) + '</div>' +
+            (item.desc ? '<div class="neighbor-item-desc">' + escAttr(item.desc) + '</div>' : '') +
+        '</div>' +
+        '<div class="neighbor-item-actions">' +
+            '<span class="neighbor-item-price">' + item.price + ' ₪</span>' +
+            '<button type="button" class="neighbor-add-btn" onclick="addGuestItem(' + item._i + ')">' + (hasOptions ? '+ בחר' : '+ הוסף') + '</button>' +
+        '</div></div>'
+    );
+}
+
+function toggleNeighbor(key) {
+    const body  = document.getElementById("neighbor-body-" + key);
+    const label = document.getElementById("neighbor-toggle-" + key);
+    if (!body) return;
+    const willOpen = body.style.display === "none";
+    body.style.display = willOpen ? "block" : "none";
+    if (label) label.textContent = willOpen ? "סגור תפריט ▴" : "הצג תפריט ▾";
+}
+
+// Simple guest items (no toppings/choices) add straight to the cart on one tap; guest
+// items with toppings or a choice open the exact same extras modal as the site's own
+// menu (openModal already handles item.extras / item.choices generically).
+function addGuestItem(idx) {
+    const item = ITEM_IDX[idx];
+    if (!item || !item._source || item._source === "self") return;
+    const hasOptions = (Array.isArray(item.extras) && item.extras.length) || (Array.isArray(item.choices) && item.choices.length);
+    if (hasOptions) { openModal(idx); return; }
+    cart.push({
+        name: item.name, basePrice: item.price, choice: "", extras: [], notes: "",
+        total: item.price, source: item._source, sourceName: item._sourceName
+    });
+    updateCart();
+    toast("✅ " + item.name + " נוסף לעגלה (" + item._sourceName + ")");
+}
+
+// ============================================================
 // APPLE-STYLE SHEET — swipe-to-dismiss modal/bottom-sheet motion.
 // Every open/close reads the panel's LIVE transform before starting a new
 // transition (so a tap or drag mid-animation never jumps), tracks a drag 1:1
@@ -1786,6 +1907,7 @@ function confirmAdd() {
         .map(([name, v]) => ({name, qty: v.qty, price: v.price}));
     const extTotal = sel.reduce((s, e) => s + e.qty * e.price, 0);
     const unitPrice = modalItem.price + extTotal;
+    const isGuest = modalItem._source && modalItem._source !== "self";
     for (let i = 0; i < modalQty; i++) {
         cart.push({
             name:      modalItem.name,
@@ -1793,7 +1915,9 @@ function confirmAdd() {
             choice:    choices.length ? modalChoice : "",
             extras:    sel,
             notes:     document.getElementById("modal-notes").value.trim(),
-            total:     unitPrice
+            total:     unitPrice,
+            source:     isGuest ? modalItem._source : "self",
+            sourceName: isGuest ? modalItem._sourceName : undefined
         });
     }
     const addedName = modalItem.name; // read before closeModal() nulls modalItem
@@ -1879,10 +2003,14 @@ function updateCart() {
         const extText = item.extras.length
             ? "תוספות: " + item.extras.map(e => escAttr(e.name) + (e.qty > 1 ? " x" + e.qty : "")).join(", ")
             : "";
+        const sourceTag = (item.source && item.source !== "self")
+            ? '<div class="cart-item-source-tag">🏪 מ-' + escAttr(item.sourceName || item.source) + '</div>'
+            : "";
         return (
             '<li class="cart-item">' +
             '<div class="cart-item-top"><span class="cart-item-name">' + escAttr(item.name) + "</span>" +
             '<span class="cart-item-price">' + (Number(item.total) || 0) + " ₪</span></div>" +
+            sourceTag +
             (item.choice ? '<div class="cart-item-extras">🥙 ' + escAttr(item.choice) + "</div>" : "") +
             (extText ? '<div class="cart-item-extras">' + extText + "</div>" : "") +
             (item.notes ? '<div class="cart-item-notes">📝 ' + escAttr(item.notes) + "</div>" : "") +
@@ -2081,7 +2209,7 @@ async function submitOrder() {
             body: JSON.stringify({
                 name, phone, type, address, payment,
                 couponCode: coupon ? coupon.code : null,
-                items: cart.map(i => ({ name: i.name, extras: i.extras, notes: i.notes, choice: i.choice || "" }))
+                items: cart.map(i => ({ name: i.name, extras: i.extras, notes: i.notes, choice: i.choice || "", source: i.source || "self" }))
             })
         });
         if (res.ok) {
@@ -3347,6 +3475,7 @@ async function init() {
     await loadExtrasFromFirebase();
     await loadTopSellers();
     renderMenu();
+    renderNeighbors();
     applyBusy();
     applyHours();
     setInterval(applyHours, 60000);

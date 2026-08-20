@@ -920,14 +920,14 @@
             <div id="quiz-result" class="quiz-result" style="display:none;"></div>
         </div>
         <a href="/group.html" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;background:#fff0e6;border:1.5px dashed #7d6652;border-radius:10px;padding:0.7rem 1rem;margin:0.5rem 0 1rem;text-decoration:none;color:#7d6652;font-weight:700;font-size:0.95rem;">🥙 מזמינים יחד? פתח הזמנה קבוצתית — כל אחד בוחר משלו</a>
-        <div class="section-title">עיקריות</div>
-        <div class="menu-grid" id="grid-mains"></div>
-
         <div class="section-title">נשנושים</div>
         <div class="menu-grid" id="grid-snacks"></div>
 
         <div class="section-title">ראשונות</div>
         <div class="menu-grid" id="grid-starters"></div>
+
+        <div class="section-title">עיקריות</div>
+        <div class="menu-grid" id="grid-mains"></div>
 
         <div class="section-title">שתייה קלה</div>
         <div class="menu-grid" id="grid-drinks"></div>
@@ -1247,9 +1247,9 @@ function normCoupleMeal(raw) {
     };
 }
 const MENU_SECTIONS = [
-    {key:"mains",    label:"עיקריות"},
     {key:"snacks",   label:"נשנושים"},
     {key:"starters", label:"ראשונות"},
+    {key:"mains",    label:"עיקריות"},
     {key:"drinks",   label:"שתייה קלה"}
 ];
 
@@ -1539,9 +1539,9 @@ function loadLastOrder() {
 // RENDER MENU
 // ============================================================
 function renderMenu() {
-    renderMainsGrid();
     renderSection("grid-snacks",   MENU.snacks   || []);
     renderSection("grid-starters", MENU.starters || []);
+    renderMainsGrid();
     renderSection("grid-drinks",   MENU.drinks   || []);
 }
 
@@ -2624,7 +2624,7 @@ function saveETA() {
 function renderSoldOutGrid() {
     const grid = document.getElementById("soldout-grid");
     if (!grid) return;
-    const allItems = [...(MENU.mains||[]), ...(MENU.snacks||[]), ...(MENU.starters||[]), ...(MENU.drinks||[])];
+    const allItems = [...(MENU.snacks||[]), ...(MENU.starters||[]), ...(MENU.mains||[]), ...(MENU.drinks||[])];
     // Include specials if enabled so the admin can mark them sold out too.
     if (chefSpecial && chefSpecial.enabled) allItems.push(chefSpecial);
     if (coupleMeal  && coupleMeal.enabled)  allItems.push(coupleMeal);

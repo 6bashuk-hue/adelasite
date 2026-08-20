@@ -1939,6 +1939,12 @@ function isDelivery() {
     return el && el.value === "delivery";
 }
 
+// אדלה בשוק's own items only — guest ("עוד מהשכונה") items never count toward the
+// threshold-nudge free item (server enforces this too; see place-order.js).
+function selfItemsTotal(c) {
+    return c.reduce((s, i) => s + ((!i.source || i.source === "self") ? (Number(i.total) || 0) : 0), 0);
+}
+
 function calcDiscount(itemsTotal) {
     if (!coupon) return 0;
     if (coupon.type === "percent") return Math.round(itemsTotal * coupon.value / 100);
@@ -2025,12 +2031,13 @@ function updateCart() {
     }).join("");
 
     const itemsTotal = cart.reduce((s, i) => s + i.total, 0);
+    const selfTotal  = selfItemsTotal(cart);
     const fee        = isDelivery() ? DELIVERY_FEE : 0;
     const disc       = calcDiscount(itemsTotal);
     const finalTotal = Math.max(0, itemsTotal + fee - disc);
 
-    updateThresholdNudge(itemsTotal);
-    if (thresholdReached(itemsTotal)) {
+    updateThresholdNudge(selfTotal);
+    if (thresholdReached(selfTotal)) {
         const r = thresholdConfig.rewardItem;
         list.insertAdjacentHTML("beforeend",
             '<li class="freebie-row"><span>🎁 ' + escAttr(r.name) + ' <span class="freebie-badge">חינם</span></span><span>0 ₪</span></li>');
@@ -2274,14 +2281,15 @@ async function submitOrder() {
     try {
         const orderItems = cart.slice();
         let thresholdReward = null;
-        if (thresholdReached(itemsTotal)) {
+        const selfTotal = selfItemsTotal(cart);
+        if (thresholdReached(selfTotal)) {
             const r = thresholdConfig.rewardItem;
             orderItems.push({
                 name: r.name, basePrice: 0, extras: [], notes: r.description || "",
-                total: 0, isThresholdReward: true
+                total: 0, isThresholdReward: true, source: "self"
             });
             thresholdReward = {
-                rewarded: true, orderTotal: itemsTotal,
+                rewarded: true, orderTotal: selfTotal,
                 threshold: thresholdConfig.thresholdAmount,
                 rewardItem: r.name, rewardCost: r.actualCost || 0
             };

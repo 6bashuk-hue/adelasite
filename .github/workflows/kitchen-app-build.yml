@@ -1,0 +1,70 @@
+name: Build Kitchen App (Android APK)
+
+# Lets you build a debug APK for the kitchen app from GitHub's website/app —
+# no computer needed. Run manually from the Actions tab ("Run workflow"), or it
+# runs automatically on changes to the Capacitor project or the files it packages.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+    paths:
+      - "capacitor-kitchen-app/**"
+      - "admin.html"
+      - "site.config.js"
+      - "js/firebase-auth.js"
+      - "sounds/alert.wav"
+      - "admin-manifest.json"
+      - ".github/workflows/kitchen-app-build.yml"
+
+defaults:
+  run:
+    working-directory: capacitor-kitchen-app
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21" # matches compileSdk 35 in android/variables.gradle
+
+      # GitHub-hosted runners don't put `sdkmanager` on PATH by default.
+      - uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build web assets (sync-web.js)
+        run: npm run build
+        env:
+          PROD_ORIGIN: ${{ vars.PROD_ORIGIN }} # optional override; falls back to site.config.js's canonicalUrl
+          APP_ID: ${{ vars.APP_ID }}
+          APP_NAME: ${{ vars.APP_NAME }}
+
+      - name: Capacitor sync
+        run: npx cap sync android
+        env:
+          APP_ID: ${{ vars.APP_ID }}
+          APP_NAME: ${{ vars.APP_NAME }}
+
+      - name: Make gradlew executable
+        run: chmod +x android/gradlew
+
+      - name: Build debug APK
+        working-directory: capacitor-kitchen-app/android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kitchen-app-debug-apk
+          path: capacitor-kitchen-app/android/app/build/outputs/apk/debug/app-debug.apk

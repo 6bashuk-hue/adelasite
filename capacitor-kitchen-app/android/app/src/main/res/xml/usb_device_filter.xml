@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  רשימת מכשירי USB שעבורם המערכת תפעיל אוטומטית את האפליקציה כשהמדפסת מחוברת
+  (דרך ה-intent-filter android.hardware.usb.action.USB_DEVICE_ATTACHED ב-AndroidManifest.xml).
+
+  זה לא חובה כדי שהחיבור עצמו יעבוד — UsbThermalPrinterPlugin.connect() מוצא את המדפסת
+  גם בלי זה (לפי USB Printer Class, interfaceClass == 7). זה נותן נוחות נוספת: "פתיחת
+  האפליקציה אוטומטית כשמחברים את המדפסת".
+
+  כדי למלא vendor-id/product-id אמיתיים: חבר את המדפסת למחשב/טלפון ובדוק
+  `lsusb` (לינוקס) או `dumpsys usb` (מתוך adb shell על מכשיר אנדרואיד מחובר).
+  הערכים הם עשרוניים (decimal), לא הקסה־דצימליים — למשל אם lsusb מציג
+  "ID 0483:5743" (הקסדצימלי), צריך להמיר ל-decimal: vendor-id="1155" product-id="22339".
+-->
+<resources>
+    <!-- <usb-device vendor-id="0000" product-id="0000" /> -->
+</resources>

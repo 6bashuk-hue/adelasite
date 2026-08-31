@@ -15,14 +15,14 @@
       name: "אדלה בשוק",
       tagline: "בר אוכל שוק",
       type: "בר אוכל שוק אותנטי מזרחי",           // ← free text, used in SEO/schema.org
-      city: "ערד",                                // ⚠️ לוודא — לא צויינה עיר במקור, הונח לפי \"הדיינר\" השכן
+      city: "ערד",
       country: "IL",
-      phone: "+972000000000",                      // ⚠️ TODO: להשלים מספר טלפון אמיתי
-      phoneDisplay: "000-0000000",                  // ⚠️ TODO: להשלים מספר טלפון אמיתי
+      phone: "+972504599409",
+      phoneDisplay: "050-4599409",
       whatsappCountryCode: "972",
-      address: { street: "", locality: "ערד", region: "", country: "IL" }, // ⚠️ TODO: להשלים כתובת מדויקת בשוק
-      hoursDisplay: "ב׳-ד׳ 18:00–01:00 · שבת 09:30–01:00", // מהתפריט המודפס — ⚠️ לוודא (חסרים א׳, ה׳, ו׳)
-      canonicalUrl: "https://REPLACE-WITH-YOUR-DOMAIN.netlify.app" // ⚠️ TODO: דומיין בפועל אחרי הדיפלוי
+      address: { street: "התעשייה 6", locality: "ערד", region: "", country: "IL" },
+      hoursDisplay: "א׳-ו׳ 18:00–24:00 · שבת 10:00–24:00",
+      canonicalUrl: "https://adelabashuk.netlify.app"
     },
     firebase: {
       // ⚠️ Create your OWN Firebase Realtime Database project (SETUP.md step 2) —
@@ -38,9 +38,9 @@
       currency: "₪"
     },
     theme: {
-      primary: "#9c5a2e",
-      primaryDark: "#5c3115",
-      bg: "#f6efe0"
+      primary: "#7d6652",
+      primaryDark: "#5c4a3a",
+      bg: "#f3ead9"
     }
   };
 

@@ -7,7 +7,7 @@
   <script src="site.config.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root { --primary:#b3592d; --primary-dark:#8c4220; --bg:#fff8f3; --success:#28a745; --gray:#666; --border:#e0d0b0; --danger:#c62828; }
+    :root { --primary:#7d6652; --primary-dark:#8c4220; --bg:#fff8f3; --success:#28a745; --gray:#666; --border:#e0d0b0; --danger:#c62828; }
     * { box-sizing: border-box; }
     body { font-family: 'Heebo', sans-serif; background: var(--bg); margin: 0; padding: 1rem; color: #2a2a2a; }
     .wrap { max-width: 720px; margin: 0 auto; }
@@ -198,7 +198,7 @@ const EXTRAS_GROUPS = [
   { key: "premium", label: "✨ פרימיום" }
 ];
 const SECTION_LABELS = { mains: "🍽 עיקריות", snacks: "🥙 נשנושים", starters: "🥗 ראשונות", drinks: "🥤 שתייה" };
-const SECTION_ORDER = ["mains", "snacks", "starters", "drinks"];
+const SECTION_ORDER = ["snacks", "starters", "mains", "drinks"];
 let soldOutSet = new Set();
 let ITEM_IDX = [];
 
@@ -218,10 +218,8 @@ function getILHoursStatus() {
   const t = parseInt(parts.find(p => p.type === "hour").value, 10) * 60 + parseInt(parts.find(p => p.type === "minute").value, 10);
   const d = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 }[day];
   let pickup = false, delivery = false, msg = "";
-  if (d >= 1 && d <= 4) { pickup = t >= 1080 && t < 1440; delivery = t >= 1080 && t < 1380; if (t < 1080) msg = "נפתח היום ב-18:00"; else if (t >= 1440) msg = "נפתח מחר ב-18:00"; }
-  else if (d === 5) { pickup = t >= 1080; if (t < 1080) msg = "נפתח היום בשישי ב-18:00"; }
-  else if (d === 6) { pickup = t < 60 || t >= 720; delivery = t >= 1080 && t < 1380; if (t >= 60 && t < 720) msg = "נפתח היום בשבת ב-12:00"; }
-  else { msg = "נפתח ביום שני ב-18:00"; }
+  if (d === 6) { pickup = t >= 600 && t < 1440; delivery = pickup; if (t < 600) msg = "נפתח היום בשבת ב-10:00"; }
+  else { pickup = t >= 1080 && t < 1440; delivery = pickup; if (t < 1080) msg = "נפתח היום ב-18:00"; }
   return { pickupOpen: pickup, deliveryOpen: delivery, msg };
 }
 async function applyClosedBanner() {

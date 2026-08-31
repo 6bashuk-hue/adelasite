@@ -30,7 +30,7 @@
 <!-- PWA -->
 
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#9c5a2e">                                  <!-- ← your brand color, keep in sync with site.config.js theme.primary -->
+<meta name="theme-color" content="#7d6652">                                  <!-- ← your brand color, keep in sync with site.config.js theme.primary -->
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -39,21 +39,21 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Restaurant","name":"אדלה בשוק","url":"https://REPLACE-WITH-YOUR-DOMAIN.netlify.app","telephone":"+972000000000","image":"https://REPLACE-WITH-YOUR-DOMAIN.netlify.app/icon-512.png","servesCuisine":["Middle Eastern","Israeli"],"priceRange":"$$","address":{"@type":"PostalAddress","addressLocality":"ערד","addressRegion":"","addressCountry":"IL"},"openingHours":["Mo-We 18:00-01:00","Sa 09:30-01:00"],"hasMap":"https://maps.google.com/?q=ערד+אדלה+בשוק"}
+{"@context":"https://schema.org","@type":"Restaurant","name":"אדלה בשוק","url":"https://REPLACE-WITH-YOUR-DOMAIN.netlify.app","telephone":"+972504599409","image":"https://REPLACE-WITH-YOUR-DOMAIN.netlify.app/icon-512.png","servesCuisine":["Middle Eastern","Israeli"],"priceRange":"$$","address":{"@type":"PostalAddress","streetAddress":"התעשייה 6","addressLocality":"ערד","addressRegion":"","addressCountry":"IL"},"openingHours":["Su-Fr 18:00-24:00","Sa 10:00-24:00"],"hasMap":"https://maps.google.com/?q=אדלה+בשוק+התעשייה+6+ערד"}
 </script>
 <!-- SEO:END -->
 <style>
         :root {
-            --primary: #9c5a2e;
-            --primary-dark: #5c3115;
-            --bg: #f6efe0;
-            --dark: #2b1a10;
+            --primary: #7d6652;
+            --primary-dark: #5c4a3a;
+            --bg: #f3ead9;
+            --dark: #1a0f08;
             --white: #ffffff;
             --success: #25D366;
             --danger: #e74c3c;
             --gray: #6b5c48;
             --border: #ddc9a0;
-            --gold: #b8892f;
+            --gold: #ad8e72;
             --font-display: 'Frank Ruhl Libre', 'Heebo', serif;
         }
         * { box-sizing: border-box; }
@@ -107,7 +107,7 @@
 
     /* PROMO BANNER */
     .promo-banner {
-        background: linear-gradient(135deg, #b3592d, #d97706);
+        background: linear-gradient(135deg, #7d6652, #d97706);
         color: #fff8e1; text-align: center;
         padding: 0.7rem 1rem; font-size: 0.95rem; font-weight: 700;
         border-bottom: 2px solid #fbbf24; display: none;
@@ -145,7 +145,7 @@
         border-radius: 8px; padding: 0.6rem 0.8rem; margin-top: 0.6rem;
         font-size: 0.9rem; color: #7a5800;
     }
-    .loyalty-card .lc-reward strong { color: #b3592d; letter-spacing: 1px; font-family: monospace; }
+    .loyalty-card .lc-reward strong { color: #7d6652; letter-spacing: 1px; font-family: monospace; }
     .loyalty-card .lc-comeback {
         background: #eafaf1; border: 1.5px solid #25D366;
         border-radius: 8px; padding: 0.6rem 0.8rem; margin-top: 0.6rem;
@@ -173,7 +173,7 @@
     .track-box h3 { margin: 0 0 0.7rem; color: var(--primary); }
     .track-result { margin-top: 1rem; }
     .track-status { font-size: 1.1rem; font-weight: 900; padding: 0.5rem 0.8rem; border-radius: 6px; text-align: center; margin-bottom: 0.6rem; }
-    .track-status.s-new    { background: #ffe9d6; color: #b3592d; }
+    .track-status.s-new    { background: #ffe9d6; color: #7d6652; }
     .track-status.s-inprog { background: #fff3cd; color: #92400e; }
     .track-status.s-done   { background: #e6f9ec; color: #166534; }
     .track-empty { color: #999; text-align: center; padding: 1rem; font-size: 0.9rem; }
@@ -336,12 +336,12 @@
     .min-order-notice { background: #fff3cd; border: 1.5px solid #f0ad4e; border-radius: 8px; padding: 0.7rem 1rem; margin-bottom: 0.8rem; font-size: 0.88rem; color: #7a5800; font-weight: bold; display: none; text-align: center; }
 
     /* THRESHOLD NUDGE */
-    .threshold-nudge { background: linear-gradient(135deg, #fff0e6 0%, #ffe4d0 100%); border: 2px dashed #b3592d; border-radius: 10px; padding: 0.7rem 0.9rem; margin-bottom: 0.9rem; }
+    .threshold-nudge { background: linear-gradient(135deg, #fff0e6 0%, #ffe4d0 100%); border: 2px dashed #7d6652; border-radius: 10px; padding: 0.7rem 0.9rem; margin-bottom: 0.9rem; }
     .threshold-row { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; }
     .threshold-icon { font-size: 1.4rem; }
-    .threshold-text { flex: 1; font-size: 0.92rem; font-weight: 700; color: #b3592d; }
-    .threshold-bar { height: 10px; background: #fff; border-radius: 6px; overflow: hidden; border: 1px solid #b3592d; }
-    .threshold-fill { height: 100%; background: linear-gradient(90deg, #b3592d 0%, #ff8a4c 100%); width: 0%; transition: width 0.4s ease; border-radius: 6px; }
+    .threshold-text { flex: 1; font-size: 0.92rem; font-weight: 700; color: #7d6652; }
+    .threshold-bar { height: 10px; background: #fff; border-radius: 6px; overflow: hidden; border: 1px solid #7d6652; }
+    .threshold-fill { height: 100%; background: linear-gradient(90deg, #7d6652 0%, #ff8a4c 100%); width: 0%; transition: width 0.4s ease; border-radius: 6px; }
     .threshold-achieved { background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); border: 2px solid #28a745; border-radius: 10px; padding: 0.7rem 0.9rem; margin-bottom: 0.9rem; display: flex; align-items: center; gap: 0.7rem; animation: thAch 0.45s ease; }
     .threshold-achieved strong { display: block; color: #155724; font-size: 0.95rem; }
     .threshold-reward-desc { color: #155724; font-size: 0.82rem; opacity: 0.85; }
@@ -361,13 +361,13 @@
     .quiz-coupon { display: inline-block; background: white; padding: 0.3rem 0.6rem; border-radius: 6px; font-family: monospace; font-size: 1rem; margin-top: 0.35rem; border: 2px dashed #2e7d32; cursor: pointer; }
 
     /* REORDER CARD */
-    .reorder-card { background: linear-gradient(135deg, #fff8f3 0%, #ffe4d0 100%); border: 2px solid #b3592d; border-radius: 12px; padding: 1rem 1.1rem; margin: 0.4rem 0 1rem; }
-    .reorder-title { font-size: 1.05rem; font-weight: 800; color: #b3592d; }
+    .reorder-card { background: linear-gradient(135deg, #fff8f3 0%, #ffe4d0 100%); border: 2px solid #7d6652; border-radius: 12px; padding: 1rem 1.1rem; margin: 0.4rem 0 1rem; }
+    .reorder-title { font-size: 1.05rem; font-weight: 800; color: #7d6652; }
     .reorder-meta { color: #666; font-size: 0.84rem; margin: 0.3rem 0 0.7rem; }
     .reorder-items { list-style: none; padding: 0; margin: 0.5rem 0 0.8rem; }
     .reorder-items li { padding: 0.35rem 0; border-bottom: 1px solid #f0e3d2; font-size: 0.9rem; color: #333; }
     .reorder-items li:last-child { border-bottom: none; }
-    .reorder-btn { background: #b3592d; color: white; border: none; padding: 0.85rem 1.2rem; border-radius: 8px; font-size: 1rem; font-weight: 800; cursor: pointer; width: 100%; font-family: 'Heebo', sans-serif; }
+    .reorder-btn { background: #7d6652; color: white; border: none; padding: 0.85rem 1.2rem; border-radius: 8px; font-size: 1rem; font-weight: 800; cursor: pointer; width: 100%; font-family: 'Heebo', sans-serif; }
     .reorder-btn:hover { background: var(--primary-dark); }
     .reorder-dismiss { display: block; margin: 0.5rem auto 0; background: none; border: none; color: #888; font-size: 0.85rem; cursor: pointer; text-decoration: underline; }
     .freebie-row { background: #eafaf1; border: 1px dashed #28a745; border-radius: 8px; padding: 0.55rem 0.75rem; margin-bottom: 0.6rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.92rem; }
@@ -835,7 +835,7 @@
         <div class="logo-wrap">
             <img src="logo.png" alt="לוגו אדלה בשוק" id="brand-logo-img" class="logo-img" onclick="handleLogoTap()">
             <div class="restaurant-name" id="brand-name-display">אדלה בשוק</div>
-            <p class="header-sub">שוק | על האש | אותנטי</p>
+            <p class="header-sub">בר | אוכל | שוק</p>
         </div>
     </header>
 
@@ -899,9 +899,8 @@
         <p id="closed-msg"></p>
         <p class="open-soon" id="closed-next"></p>
         <table class="hours-table">
-            <tr><td>ראשון–חמישי</td><td>18:00–24:00</td></tr>
-            <tr><td>שישי</td><td>18:00–23:00 (איסוף בלבד)</td></tr>
-            <tr><td>שבת</td><td>12:00–23:00</td></tr>
+            <tr><td>ראשון–שישי</td><td>18:00–24:00</td></tr>
+            <tr><td>שבת</td><td>10:00–24:00</td></tr>
         </table>
     </div>
 
@@ -920,15 +919,15 @@
             <div id="quiz-options" class="quiz-options"></div>
             <div id="quiz-result" class="quiz-result" style="display:none;"></div>
         </div>
-        <a href="/group.html" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;background:#fff0e6;border:1.5px dashed #b3592d;border-radius:10px;padding:0.7rem 1rem;margin:0.5rem 0 1rem;text-decoration:none;color:#b3592d;font-weight:700;font-size:0.95rem;">🥙 מזמינים יחד? פתח הזמנה קבוצתית — כל אחד בוחר משלו</a>
-        <div class="section-title">עיקריות</div>
-        <div class="menu-grid" id="grid-mains"></div>
-
+        <a href="/group.html" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;background:#fff0e6;border:1.5px dashed #7d6652;border-radius:10px;padding:0.7rem 1rem;margin:0.5rem 0 1rem;text-decoration:none;color:#7d6652;font-weight:700;font-size:0.95rem;">🥙 מזמינים יחד? פתח הזמנה קבוצתית — כל אחד בוחר משלו</a>
         <div class="section-title">נשנושים</div>
         <div class="menu-grid" id="grid-snacks"></div>
 
         <div class="section-title">ראשונות</div>
         <div class="menu-grid" id="grid-starters"></div>
+
+        <div class="section-title">עיקריות</div>
+        <div class="menu-grid" id="grid-mains"></div>
 
         <div class="section-title">שתייה קלה</div>
         <div class="menu-grid" id="grid-drinks"></div>
@@ -1027,9 +1026,9 @@
             שתף עם חברים
         </button>
         <br><br>
-        <div id="push-prompt" style="display:none;background:linear-gradient(135deg,#fff0e6 0%,#ffe4d0 100%);border:2px solid #b3592d;border-radius:12px;padding:1rem;max-width:340px;margin:0 auto 1rem;text-align:center;">
+        <div id="push-prompt" style="display:none;background:linear-gradient(135deg,#fff0e6 0%,#ffe4d0 100%);border:2px solid #7d6652;border-radius:12px;padding:1rem;max-width:340px;margin:0 auto 1rem;text-align:center;">
             <div style="font-size:1.6rem;">🔔</div>
-            <strong style="display:block;color:#b3592d;font-size:1.05rem;">להישאר מעודכן?</strong>
+            <strong style="display:block;color:#7d6652;font-size:1.05rem;">להישאר מעודכן?</strong>
             <div style="color:#666;font-size:0.88rem;margin:0.3rem 0 0.7rem;">נשלח לך התראה כשההזמנה יוצאת מהמטבח + קופונים מיוחדים.</div>
             <button class="btn-submit" style="max-width:240px;margin:0.2rem auto;" onclick="enablePushFromThankYou()">כן, להפעיל</button>
             <button onclick="dismissPushPrompt()" style="display:block;margin:0.3rem auto 0;background:none;border:none;color:#888;text-decoration:underline;cursor:pointer;font-size:0.85rem;">אולי בפעם הבאה</button>
@@ -1038,12 +1037,12 @@
             </div>
         </div>
 
-        <div id="referral-section" style="background:#fff0e6;border:2px solid #b3592d;border-radius:12px;padding:1rem;max-width:340px;margin:0 auto 1rem;text-align:center;">
-            <div style="font-weight:bold;color:#b3592d;font-size:1.05rem;">🎁 הזמן חבר וקבל ₪20</div>
+        <div id="referral-section" style="background:#fff0e6;border:2px solid #7d6652;border-radius:12px;padding:1rem;max-width:340px;margin:0 auto 1rem;text-align:center;">
+            <div style="font-weight:bold;color:#7d6652;font-size:1.05rem;">🎁 הזמן חבר וקבל ₪20</div>
             <div style="font-size:0.88rem;color:#666;margin:0.3rem 0 0.7rem;">קוד אישי. החבר מקבל 15% הנחה — אתה ₪20 בהזמנה הבאה.</div>
             <button class="btn-submit" style="max-width:240px;margin:0 auto;" onclick="createReferralCode()">צור קוד אישי</button>
             <div id="referral-result" style="display:none;margin-top:0.7rem;">
-                <div style="font-family:monospace;font-size:1.1rem;background:#fff;padding:0.4rem;border-radius:6px;border:2px dashed #b3592d;" id="referral-code"></div>
+                <div style="font-family:monospace;font-size:1.1rem;background:#fff;padding:0.4rem;border-radius:6px;border:2px dashed #7d6652;" id="referral-code"></div>
                 <button class="whatsapp-share-btn" style="margin-top:0.6rem;" onclick="shareReferralWhatsApp()">📱 שלח בוואטסאפ</button>
             </div>
         </div>
@@ -1061,11 +1060,11 @@
 </div>
 
 <footer>
-    <strong id="footer-brand-name">העסק שלי</strong> -- <span id="footer-tagline">התיאור הקצר של העסק</span><br>
-    📍 <span id="footer-city">העיר שלי</span> &nbsp;|&nbsp; 📞 <a href="tel:+972000000000" id="footer-phone-link">000-0000000</a><br>
+    <strong id="footer-brand-name">אדלה בשוק</strong> -- <span id="footer-tagline">בר אוכל שוק</span><br>
+    📍 <a id="footer-address-link" href="#" target="_blank" rel="noopener">התעשייה 6, ערד</a> &nbsp;|&nbsp; 📞 <a href="tel:+972504599409" id="footer-phone-link">050-4599409</a><br>
     <br>
     <strong>שעות פתיחה:</strong><br>
-    <span id="footer-hours">ימים א׳-ה׳ 09:00–22:00</span>
+    <span id="footer-hours">א׳-ו׳ 18:00–24:00 · שבת 10:00–24:00</span>
     <a class="track-link" onclick="openTrackModal()">📍 איפה ההזמנה שלי?</a>
     <a class="track-link" href="/group.html" style="display:block;margin-top:0.5rem;">🥙 מזמינים יחד? פתח הזמנה קבוצתית</a>
 </footer>
@@ -1101,12 +1100,18 @@ const MIN_DELIVERY  = SITE_CONFIG.commerce.minDelivery;
     setText("delivery-fee-amount", DELIVERY_FEE + " " + SITE_CONFIG.commerce.currency);
     setText("footer-brand-name", b.name);
     setText("footer-tagline", b.tagline);
-    setText("footer-city", b.city);
     setText("footer-hours", b.hoursDisplay);
     const logoImg = document.getElementById("brand-logo-img");
     if (logoImg) logoImg.alt = "לוגו " + b.name;
     const phoneLink = document.getElementById("footer-phone-link");
     if (phoneLink) { phoneLink.href = "tel:" + b.phone; phoneLink.textContent = b.phoneDisplay; }
+    const addr = b.address || {};
+    const addrText = [addr.street, b.city].filter(Boolean).join(", ");
+    const addrLink = document.getElementById("footer-address-link");
+    if (addrLink) {
+        addrLink.textContent = addrText || b.city;
+        addrLink.href = "https://maps.google.com/?q=" + encodeURIComponent([b.name, addr.street, b.city].filter(Boolean).join(" "));
+    }
 })();
 // Optional integrations — leave empty to disable each silently.
 const GOOGLE_MAPS_API_KEY = "";   // get from console.cloud.google.com → enable Places API → restrict to your domain
@@ -1242,9 +1247,9 @@ function normCoupleMeal(raw) {
     };
 }
 const MENU_SECTIONS = [
-    {key:"mains",    label:"עיקריות"},
     {key:"snacks",   label:"נשנושים"},
     {key:"starters", label:"ראשונות"},
+    {key:"mains",    label:"עיקריות"},
     {key:"drinks",   label:"שתייה קלה"}
 ];
 
@@ -1534,9 +1539,9 @@ function loadLastOrder() {
 // RENDER MENU
 // ============================================================
 function renderMenu() {
-    renderMainsGrid();
     renderSection("grid-snacks",   MENU.snacks   || []);
     renderSection("grid-starters", MENU.starters || []);
+    renderMainsGrid();
     renderSection("grid-drinks",   MENU.drinks   || []);
 }
 
@@ -1934,6 +1939,12 @@ function isDelivery() {
     return el && el.value === "delivery";
 }
 
+// אדלה בשוק's own items only — guest ("עוד מהשכונה") items never count toward the
+// threshold-nudge free item (server enforces this too; see place-order.js).
+function selfItemsTotal(c) {
+    return c.reduce((s, i) => s + ((!i.source || i.source === "self") ? (Number(i.total) || 0) : 0), 0);
+}
+
 function calcDiscount(itemsTotal) {
     if (!coupon) return 0;
     if (coupon.type === "percent") return Math.round(itemsTotal * coupon.value / 100);
@@ -2020,12 +2031,13 @@ function updateCart() {
     }).join("");
 
     const itemsTotal = cart.reduce((s, i) => s + i.total, 0);
+    const selfTotal  = selfItemsTotal(cart);
     const fee        = isDelivery() ? DELIVERY_FEE : 0;
     const disc       = calcDiscount(itemsTotal);
     const finalTotal = Math.max(0, itemsTotal + fee - disc);
 
-    updateThresholdNudge(itemsTotal);
-    if (thresholdReached(itemsTotal)) {
+    updateThresholdNudge(selfTotal);
+    if (thresholdReached(selfTotal)) {
         const r = thresholdConfig.rewardItem;
         list.insertAdjacentHTML("beforeend",
             '<li class="freebie-row"><span>🎁 ' + escAttr(r.name) + ' <span class="freebie-badge">חינם</span></span><span>0 ₪</span></li>');
@@ -2269,14 +2281,15 @@ async function submitOrder() {
     try {
         const orderItems = cart.slice();
         let thresholdReward = null;
-        if (thresholdReached(itemsTotal)) {
+        const selfTotal = selfItemsTotal(cart);
+        if (thresholdReached(selfTotal)) {
             const r = thresholdConfig.rewardItem;
             orderItems.push({
                 name: r.name, basePrice: 0, extras: [], notes: r.description || "",
-                total: 0, isThresholdReward: true
+                total: 0, isThresholdReward: true, source: "self"
             });
             thresholdReward = {
-                rewarded: true, orderTotal: itemsTotal,
+                rewarded: true, orderTotal: selfTotal,
                 threshold: thresholdConfig.thresholdAmount,
                 rewardItem: r.name, rewardCost: r.actualCost || 0
             };
@@ -2535,27 +2548,16 @@ function getHoursStatus() {
     const d = {Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6}[day];
     let pickupHours = false, deliveryHours = false, nextMsg = "";
 
-    if (d >= 1 && d <= 4) {
-        // ב–ה: פתוח 18–24
-        pickupHours   = t >= 18*60 && t < 24*60;
-        deliveryHours = t >= 18*60 && t < 23*60;
-        if (t < 18*60)       nextMsg = "נפתח היום ב-18:00";
-        else if (t >= 24*60) nextMsg = "נפתח מחר ב-18:00";
-        else                 nextMsg = "";
-    } else if (d === 5) {
-        // שישי: איסוף 18+, ללא משלוח
-        pickupHours   = t >= 18*60;
-        deliveryHours = false;
-        nextMsg = t < 18*60 ? "נפתח היום בשישי ב-18:00" : "";
-    } else if (d === 6) {
-        // שבת: פתוח 12–24, משלוח 18–23
-        pickupHours   = t < 60 || t >= 12*60;
-        deliveryHours = t >= 18*60 && t < 23*60;
-        if (t >= 60 && t < 12*60) nextMsg = "נפתח היום בשבת ב-12:00";
-        else                      nextMsg = "";
+    if (d === 6) {
+        // שבת: פתוח 10:00–24:00
+        pickupHours   = t >= 10*60 && t < 24*60;
+        deliveryHours = pickupHours;
+        nextMsg = t < 10*60 ? "נפתח היום בשבת ב-10:00" : "";
     } else {
-        // ראשון: סגור
-        nextMsg = "נפתח ביום שני ב-18:00";
+        // א׳-ו׳: פתוח 18:00–24:00
+        pickupHours   = t >= 18*60 && t < 24*60;
+        deliveryHours = pickupHours;
+        nextMsg = t < 18*60 ? "נפתח היום ב-18:00" : "";
     }
     return {pickupHours, deliveryHours, nextMsg};
 }
@@ -2586,7 +2588,7 @@ function applyHours() {
     const hasOpt = [...sel.options].some(o => o.value === "delivery");
 
     if (!effectiveDelivery) {
-        const why = !deliveryOn ? "המשלוחים מושבתים כרגע" : "משלוחים זמינים ב׳–ה׳ ובשבת בין 18:00–23:00";
+        const why = !deliveryOn ? "המשלוחים מושבתים כרגע" : "משלוחים זמינים א׳-ו׳ 18:00–24:00 ובשבת 10:00–24:00";
         notice.textContent = "🛵 " + why; notice.style.display = "block";
         if (hasOpt) sel.remove([...sel.options].findIndex(o => o.value === "delivery"));
         document.getElementById("address-wrap").style.display = "none";
@@ -2630,7 +2632,7 @@ function saveETA() {
 function renderSoldOutGrid() {
     const grid = document.getElementById("soldout-grid");
     if (!grid) return;
-    const allItems = [...(MENU.mains||[]), ...(MENU.snacks||[]), ...(MENU.starters||[]), ...(MENU.drinks||[])];
+    const allItems = [...(MENU.snacks||[]), ...(MENU.starters||[]), ...(MENU.mains||[]), ...(MENU.drinks||[])];
     // Include specials if enabled so the admin can mark them sold out too.
     if (chefSpecial && chefSpecial.enabled) allItems.push(chefSpecial);
     if (coupleMeal  && coupleMeal.enabled)  allItems.push(coupleMeal);

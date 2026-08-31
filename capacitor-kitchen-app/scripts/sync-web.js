@@ -75,15 +75,30 @@ function buildInjectedScript(prodOrigin) {
   if (IS_NATIVE && PROD_ORIGIN) {
     var origFetch = window.fetch.bind(window);
     window.fetch = function (input, init) {
+      var rewritten = null;
       try {
         if (typeof input === "string" && input.charAt(0) === "/" && input.charAt(1) !== "/") {
-          input = PROD_ORIGIN + input;
+          rewritten = PROD_ORIGIN + input;
+          input = rewritten;
         } else if (input && typeof input.url === "string" && input.url.charAt(0) === "/" && input.url.charAt(1) !== "/") {
-          input = PROD_ORIGIN + input.url;
+          rewritten = PROD_ORIGIN + input.url;
+          input = rewritten;
         }
-      } catch (e) { /* fall through with the original input */ }
+      } catch (e) { console.error("[capacitor-bridge] fetch rewrite threw:", e); }
+      // Diagnostic only (visible via chrome://inspect) — tells us definitively
+      // whether a login/API failure is "request never went out" vs. "server
+      // rejected it", instead of admin.html's identical error message for both.
+      if (rewritten) {
+        console.log("[capacitor-bridge] fetch rewritten:", rewritten);
+        return origFetch(input, init).then(
+          function (res) { console.log("[capacitor-bridge] fetch ok:", rewritten, "status:", res.status); return res; },
+          function (err) { console.error("[capacitor-bridge] fetch FAILED (network/CORS):", rewritten, err); throw err; }
+        );
+      }
       return origFetch(input, init);
     };
+  } else if (IS_NATIVE && !PROD_ORIGIN) {
+    console.error("[capacitor-bridge] IS_NATIVE but PROD_ORIGIN is empty — relative fetch() calls will hit https://localhost and fail.");
   }
 
   // 2) <audio loop> is unreliable in the Android WebView (plays once and stops

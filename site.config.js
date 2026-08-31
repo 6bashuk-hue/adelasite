@@ -22,7 +22,7 @@
       whatsappCountryCode: "972",
       address: { street: "התעשייה 6", locality: "ערד", region: "", country: "IL" },
       hoursDisplay: "א׳-ו׳ 18:00–24:00 · שבת 10:00–24:00",
-      canonicalUrl: "https://REPLACE-WITH-YOUR-DOMAIN.netlify.app" // ⚠️ TODO: דומיין בפועל אחרי הדיפלוי
+      canonicalUrl: "https://adelabashuk.netlify.app"
     },
     firebase: {
       // ⚠️ Create your OWN Firebase Realtime Database project (SETUP.md step 2) —

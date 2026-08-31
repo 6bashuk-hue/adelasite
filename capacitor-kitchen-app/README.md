@@ -81,13 +81,13 @@ capacitor-kitchen-app/
 |---|---|---|---|
 | `APP_ID` | env var בזמן build (`capacitor.config.ts`) | `com.adelabashuk.kitchen` | Application ID של האפליקציה |
 | `APP_NAME` | env var בזמן build (`capacitor.config.ts`) | `אדלה בשוק — מטבח` | שם האפליקציה במכשיר |
-| `PROD_ORIGIN` | env var בזמן build (`scripts/sync-web.js`) | נלקח אוטומטית מ-`site.config.js` → `business.canonicalUrl` בריפו הראשי | הדומיין האמיתי של האתר; **ריק/placeholder כרגע** — ראו אזהרה למטה |
+| `PROD_ORIGIN` | env var בזמן build (`scripts/sync-web.js`) | נלקח אוטומטית מ-`site.config.js` → `business.canonicalUrl` בריפו הראשי | כרגע: `https://adelabashuk.netlify.app` |
 | VID/PID של המדפסת | `android/app/src/main/res/xml/usb_device_filter.xml` | ריק (placeholder בהערה) | ראו הוראות מילוי למטה |
 
-⚠️ **`site.config.js` בריפו הראשי עדיין מכיל `canonicalUrl` placeholder**
-(`REPLACE-WITH-YOUR-DOMAIN.netlify.app`) — כשתמלאו שם את הדומיין האמיתי (ר'
-`SETUP.md`), ה-build של האפליקציה יאסוף אותו אוטומטית, בלי לגעת בקוד הזה. עד אז,
-אפשר לעקוף עם `PROD_ORIGIN=https://your-real-site.netlify.app npm run build`.
+`site.config.js` בריפו הראשי כבר מכיל את הדומיין האמיתי (`canonicalUrl:
+"https://adelabashuk.netlify.app"`) — ה-build של האפליקציה אוסף אותו אוטומטית, בלי
+לגעת בקוד הזה. אם תרצו לבנות מול דומיין אחר (סביבת בדיקה וכו') — עקפו עם
+`PROD_ORIGIN=https://other-domain.example npm run build`.
 
 ### איך למלא את VID/PID של המדפסת
 1. חברו את המדפסת לטלפון/טאבלט (או למחשב, USB רגיל).

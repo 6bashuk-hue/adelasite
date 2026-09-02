@@ -28,8 +28,8 @@
       // ⚠️ Create your OWN Firebase Realtime Database project (SETUP.md step 2) —
       // never point this at someone else's project. These placeholders will not work
       // until you replace them.
-      dbUrl: "https://REPLACE-WITH-YOUR-PROJECT-default-rtdb.REGION.firebasedatabase.app/",
-      apiKey: "REPLACE-WITH-YOUR-FIREBASE-WEB-API-KEY",
+      dbUrl: "https://adela-1fb6a-default-rtdb.europe-west1.firebasedatabase.app/",
+      apiKey: "AIzaSyAiOJXVvK6bVABnAjcRPGaf850iNVIwzak",
       adminEmail: "owner@yourbusiness.local"
     },
     commerce: {

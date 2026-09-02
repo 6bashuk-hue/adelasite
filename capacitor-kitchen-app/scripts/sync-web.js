@@ -67,6 +67,22 @@ function buildInjectedScript(prodOrigin) {
   'use strict';
   var IS_NATIVE = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
 
+  // 0) Always-on debug badge, visible the instant the app loads — no login attempt
+  //    needed. Confirms unambiguously whether this build's injected script is even
+  //    running, decoupled from the fetch/login-specific diagnostic below.
+  document.addEventListener("DOMContentLoaded", function () {
+    var badge = document.createElement("div");
+    badge.id = "capacitor-debug-badge";
+    badge.style.cssText = "position:fixed;bottom:6px;right:6px;z-index:2147483647;" +
+      "background:#000;color:#0f0;font-size:10px;line-height:1.4;padding:4px 8px;" +
+      "border-radius:6px;direction:ltr;text-align:left;font-family:monospace;" +
+      "opacity:0.9;pointer-events:none;max-width:90vw;word-break:break-all;";
+    badge.textContent = "build=2026-09-02f native=" + IS_NATIVE +
+      " origin=" + ${JSON.stringify(prodOrigin || "(empty)")} +
+      " Capacitor=" + !!window.Capacitor;
+    document.body.appendChild(badge);
+  });
+
   // 1) Relative-URL fetch rewrite: /.netlify/functions/... etc. resolve against
   //    https://localhost inside the app, not the real site. PROD_ORIGIN is baked
   //    in at build time from site.config.js's canonicalUrl (override with the
@@ -120,7 +136,7 @@ function buildInjectedScript(prodOrigin) {
     if (!lerr || !lerr.parentNode) return;
     var diag = document.createElement("div");
     diag.id = "capacitor-login-diag";
-    diag.style.cssText = "font-size:11px;opacity:0.85;margin-top:6px;direction:ltr;text-align:center;word-break:break-all;color:#fff;";
+    diag.style.cssText = "font-size:12px;font-weight:bold;margin-top:6px;direction:ltr;text-align:center;word-break:break-all;color:#facc15;background:#000;padding:4px;border-radius:4px;";
     lerr.parentNode.insertBefore(diag, lerr.nextSibling);
     var mo = new MutationObserver(function () {
       var visible = lerr.style.display && lerr.style.display !== "none";

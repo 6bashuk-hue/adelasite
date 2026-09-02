@@ -72,6 +72,7 @@ function buildInjectedScript(prodOrigin) {
   //    in at build time from site.config.js's canonicalUrl (override with the
   //    PROD_ORIGIN env var if that value isn't set yet).
   var PROD_ORIGIN = ${JSON.stringify(prodOrigin || "")};
+  var lastLoginFetchDiag = null; // human-readable outcome of the most recent admin-login fetch
   if (IS_NATIVE) {
     var origFetch = window.fetch.bind(window);
     window.fetch = function (input, init) {
@@ -85,21 +86,51 @@ function buildInjectedScript(prodOrigin) {
           input = rewritten;
         }
       } catch (e) { console.error("[capacitor-bridge] fetch rewrite threw:", e); }
-      // Diagnostic only (visible via chrome://inspect) — covers every fetch() call
-      // (relative ones we rewrote above, AND absolute ones like the direct Firebase
-      // REST calls, which we never touch) so a silent failure (e.g. a write that's
-      // rejected/blocked and just no-ops in the UI) is visible instead of guessed at.
+      // Diagnostic — covers every fetch() call (relative ones we rewrote above, AND
+      // absolute ones like the direct Firebase REST calls, which we never touch) so
+      // a silent failure (e.g. a write that's rejected/blocked and just no-ops in
+      // the UI) is visible instead of guessed at. Logged to console AND (for the
+      // admin-login call specifically) surfaced directly on screen below, since
+      // devtools access isn't always practical on the actual kitchen device.
       var method = (init && init.method) || "GET";
       var url = rewritten || (typeof input === "string" ? input : (input && input.url) || String(input));
+      var isLoginCall = url.indexOf("/admin-login") !== -1;
       return origFetch(input, init).then(
-        function (res) { if (!res.ok) console.warn("[capacitor-bridge] fetch", method, url, "-> status", res.status); return res; },
-        function (err) { console.error("[capacitor-bridge] fetch FAILED (network/CORS):", method, url, err); throw err; }
+        function (res) {
+          if (!res.ok) console.warn("[capacitor-bridge] fetch", method, url, "-> status", res.status);
+          if (isLoginCall) lastLoginFetchDiag = "בקשה נשלחה ל-" + url + " — קיבלנו תשובה, סטטוס " + res.status;
+          return res;
+        },
+        function (err) {
+          console.error("[capacitor-bridge] fetch FAILED (network/CORS):", method, url, err);
+          if (isLoginCall) lastLoginFetchDiag = "הבקשה ל-" + url + " נכשלה ברמת הרשת/CORS: " + (err && (err.message || err.name || String(err)));
+          throw err;
+        }
       );
     };
   }
   if (IS_NATIVE && !PROD_ORIGIN) {
     console.error("[capacitor-bridge] IS_NATIVE but PROD_ORIGIN is empty — relative fetch() calls will hit https://localhost and fail.");
   }
+
+  // Surface the diagnostic directly under the login error message on screen — no
+  // devtools/chrome://inspect needed to read it, just look at the app.
+  document.addEventListener("DOMContentLoaded", function () {
+    var lerr = document.getElementById("lerr");
+    if (!lerr || !lerr.parentNode) return;
+    var diag = document.createElement("div");
+    diag.id = "capacitor-login-diag";
+    diag.style.cssText = "font-size:11px;opacity:0.85;margin-top:6px;direction:ltr;text-align:center;word-break:break-all;color:#fff;";
+    lerr.parentNode.insertBefore(diag, lerr.nextSibling);
+    var mo = new MutationObserver(function () {
+      var visible = lerr.style.display && lerr.style.display !== "none";
+      if (!visible) { diag.textContent = ""; return; }
+      diag.textContent = lastLoginFetchDiag || (IS_NATIVE
+        ? "לא זוהתה קריאת רשת ל-admin-login כלל (בדוק IS_NATIVE=" + IS_NATIVE + " PROD_ORIGIN=" + PROD_ORIGIN + ")"
+        : "");
+    });
+    mo.observe(lerr, { attributes: true, attributeFilter: ["style"] });
+  });
 
   // 1b) A small always-visible-when-active status pill (#kitchen-status-bar, from
   //    admin.html's existing Kitchen Mode feature) is fixed-positioned with a very

@@ -122,8 +122,12 @@ class UsbThermalPrinterPlugin : Plugin() {
         }
 
         val bytes = Base64.decode(b64, Base64.DEFAULT)
-        // Some USB-printer bulk endpoints choke on very large single transfers — chunk it.
-        val chunkSize = 4096
+        // Chunk to the endpoint's actual max packet size (compared against a proven-working
+        // sibling implementation) — Full-Speed USB bulk endpoints (64 bytes) are common on
+        // cheap thermal printers, and a hardcoded oversized chunk (this used to be a flat
+        // 4096) can make bulkTransfer fail depending on the printer's USB controller, even
+        // though the connection/claimInterface step itself already succeeded.
+        val chunkSize = if (ep.maxPacketSize > 0) ep.maxPacketSize else 512
         var offset = 0
         while (offset < bytes.size) {
             val len = minOf(chunkSize, bytes.size - offset)

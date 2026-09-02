@@ -77,20 +77,45 @@ function buildInjectedScript(prodOrigin) {
       "background:#000;color:#0f0;font-size:10px;line-height:1.4;padding:4px 8px;" +
       "border-radius:6px;direction:ltr;text-align:left;font-family:monospace;" +
       "opacity:0.9;pointer-events:none;max-width:90vw;word-break:break-all;";
-    badge.textContent = "build=2026-09-02f native=" + IS_NATIVE +
+    badge.textContent = "build=2026-09-02g native=" + IS_NATIVE +
       " origin=" + ${JSON.stringify(prodOrigin || "(empty)")} +
-      " Capacitor=" + !!window.Capacitor;
+      " Capacitor=" + !!window.Capacitor +
+      " NativeHttp=" + !!(window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.NativeHttp);
     document.body.appendChild(badge);
   });
 
-  // 1) Relative-URL fetch rewrite: /.netlify/functions/... etc. resolve against
-  //    https://localhost inside the app, not the real site. PROD_ORIGIN is baked
-  //    in at build time from site.config.js's canonicalUrl (override with the
-  //    PROD_ORIGIN env var if that value isn't set yet).
+  // 1) fetch() replacement. Two problems solved together:
+  //    a) Relative-URL rewrite: /.netlify/functions/... resolves against
+  //       https://localhost inside the app, not the real site. PROD_ORIGIN is baked
+  //       in at build time from site.config.js's canonicalUrl.
+  //    b) CORS: on-device testing showed the rewritten fetch() failing with
+  //       "Failed to fetch" (no HTTP status ever received) even though the exact
+  //       same URL/request works fine from a regular browser — i.e. a real CORS
+  //       rejection at the WebView level that couldn't be resolved or verified
+  //       from the server side alone. Routing the request through the native
+  //       NativeHttpPlugin (Kotlin, HttpURLConnection) instead of the WebView's own
+  //       fetch sidesteps CORS entirely — it's not a browser, so there's no origin
+  //       for CORS to apply to. Falls back to the WebView's own fetch if that
+  //       native plugin isn't available for any reason.
   var PROD_ORIGIN = ${JSON.stringify(prodOrigin || "")};
   var lastLoginFetchDiag = null; // human-readable outcome of the most recent admin-login fetch
   if (IS_NATIVE) {
     var origFetch = window.fetch.bind(window);
+    var NativeHttp = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.NativeHttp;
+
+    function headersToPlainObject(h) {
+      var out = {};
+      if (!h) return out;
+      if (typeof Headers !== "undefined" && h instanceof Headers) {
+        h.forEach(function (v, k) { out[k] = v; });
+      } else if (Array.isArray(h)) {
+        h.forEach(function (pair) { out[pair[0]] = pair[1]; });
+      } else {
+        for (var k in h) if (Object.prototype.hasOwnProperty.call(h, k)) out[k] = h[k];
+      }
+      return out;
+    }
+
     window.fetch = function (input, init) {
       var rewritten = null;
       try {
@@ -102,15 +127,30 @@ function buildInjectedScript(prodOrigin) {
           input = rewritten;
         }
       } catch (e) { console.error("[capacitor-bridge] fetch rewrite threw:", e); }
-      // Diagnostic — covers every fetch() call (relative ones we rewrote above, AND
-      // absolute ones like the direct Firebase REST calls, which we never touch) so
-      // a silent failure (e.g. a write that's rejected/blocked and just no-ops in
-      // the UI) is visible instead of guessed at. Logged to console AND (for the
-      // admin-login call specifically) surfaced directly on screen below, since
-      // devtools access isn't always practical on the actual kitchen device.
+
       var method = (init && init.method) || "GET";
       var url = rewritten || (typeof input === "string" ? input : (input && input.url) || String(input));
       var isLoginCall = url.indexOf("/admin-login") !== -1;
+
+      if (NativeHttp && (url.indexOf("http://") === 0 || url.indexOf("https://") === 0)) {
+        var headers = headersToPlainObject(init && init.headers);
+        var body = init && init.body != null ? (typeof init.body === "string" ? init.body : JSON.stringify(init.body)) : null;
+        return NativeHttp.request({ url: url, method: method, headers: headers, body: body }).then(
+          function (r) {
+            if (isLoginCall) lastLoginFetchDiag = "בקשה נשלחה (נייטיבי, בלי CORS) ל-" + url + " — סטטוס " + r.status;
+            return new Response(r.body, { status: r.status, headers: r.headers || {} });
+          },
+          function (err) {
+            console.error("[capacitor-bridge] NativeHttp FAILED:", method, url, err);
+            if (isLoginCall) lastLoginFetchDiag = "בקשה נייטיבית ל-" + url + " נכשלה: " + (err && (err.message || String(err)));
+            throw err;
+          }
+        );
+      }
+
+      // Diagnostic — covers every fetch() call so a silent failure is visible
+      // instead of guessed at. Logged to console AND (for admin-login) surfaced
+      // directly on screen below, since devtools access isn't always practical.
       return origFetch(input, init).then(
         function (res) {
           if (!res.ok) console.warn("[capacitor-bridge] fetch", method, url, "-> status", res.status);

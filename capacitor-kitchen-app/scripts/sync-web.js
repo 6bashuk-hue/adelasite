@@ -72,34 +72,46 @@ function buildInjectedScript(prodOrigin) {
   //    in at build time from site.config.js's canonicalUrl (override with the
   //    PROD_ORIGIN env var if that value isn't set yet).
   var PROD_ORIGIN = ${JSON.stringify(prodOrigin || "")};
-  if (IS_NATIVE && PROD_ORIGIN) {
+  if (IS_NATIVE) {
     var origFetch = window.fetch.bind(window);
     window.fetch = function (input, init) {
       var rewritten = null;
       try {
-        if (typeof input === "string" && input.charAt(0) === "/" && input.charAt(1) !== "/") {
+        if (PROD_ORIGIN && typeof input === "string" && input.charAt(0) === "/" && input.charAt(1) !== "/") {
           rewritten = PROD_ORIGIN + input;
           input = rewritten;
-        } else if (input && typeof input.url === "string" && input.url.charAt(0) === "/" && input.url.charAt(1) !== "/") {
+        } else if (PROD_ORIGIN && input && typeof input.url === "string" && input.url.charAt(0) === "/" && input.url.charAt(1) !== "/") {
           rewritten = PROD_ORIGIN + input.url;
           input = rewritten;
         }
       } catch (e) { console.error("[capacitor-bridge] fetch rewrite threw:", e); }
-      // Diagnostic only (visible via chrome://inspect) — tells us definitively
-      // whether a login/API failure is "request never went out" vs. "server
-      // rejected it", instead of admin.html's identical error message for both.
-      if (rewritten) {
-        console.log("[capacitor-bridge] fetch rewritten:", rewritten);
-        return origFetch(input, init).then(
-          function (res) { console.log("[capacitor-bridge] fetch ok:", rewritten, "status:", res.status); return res; },
-          function (err) { console.error("[capacitor-bridge] fetch FAILED (network/CORS):", rewritten, err); throw err; }
-        );
-      }
-      return origFetch(input, init);
+      // Diagnostic only (visible via chrome://inspect) — covers every fetch() call
+      // (relative ones we rewrote above, AND absolute ones like the direct Firebase
+      // REST calls, which we never touch) so a silent failure (e.g. a write that's
+      // rejected/blocked and just no-ops in the UI) is visible instead of guessed at.
+      var method = (init && init.method) || "GET";
+      var url = rewritten || (typeof input === "string" ? input : (input && input.url) || String(input));
+      return origFetch(input, init).then(
+        function (res) { if (!res.ok) console.warn("[capacitor-bridge] fetch", method, url, "-> status", res.status); return res; },
+        function (err) { console.error("[capacitor-bridge] fetch FAILED (network/CORS):", method, url, err); throw err; }
+      );
     };
-  } else if (IS_NATIVE && !PROD_ORIGIN) {
+  }
+  if (IS_NATIVE && !PROD_ORIGIN) {
     console.error("[capacitor-bridge] IS_NATIVE but PROD_ORIGIN is empty — relative fetch() calls will hit https://localhost and fail.");
   }
+
+  // 1b) A small always-visible-when-active status pill (#kitchen-status-bar, from
+  //    admin.html's existing Kitchen Mode feature) is fixed-positioned with a very
+  //    high z-index at the same screen corner where the topbar's action buttons
+  //    (incl. "🔌 חבר מדפסת USB") wrap to on a narrow/tablet viewport, and has no
+  //    interactive children — so it can silently eat clicks meant for whatever
+  //    renders underneath it. Made click-through here (not in admin.html) since
+  //    it's cosmetic-only either way and this only matters in the packaged app's
+  //    fixed viewport.
+  var style = document.createElement("style");
+  style.textContent = "#kitchen-status-bar{pointer-events:none}";
+  document.head.appendChild(style);
 
   // 2) <audio loop> is unreliable in the Android WebView (plays once and stops
   //    instead of looping). Manually replay on 'ended' when loop is still true —

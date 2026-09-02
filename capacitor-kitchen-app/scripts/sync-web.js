@@ -66,6 +66,7 @@ function buildInjectedScript(prodOrigin) {
 (function () {
   'use strict';
   var IS_NATIVE = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+  var usbPolyfillInstalled = false; // set below, in section 3 — read here via closure once DOMContentLoaded fires
 
   // 0) Always-on debug badge, visible the instant the app loads — no login attempt
   //    needed. Confirms unambiguously whether this build's injected script is even
@@ -80,7 +81,8 @@ function buildInjectedScript(prodOrigin) {
     badge.textContent = "build=2026-09-02g native=" + IS_NATIVE +
       " origin=" + ${JSON.stringify(prodOrigin || "(empty)")} +
       " Capacitor=" + !!window.Capacitor +
-      " NativeHttp=" + !!(window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.NativeHttp);
+      " NativeHttp=" + !!(window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.NativeHttp) +
+      " usbPolyfill=" + usbPolyfillInstalled;
     document.body.appendChild(badge);
   });
 
@@ -258,13 +260,32 @@ function buildInjectedScript(prodOrigin) {
 
     var lastDevice = null;
 
-    navigator.usb = {
+    // navigator.usb is a real, read-only getter-only accessor in Chromium/Android
+    // WebView (native WebUSB support is present even though it can't claim a
+    // USB-printer-class interface behind the kernel's usblp driver — that's the
+    // whole reason this plugin exists). A plain assignment ("navigator.usb = ...")
+    // throws under 'use strict' ("Cannot set property usb of #<Navigator> which has
+    // only a getter") and — since this whole block is one IIFE — SILENTLY aborted
+    // this entire polyfill installation, leaving the real (broken) WebUSB API in
+    // place. That's what made the connect button appear to do nothing at all.
+    // Object.defineProperty bypasses the missing setter and replaces the accessor
+    // outright (works because Navigator's own IDL-defined properties are configurable).
+    var usbPolyfill = {
       // Called from the explicit "🔌 חבר מדפסת USB" button (user gesture) — may
       // show the native Android USB-permission dialog once.
+      // admin.html's own escposConnect() only console.warn()s on a rejection here
+      // (unless e.name === "NotFoundError") — nothing visible happens on screen, so
+      // a real connect failure looks identical to the click not registering at all.
+      // Surface the actual native reason on screen so the two are distinguishable.
       requestDevice: function () {
         return Native.connect({}).then(function () {
           lastDevice = makeFakeDevice();
           return lastDevice;
+        }, function (err) {
+          var reason = (err && (err.message || err.errorMessage || String(err))) || "סיבה לא ידועה";
+          console.error("[capacitor-bridge] native USB connect failed:", err);
+          alert("🔌 חיבור מדפסת USB נכשל: " + reason);
+          throw err;
         });
       },
       // Called automatically on page load to silently reconnect — must NEVER pop
@@ -278,6 +299,13 @@ function buildInjectedScript(prodOrigin) {
       addEventListener: function () {},
       removeEventListener: function () {}
     };
+
+    try {
+      Object.defineProperty(navigator, "usb", { value: usbPolyfill, configurable: true, writable: true });
+      usbPolyfillInstalled = true;
+    } catch (e) {
+      console.error("[capacitor-bridge] could not override navigator.usb — USB printer button will not work:", e);
+    }
   }
 })();
 </script>

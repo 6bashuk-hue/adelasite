@@ -9,6 +9,7 @@ public class MainActivity extends BridgeActivity {
         // Local (non-npm) plugins aren't auto-discovered by Capacitor — must register
         // them manually, before super.onCreate().
         registerPlugin(UsbThermalPrinterPlugin.class);
+        registerPlugin(NativeHttpPlugin.class);
         super.onCreate(savedInstanceState);
     }
 }

@@ -251,9 +251,26 @@ function buildInjectedScript(prodOrigin) {
         releaseInterface: function () { return Promise.resolve(); },
         reset: function () { return Promise.resolve(); },
         close: function () { return Native.disconnect().catch(function () {}); },
+        // admin.html's escposSend()/escposPrintOrder() only console.warn() on a
+        // rejection here (via printOrder()'s try/catch) — nothing visible happens
+        // on screen, so a real native print failure looks identical to nothing
+        // having been attempted at all. Surface it once per print, like the
+        // connect-failure alert above.
         transferOut: function (endpointNumber, data) {
           var bytes = data instanceof Uint8Array ? data : new Uint8Array(data.buffer || data);
-          return Native.printBytes({ bytesBase64: uint8ToBase64(bytes) });
+          console.log("[capacitor-bridge] printBytes: sending", bytes.length, "bytes to native plugin");
+          return Native.printBytes({ bytesBase64: uint8ToBase64(bytes) }).then(
+            function (r) {
+              console.log("[capacitor-bridge] printBytes: native call resolved", r);
+              return r;
+            },
+            function (err) {
+              var reason = (err && (err.message || err.errorMessage || String(err))) || "סיבה לא ידועה";
+              console.error("[capacitor-bridge] printBytes FAILED:", err);
+              alert("🖨 הדפסה נכשלה: " + reason);
+              throw err;
+            }
+          );
         }
       };
     }

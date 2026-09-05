@@ -307,6 +307,9 @@
     .neighbor-item-name { font-weight: 700; font-size: 0.92rem; }
     .neighbor-item-desc { font-size: 0.78rem; color: var(--gray); margin-top: 0.15rem; line-height: 1.35; }
     .neighbor-item-actions { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
+    .neighbor-item-row.sold-out { opacity: 0.55; }
+    .neighbor-sold-out-badge { background: #666; color: white; font-size: 0.68rem; font-weight: bold; padding: 0.15rem 0.45rem; border-radius: 4px; margin-right: 0.4rem; }
+    .neighbor-add-btn:disabled { background: #aaa; cursor: not-allowed; }
     .neighbor-item-price { font-weight: 900; font-size: 0.88rem; color: var(--dark); }
     .neighbor-add-btn { background: var(--primary); color: white; border: none; border-radius: 8px; padding: 0.4rem 0.8rem; font-family: 'Heebo', sans-serif; font-weight: 700; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
     .neighbor-add-btn:hover { background: var(--primary-dark); }
@@ -1456,7 +1459,7 @@ function startPolling() {
             if (changed) {
                 isBusy = newBusy; soldOut = newSO; deliveryOn = newDel;
                 pickupOn = newPickup; etaMinutes = newEta;
-                applyBusy(); renderMenu(); applyHours();
+                applyBusy(); renderMenu(); applyHours(); renderNeighbors();
             }
         }
         // Also poll prepTime + promos + menu + extras
@@ -1659,15 +1662,17 @@ function neighborBoxHTML(biz) {
 
 function neighborItemHTML(item) {
     const hasOptions = (Array.isArray(item.extras) && item.extras.length) || (Array.isArray(item.choices) && item.choices.length);
+    const so = soldOut.has(item.name);
     return (
-        '<div class="neighbor-item-row">' +
+        '<div class="neighbor-item-row' + (so ? " sold-out" : "") + '">' +
         '<div class="neighbor-item-info">' +
-            '<div class="neighbor-item-name">' + escAttr(item.name) + '</div>' +
+            '<div class="neighbor-item-name">' + escAttr(item.name) + (so ? ' <span class="neighbor-sold-out-badge">אזל מהמלאי</span>' : '') + '</div>' +
             (item.desc ? '<div class="neighbor-item-desc">' + escAttr(item.desc) + '</div>' : '') +
         '</div>' +
         '<div class="neighbor-item-actions">' +
             '<span class="neighbor-item-price">' + item.price + ' ₪</span>' +
-            '<button type="button" class="neighbor-add-btn" onclick="addGuestItem(' + item._i + ')">' + (hasOptions ? '+ בחר' : '+ הוסף') + '</button>' +
+            '<button type="button" class="neighbor-add-btn"' + (so ? " disabled" : "") +
+            ' onclick="addGuestItem(' + item._i + ')">' + (so ? "אזל" : (hasOptions ? '+ בחר' : '+ הוסף')) + '</button>' +
         '</div></div>'
     );
 }
@@ -1686,7 +1691,7 @@ function toggleNeighbor(key) {
 // menu (openModal already handles item.extras / item.choices generically).
 function addGuestItem(idx) {
     const item = ITEM_IDX[idx];
-    if (!item || !item._source || item._source === "self") return;
+    if (!item || !item._source || item._source === "self" || soldOut.has(item.name)) return;
     const hasOptions = (Array.isArray(item.extras) && item.extras.length) || (Array.isArray(item.choices) && item.choices.length);
     if (hasOptions) { openModal(idx); return; }
     cart.push({
@@ -1873,13 +1878,18 @@ function openModal(idx) {
 
 function extraRow(e) {
     const key = "eq_" + e.n.replace(/\s/g, "_");
+    // JSON.stringify gives a safe JS string literal (handles embedded quotes/
+    // apostrophes/backslashes, e.g. "צ'יפס" or a name with a literal "); escAttr
+    // then escapes that literal for the surrounding HTML attribute — otherwise it
+    // can silently truncate the onclick="..." attribute and break the +/- buttons.
+    const safeCall = JSON.stringify(e.n) + ',' + e.p;
     return (
         '<div class="extra-row">' +
-        "<div><span>" + e.n + "</span> <span class=\"extra-price\">+" + e.p + " ₪</span></div>" +
+        "<div><span>" + escAttr(e.n) + "</span> <span class=\"extra-price\">+" + e.p + " ₪</span></div>" +
         '<div class="qty-ctrl">' +
-        '<button class="qty-btn" onclick="changeExtra(\'' + e.n + '\',' + e.p + ',-1)">−</button>' +
+        '<button class="qty-btn" onclick="' + escAttr("changeExtra(" + safeCall + ",-1)") + '">−</button>' +
         '<span class="qty-num" id="' + key + '">0</span>' +
-        '<button class="qty-btn" onclick="changeExtra(\'' + e.n + '\',' + e.p + ',1)">+</button>' +
+        '<button class="qty-btn" onclick="' + escAttr("changeExtra(" + safeCall + ",1)") + '">+</button>' +
         "</div></div>"
     );
 }
@@ -2318,13 +2328,14 @@ async function submitOrder() {
         if (item.notes) itemsText += "\n  📝 " + item.notes;
         itemsText += "\n  סה\"כ: " + item.total + " ₪\n";
     });
+    if (type === "משלוח" && zone) itemsText += "• 🛵 משלוח (" + zone.label + ") -- " + fee + " ₪\n";
 
     let msg = "🥙 *הזמנה חדשה -- " + SITE_CONFIG.business.name + "*\n━━━━━━━━━━━━━━━━━\n";
     msg += "👤 *שם:* " + name + "\n📞 *טלפון:* " + phone + "\n🚲 *סוג:* " + type + "\n";
     msg += "💰 *תשלום:* " + paymentLabel + (payment === "credit" ? " — ⚠️ להתקשר" : "") + "\n";
     if (type === "משלוח" && zone) {
+        msg += "📍 *כתובת:* " + (address || zone.label) + "\n";
         msg += "🗺️ *אזור משלוח:* " + zone.label + "\n";
-        if (address) msg += "📍 *כתובת:* " + address + "\n";
         msg += "💵 דמי משלוח: " + fee + " ₪\n";
     }
     if (courierNotes) msg += "🛵 *הערה לשליח:* " + courierNotes + "\n";
@@ -2520,11 +2531,10 @@ function openUpsell() {
     refreshUpsellTiles();
 }
 function upsellTile(item) {
-    const safeName = String(item.name).replace(/'/g, "\\'");
     return (
-        '<div class="upsell-tile" data-name="' + escAttr(item.name) + '" onclick="upsellAdd(\'' + safeName + '\')">' +
-            '<div class="upsell-tile-name">' + item.name + '</div>' +
-            (item.desc ? '<div class="upsell-tile-desc">' + item.desc + '</div>' : '') +
+        '<div class="upsell-tile" data-name="' + escAttr(item.name) + '" onclick="' + escAttr("upsellAdd(" + JSON.stringify(item.name) + ")") + '">' +
+            '<div class="upsell-tile-name">' + escAttr(item.name) + '</div>' +
+            (item.desc ? '<div class="upsell-tile-desc">' + escAttr(item.desc) + '</div>' : '') +
             '<div class="upsell-tile-bottom">' +
                 '<span class="upsell-tile-price">' + item.price + ' ₪</span>' +
                 '<span class="upsell-qty" data-name="' + escAttr(item.name) + '"></span>' +
@@ -2691,13 +2701,24 @@ function renderSoldOutGrid() {
     // Include specials if enabled so the admin can mark them sold out too.
     if (chefSpecial && chefSpecial.enabled) allItems.push(chefSpecial);
     if (coupleMeal  && coupleMeal.enabled)  allItems.push(coupleMeal);
-    grid.innerHTML = allItems.map(item =>
-        '<div class="soldout-item">' +
-        "<span>" + item.name + "</span>" +
+    // "עוד מהשכונה" dishes share this same soldOut list — see renderNeighbors().
+    const neighborBusinesses = (typeof NEIGHBORS_CONFIG !== "undefined" && NEIGHBORS_CONFIG.businesses) || [];
+    neighborBusinesses.forEach(biz => (biz.sections || []).forEach(sec => (sec.items || []).forEach(it => {
+        if (it && it.name) allItems.push({ name: it.name, _neighborLabel: biz.name });
+    })));
+    grid.innerHTML = allItems.map(item => {
+        const label = item._neighborLabel ? "🏪 " + item._neighborLabel + " — " + item.name : item.name;
+        // JSON.stringify gives a safe JS string literal (handles embedded quotes/backslashes);
+        // escAttr then escapes that literal for the surrounding HTML attribute — a name
+        // containing a literal " (e.g. an abbreviation like תפו"א) would otherwise truncate
+        // the onchange="..." attribute and silently break the checkbox.
+        const call = "toggleSoldOut(" + JSON.stringify(item.name) + ",this.checked)";
+        return '<div class="soldout-item">' +
+        "<span>" + escAttr(label) + "</span>" +
         '<input type="checkbox" class="soldout-check"' + (soldOut.has(item.name) ? " checked" : "") +
-        ' onchange="toggleSoldOut(\'' + item.name.replace(/'/g, "\\'") + '\',this.checked)">' +
-        "</div>"
-    ).join("");
+        ' onchange="' + escAttr(call) + '">' +
+        "</div>";
+    }).join("");
     const td = document.getElementById("toggle-delivery");
     const tp = document.getElementById("toggle-pickup");
     if (td) td.checked = deliveryOn;
@@ -2706,7 +2727,7 @@ function renderSoldOutGrid() {
 
 function toggleSoldOut(name, on) {
     if (on) soldOut.add(name); else soldOut.delete(name);
-    saveAdminState(); renderMenu();
+    saveAdminState(); renderMenu(); renderNeighbors();
 }
 
 // ============================================================

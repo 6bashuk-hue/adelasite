@@ -87,8 +87,12 @@ function priceCart(items, { menuPrices, extraPrices, soldOut, menuLoaded }) {
 
     let basePrice, extraPriceMap, sourceName = null, sourceIcon = null;
 
+    // Shared with own-menu items: "עוד מהשכונה" dishes are marked sold out through the
+    // exact same admin_state.soldOut list (see admin.html / index.html availability
+    // toggles), keyed by their plain item name from neighbors.config.js.
+    if (soldOut.has(itemName)) throw new PricingError(409, `הפריט "${itemName}" אזל מהמלאי`);
+
     if (!isGuest) {
-      if (soldOut.has(itemName)) throw new PricingError(409, `הפריט "${itemName}" אזל מהמלאי`);
       if (menuLoaded) {
         if (!menuPrices.has(itemName)) throw new PricingError(409, `הפריט "${itemName}" כבר לא בתפריט — רענן את הדף`);
         basePrice = menuPrices.get(itemName);

@@ -22,14 +22,14 @@
       whatsappCountryCode: "972",
       address: { street: "התעשייה 6", locality: "ערד", region: "", country: "IL" },
       hoursDisplay: "א׳-ו׳ 18:00–24:00 · שבת 10:00–24:00",
-      canonicalUrl: "https://REPLACE-WITH-YOUR-DOMAIN.netlify.app" // ⚠️ TODO: דומיין בפועל אחרי הדיפלוי
+      canonicalUrl: "https://adelabashuk.netlify.app"
     },
     firebase: {
       // ⚠️ Create your OWN Firebase Realtime Database project (SETUP.md step 2) —
       // never point this at someone else's project. These placeholders will not work
       // until you replace them.
-      dbUrl: "https://REPLACE-WITH-YOUR-PROJECT-default-rtdb.REGION.firebasedatabase.app/",
-      apiKey: "REPLACE-WITH-YOUR-FIREBASE-WEB-API-KEY",
+      dbUrl: "https://adela-1fb6a-default-rtdb.europe-west1.firebasedatabase.app/",
+      apiKey: "AIzaSyAiOJXVvK6bVABnAjcRPGaf850iNVIwzak",
       adminEmail: "owner@yourbusiness.local"
     },
     commerce: {

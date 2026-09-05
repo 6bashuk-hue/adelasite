@@ -24,32 +24,45 @@ function tooFrequent(ip) {
   return now - prev < MIN_INTERVAL_MS;
 }
 
+// netlify.toml sets these same headers for /.netlify/functions/* at the edge, but
+// that doesn't reliably cover every response path (e.g. the Capacitor Android app's
+// origin is https://localhost, not the real site) — set them explicitly here too,
+// including on the OPTIONS preflight, which the function must answer itself.
+const CORS_HEADERS = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type"
+};
+
 exports.handler = async (event) => {
+  if (event.httpMethod === "OPTIONS") {
+    return { statusCode: 204, headers: CORS_HEADERS, body: "" };
+  }
   if (event.httpMethod !== "POST") {
-    return { statusCode: 405, body: "Method Not Allowed" };
+    return { statusCode: 405, headers: CORS_HEADERS, body: "Method Not Allowed" };
   }
 
   const ip = ((event.headers && event.headers["x-forwarded-for"]) || "").split(",")[0].trim() || "unknown";
   if (tooFrequent(ip)) {
-    return { statusCode: 429, body: JSON.stringify({ error: "Too many attempts" }) };
+    return { statusCode: 429, headers: CORS_HEADERS, body: JSON.stringify({ error: "Too many attempts" }) };
   }
 
   const { ADMIN_PASSWORD } = process.env;
   if (!ADMIN_PASSWORD) {
-    return { statusCode: 500, body: JSON.stringify({ error: "Missing env var" }) };
+    return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: "Missing env var" }) };
   }
 
   let body;
   try {
     body = JSON.parse(event.body);
   } catch {
-    return { statusCode: 400, body: JSON.stringify({ error: "Invalid JSON" }) };
+    return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: "Invalid JSON" }) };
   }
 
   const { password } = body;
   if (typeof password === "string" && password.length > 0 && safeEqual(password, ADMIN_PASSWORD)) {
-    return { statusCode: 200, body: JSON.stringify({ ok: true }) };
+    return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true }) };
   } else {
-    return { statusCode: 401, body: JSON.stringify({ ok: false }) };
+    return { statusCode: 401, headers: CORS_HEADERS, body: JSON.stringify({ ok: false }) };
   }
 };

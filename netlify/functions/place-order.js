@@ -176,12 +176,16 @@ exports.handler = async (event) => {
 
     let basePrice, extraPriceMap, sourceName = null, sourceIcon = null;
 
+    // Shared with own-menu items: "עוד מהשכונה" dishes are marked sold out through the
+    // exact same admin_state.soldOut list (see admin.html / index.html availability
+    // toggles), keyed by their plain item name from neighbors.config.js.
+    if (soldOut.has(itemName)) {
+      return { statusCode: 409, body: JSON.stringify({ error: `הפריט "${itemName}" אזל מהמלאי` }) };
+    }
+
     if (!isGuest) {
       // Own menu — priced from the live `menu` node (or the client's basePrice only
       // as a last resort if Firebase itself is unreachable).
-      if (soldOut.has(itemName)) {
-        return { statusCode: 409, body: JSON.stringify({ error: `הפריט "${itemName}" אזל מהמלאי` }) };
-      }
       if (menuLoaded) {
         if (!menuPrices.has(itemName)) {
           return { statusCode: 409, body: JSON.stringify({ error: `הפריט "${itemName}" כבר לא בתפריט — רענן את הדף` }) };

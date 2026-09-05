@@ -307,6 +307,9 @@
     .neighbor-item-name { font-weight: 700; font-size: 0.92rem; }
     .neighbor-item-desc { font-size: 0.78rem; color: var(--gray); margin-top: 0.15rem; line-height: 1.35; }
     .neighbor-item-actions { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
+    .neighbor-item-row.sold-out { opacity: 0.55; }
+    .neighbor-sold-out-badge { background: #666; color: white; font-size: 0.68rem; font-weight: bold; padding: 0.15rem 0.45rem; border-radius: 4px; margin-right: 0.4rem; }
+    .neighbor-add-btn:disabled { background: #aaa; cursor: not-allowed; }
     .neighbor-item-price { font-weight: 900; font-size: 0.88rem; color: var(--dark); }
     .neighbor-add-btn { background: var(--primary); color: white; border: none; border-radius: 8px; padding: 0.4rem 0.8rem; font-family: 'Heebo', sans-serif; font-weight: 700; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
     .neighbor-add-btn:hover { background: var(--primary-dark); }
@@ -1437,7 +1440,7 @@ function startPolling() {
             if (changed) {
                 isBusy = newBusy; soldOut = newSO; deliveryOn = newDel;
                 pickupOn = newPickup; etaMinutes = newEta;
-                applyBusy(); renderMenu(); applyHours();
+                applyBusy(); renderMenu(); applyHours(); renderNeighbors();
             }
         }
         // Also poll prepTime + promos + menu + extras
@@ -1640,15 +1643,17 @@ function neighborBoxHTML(biz) {
 
 function neighborItemHTML(item) {
     const hasOptions = (Array.isArray(item.extras) && item.extras.length) || (Array.isArray(item.choices) && item.choices.length);
+    const so = soldOut.has(item.name);
     return (
-        '<div class="neighbor-item-row">' +
+        '<div class="neighbor-item-row' + (so ? " sold-out" : "") + '">' +
         '<div class="neighbor-item-info">' +
-            '<div class="neighbor-item-name">' + escAttr(item.name) + '</div>' +
+            '<div class="neighbor-item-name">' + escAttr(item.name) + (so ? ' <span class="neighbor-sold-out-badge">אזל מהמלאי</span>' : '') + '</div>' +
             (item.desc ? '<div class="neighbor-item-desc">' + escAttr(item.desc) + '</div>' : '') +
         '</div>' +
         '<div class="neighbor-item-actions">' +
             '<span class="neighbor-item-price">' + item.price + ' ₪</span>' +
-            '<button type="button" class="neighbor-add-btn" onclick="addGuestItem(' + item._i + ')">' + (hasOptions ? '+ בחר' : '+ הוסף') + '</button>' +
+            '<button type="button" class="neighbor-add-btn"' + (so ? " disabled" : "") +
+            ' onclick="addGuestItem(' + item._i + ')">' + (so ? "אזל" : (hasOptions ? '+ בחר' : '+ הוסף')) + '</button>' +
         '</div></div>'
     );
 }
@@ -1667,7 +1672,7 @@ function toggleNeighbor(key) {
 // menu (openModal already handles item.extras / item.choices generically).
 function addGuestItem(idx) {
     const item = ITEM_IDX[idx];
-    if (!item || !item._source || item._source === "self") return;
+    if (!item || !item._source || item._source === "self" || soldOut.has(item.name)) return;
     const hasOptions = (Array.isArray(item.extras) && item.extras.length) || (Array.isArray(item.choices) && item.choices.length);
     if (hasOptions) { openModal(idx); return; }
     cart.push({
@@ -2636,13 +2641,19 @@ function renderSoldOutGrid() {
     // Include specials if enabled so the admin can mark them sold out too.
     if (chefSpecial && chefSpecial.enabled) allItems.push(chefSpecial);
     if (coupleMeal  && coupleMeal.enabled)  allItems.push(coupleMeal);
-    grid.innerHTML = allItems.map(item =>
-        '<div class="soldout-item">' +
-        "<span>" + item.name + "</span>" +
+    // "עוד מהשכונה" dishes share this same soldOut list — see renderNeighbors().
+    const neighborBusinesses = (typeof NEIGHBORS_CONFIG !== "undefined" && NEIGHBORS_CONFIG.businesses) || [];
+    neighborBusinesses.forEach(biz => (biz.sections || []).forEach(sec => (sec.items || []).forEach(it => {
+        if (it && it.name) allItems.push({ name: it.name, _neighborLabel: biz.name });
+    })));
+    grid.innerHTML = allItems.map(item => {
+        const label = item._neighborLabel ? "🏪 " + item._neighborLabel + " — " + item.name : item.name;
+        return '<div class="soldout-item">' +
+        "<span>" + label + "</span>" +
         '<input type="checkbox" class="soldout-check"' + (soldOut.has(item.name) ? " checked" : "") +
         ' onchange="toggleSoldOut(\'' + item.name.replace(/'/g, "\\'") + '\',this.checked)">' +
-        "</div>"
-    ).join("");
+        "</div>";
+    }).join("");
     const td = document.getElementById("toggle-delivery");
     const tp = document.getElementById("toggle-pickup");
     if (td) td.checked = deliveryOn;
@@ -2651,7 +2662,7 @@ function renderSoldOutGrid() {
 
 function toggleSoldOut(name, on) {
     if (on) soldOut.add(name); else soldOut.delete(name);
-    saveAdminState(); renderMenu();
+    saveAdminState(); renderMenu(); renderNeighbors();
 }
 
 // ============================================================

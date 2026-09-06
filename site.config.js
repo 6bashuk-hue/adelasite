@@ -23,7 +23,7 @@
       phoneDisplay: "050-4599409",
       whatsappCountryCode: "972",
       address: { street: "התעשייה 6", locality: "ערד", region: "", country: "IL" },
-      hoursDisplay: "א׳-ו׳ 18:00–24:00 · שבת 10:00–24:00",
+      hoursDisplay: "ב׳-ה׳ 18:00–24:00 · שישי 18:00–23:30 · שבת 12:00–24:00",
       canonicalUrl: "https://adelabashuk.netlify.app"
     },
     firebase: {

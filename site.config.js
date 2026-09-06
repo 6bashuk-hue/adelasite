@@ -12,6 +12,8 @@
 (function (root) {
   const SITE_CONFIG = {
     business: {
+      id: "adela",       // stable slug — used by the delivery bot (netlify/functions/delivery-send.js)
+      emoji: "🥙",        // used in the delivery/courier Telegram message
       name: "אדלה בשוק",
       tagline: "בר אוכל שוק",
       type: "בר אוכל שוק אותנטי מזרחי",           // ← free text, used in SEO/schema.org

@@ -39,7 +39,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Restaurant","name":"אדלה בשוק","url":"https://REPLACE-WITH-YOUR-DOMAIN.netlify.app","telephone":"+972504599409","image":"https://REPLACE-WITH-YOUR-DOMAIN.netlify.app/icon-512.png","servesCuisine":["Middle Eastern","Israeli"],"priceRange":"$$","address":{"@type":"PostalAddress","streetAddress":"התעשייה 6","addressLocality":"ערד","addressRegion":"","addressCountry":"IL"},"openingHours":["Su-Fr 18:00-24:00","Sa 10:00-24:00"],"hasMap":"https://maps.google.com/?q=אדלה+בשוק+התעשייה+6+ערד"}
+{"@context":"https://schema.org","@type":"Restaurant","name":"אדלה בשוק","url":"https://REPLACE-WITH-YOUR-DOMAIN.netlify.app","telephone":"+972504599409","image":"https://REPLACE-WITH-YOUR-DOMAIN.netlify.app/icon-512.png","servesCuisine":["Middle Eastern","Israeli"],"priceRange":"$$","address":{"@type":"PostalAddress","streetAddress":"התעשייה 6","addressLocality":"ערד","addressRegion":"","addressCountry":"IL"},"openingHours":["Mo-Th 18:00-24:00","Fr 18:00-23:30","Sa 12:00-24:00"],"hasMap":"https://maps.google.com/?q=אדלה+בשוק+התעשייה+6+ערד"}
 </script>
 <!-- SEO:END -->
 <style>
@@ -902,8 +902,9 @@
         <p id="closed-msg"></p>
         <p class="open-soon" id="closed-next"></p>
         <table class="hours-table">
-            <tr><td>ראשון–שישי</td><td>18:00–24:00</td></tr>
-            <tr><td>שבת</td><td>10:00–24:00</td></tr>
+            <tr><td>שני–חמישי</td><td>18:00–24:00</td></tr>
+            <tr><td>שישי</td><td>18:00–23:30</td></tr>
+            <tr><td>שבת</td><td>12:00–24:00</td></tr>
         </table>
     </div>
 
@@ -1075,7 +1076,7 @@
     📍 <a id="footer-address-link" href="#" target="_blank" rel="noopener">התעשייה 6, ערד</a> &nbsp;|&nbsp; 📞 <a href="tel:+972504599409" id="footer-phone-link">050-4599409</a><br>
     <br>
     <strong>שעות פתיחה:</strong><br>
-    <span id="footer-hours">א׳-ו׳ 18:00–24:00 · שבת 10:00–24:00</span>
+    <span id="footer-hours">ב׳-ה׳ 18:00–24:00 · שישי 18:00–23:30 · שבת 12:00–24:00</span>
     <a class="track-link" onclick="openTrackModal()">📍 איפה ההזמנה שלי?</a>
     <a class="track-link" href="/group.html" style="display:block;margin-top:0.5rem;">🥙 מזמינים יחד? פתח הזמנה קבוצתית</a>
 </footer>
@@ -2613,16 +2614,29 @@ function getHoursStatus() {
     const d = {Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6}[day];
     let pickupHours = false, deliveryHours = false, nextMsg = "";
 
-    if (d === 6) {
-        // שבת: פתוח 10:00–24:00
-        pickupHours   = t >= 10*60 && t < 24*60;
-        deliveryHours = pickupHours;
-        nextMsg = t < 10*60 ? "נפתח היום בשבת ב-10:00" : "";
-    } else {
-        // א׳-ו׳: פתוח 18:00–24:00
+    if (d >= 1 && d <= 4) {
+        // ב–ה: פתוח 18–24
         pickupHours   = t >= 18*60 && t < 24*60;
-        deliveryHours = pickupHours;
-        nextMsg = t < 18*60 ? "נפתח היום ב-18:00" : "";
+        deliveryHours = t >= 18*60 && t < 23*60;
+        if (t < 18*60)       nextMsg = "נפתח היום ב-18:00";
+        else if (t >= 24*60) nextMsg = "נפתח מחר ב-18:00";
+        else                 nextMsg = "";
+    } else if (d === 5) {
+        // שישי: פתוח (איסוף ומשלוח) 18:00–23:30 — שניהם נסגרים באותה שעה
+        pickupHours   = t >= 18*60 && t < 23*60+30;
+        deliveryHours = t >= 18*60 && t < 23*60+30;
+        if (t < 18*60)            nextMsg = "נפתח היום בשישי ב-18:00";
+        else if (t >= 23*60+30)   nextMsg = "נפתח מחר בשבת ב-12:00";
+        else                      nextMsg = "";
+    } else if (d === 6) {
+        // שבת: פתוח 12–24, משלוח 12–23
+        pickupHours   = t >= 12*60;
+        deliveryHours = t >= 12*60 && t < 23*60;
+        if (t < 12*60) nextMsg = "נפתח היום בשבת ב-12:00";
+        else           nextMsg = "";
+    } else {
+        // ראשון: סגור
+        nextMsg = "נפתח ביום שני ב-18:00";
     }
     return {pickupHours, deliveryHours, nextMsg};
 }
@@ -2653,7 +2667,7 @@ function applyHours() {
     const hasOpt = [...sel.options].some(o => o.value === "delivery");
 
     if (!effectiveDelivery) {
-        const why = !deliveryOn ? "המשלוחים מושבתים כרגע" : "משלוחים זמינים א׳-ו׳ 18:00–24:00 ובשבת 10:00–24:00";
+        const why = !deliveryOn ? "המשלוחים מושבתים כרגע" : "משלוחים זמינים ב׳–ה׳ בין 18:00–23:00, בשישי בין 18:00–23:30, ובשבת בין 12:00–23:00";
         notice.textContent = "🛵 " + why; notice.style.display = "block";
         if (hasOpt) sel.remove([...sel.options].findIndex(o => o.value === "delivery"));
         document.getElementById("address-wrap").style.display = "none";

@@ -22,14 +22,22 @@ function getILHoursStatus() {
   const t = h * 60 + m;
   const d = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 }[day];
   let pickup = false, delivery = false, msg = "";
-  if (d === 6) {
-    pickup = t >= 10 * 60 && t < 24 * 60;
-    delivery = pickup;
-    if (t < 10 * 60) msg = "נפתח היום בשבת ב-10:00";
-  } else {
+  if (d >= 1 && d <= 4) {
     pickup = t >= 18 * 60 && t < 24 * 60;
-    delivery = pickup;
+    delivery = t >= 18 * 60 && t < 23 * 60;
     if (t < 18 * 60) msg = "נפתח היום ב-18:00";
+    else if (t >= 24 * 60) msg = "נפתח מחר ב-18:00";
+  } else if (d === 5) {
+    pickup = t >= 18 * 60 && t < 23 * 60 + 30;
+    delivery = pickup;
+    if (t < 18 * 60) msg = "נפתח היום בשישי ב-18:00";
+    else if (t >= 23 * 60 + 30) msg = "נפתח מחר בשבת ב-12:00";
+  } else if (d === 6) {
+    pickup = t >= 12 * 60;
+    delivery = t >= 12 * 60 && t < 23 * 60;
+    if (t < 12 * 60) msg = "נפתח היום בשבת ב-12:00";
+  } else {
+    msg = "נפתח ביום שני ב-18:00";
   }
   return { pickupOpen: pickup, deliveryOpen: delivery, msg };
 }

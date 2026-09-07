@@ -22,6 +22,7 @@ const SOURCE_HTML = path.join(ROOT, "admin.html");
 // code, no keys, no other pages).
 const ASSETS = [
   "site.config.js",
+  "neighbors.config.js",
   "js/firebase-auth.js",
   "admin-manifest.json",
   "icon-192.png",

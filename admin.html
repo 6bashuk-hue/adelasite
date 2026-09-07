@@ -880,7 +880,16 @@ function startRealtime() {
 async function fetchOrders() {
     const data = await fbGet('orders');
     if (!data) {
-        renderAllColumns({});
+        // fbGet() returns null both when Firebase genuinely has nothing at this
+        // path AND when the request itself failed (network error, timeout, bad
+        // status) — indistinguishable from here. But `orders` holds every order
+        // ever placed, not just active ones, so once the business has taken a
+        // single order this path can never legitimately come back empty again.
+        // A null here is therefore virtually always a transient connectivity
+        // blip, not "zero orders" — so keep showing the last known board
+        // instead of wiping it (which would hide real, unprepared orders) and
+        // just retry on the next poll.
+        if (firstPoll) renderAllColumns({});
         firstPoll = false;
         return;
     }

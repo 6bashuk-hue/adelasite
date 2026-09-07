@@ -6,7 +6,12 @@ name: Build Kitchen App (Android APK)
 on:
   workflow_dispatch:
   push:
-    branches: [main, master]
+    # Netlify's production deploy for this site currently tracks
+    # claude/adlah-neighborhood-section-wsx310, not main — every push here
+    # since that branch was created also needs to trigger an APK build, or
+    # web-side fixes silently never reach the app (see PRs #23-30, none of
+    # which triggered this workflow because it only listened for main/master).
+    branches: [main, master, claude/adlah-neighborhood-section-wsx310]
     paths:
       - "capacitor-kitchen-app/**"
       - "admin.html"

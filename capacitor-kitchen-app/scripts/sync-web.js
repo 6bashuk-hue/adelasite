@@ -27,7 +27,17 @@ const ASSETS = [
   "admin-manifest.json",
   "icon-192.png",
   "icon-512.png",
-  "sounds/alert.wav"
+  "sounds/alert.wav",
+  // Shared table-reservations "שולחנות שמורים היום" panel (added to admin.html
+  // as <script src> tags — see the "Shared table-reservation system" comment
+  // there). shared-reservations-admin-config.js isn't a <script src> tag (it's
+  // loaded dynamically at runtime by reservations-admin.js after login), but
+  // still has to be bundled here or that dynamic load 404s inside the app with
+  // no fallback, and the panel hangs on "טוען..." forever.
+  "js/shared-reservations-config.js",
+  "js/shared-reservations-client.js",
+  "js/reservations-admin.js",
+  "js/shared-reservations-admin-config.js"
 ];
 
 function readSiteConfigCanonicalUrl() {
